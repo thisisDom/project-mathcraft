@@ -6,23 +6,27 @@ module MathAPIAdapter
 
 
   def self.index(route, data)
-    response = self.post(route, query: { data: data.to_json })
+    self.get(route, query: { data: data.as_json(root: true) })
   end
 
   def self.create(route, data)
-    response = self.post(route, query: { data: data.to_json })
+    self.post(route, query: { data: data.as_json(root: true) })
   end
 
   def self.save(route, data)
-    response = self.post(route, query: { data: data.to_json })
+    self.post(route, query: { data: data.as_json(root: true) })
+  end
+
+  def self.show(route)
+    self.get(route)
   end
 
   def self.update(route, data)
-    response = self.post(route, query: { data: data.to_json })
+    self.post(route, query: { data: data.as_json(root: true) })
   end
 
   def self.destroy(route, data)
-    response = self.post(route, query: { data: data.to_json })
+    self.post(route, query: { data: data.as_json(root: true) })
   end
 
   private
