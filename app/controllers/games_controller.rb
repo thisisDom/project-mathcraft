@@ -12,8 +12,8 @@ class GamesController < ApplicationController
     @question = temp[0]
     gon.answer = temp[1]
 
-    gon.scene = "forest"
-    @scene = "forest"
+    gon.scene = "temple"
+    @scene = "temple"
 
     if request.xhr?
       render json: { question: @question, answer: gon.answer }.to_json
