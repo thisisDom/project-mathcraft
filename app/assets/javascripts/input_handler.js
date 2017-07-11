@@ -6,6 +6,7 @@ $(document).ready(function() {
     updateAnswerBox_withUserInput();
     clearText_fromAnswerBox();
     captureUserData_and_manipulateAnimation();
+    updateCalculatorWrapper_backgroundImage();
 });
 
 var updateAnswerBox_withUserInput = function() {
@@ -71,4 +72,20 @@ var updateQuestionsviaAJAX = function() {
   .fail(function(response) {
     console.log("something went wrong!", response);
   });
+}
+
+var updateCalculatorWrapper_backgroundImage = function() {
+    switch (gon.scene) {
+      case 'cave':
+        $(".calculator_wrapper").css("background-image", "url('images/backgrounds/cave.png')");
+        break;
+      case 'temple':
+        $(".calculator_wrapper").css("background-image", "url('images/backgrounds/temple.jpg')");
+        break;
+      case 'forest':
+        $(".calculator_wrapper").css("background-image", "url('images/backgrounds/forest.png')");
+        break;
+      default:
+        console.log("ERROR - Couldn't find scene:" + scene)
+    }
 }

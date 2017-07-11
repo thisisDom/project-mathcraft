@@ -101,7 +101,7 @@ div.answer_area {
 }
 
 div.calculator_wrapper {
-  background-image: url('forest.png');
+/*  background-image: url('forest.png');*/
   display: flex;
   justify-content: center;
   height: 300px;
