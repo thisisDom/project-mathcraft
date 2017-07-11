@@ -1,5 +1,5 @@
 var apt, sprite;
-var isoGroup, cursorPos, cursor, selectedTile, changedGroup;
+var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
 var lastImage;
 var i = 0;
 var worldScale = 1;
@@ -72,7 +72,7 @@ BasicGame.Boot.prototype =
         coalSprite = game.add.sprite(20, 20,'coal');
         text = game.add.text(coalSprite.x + coalSprite.width/2, coalSprite.y + coalSprite.height, 20);
 
-        // BORDER
+        // BORDER WALLS
         // game.add.isoSprite(40,630,100,'wall-SW');
         // game.add.isoSprite(330,630,100,'wall-SW');
 
@@ -190,7 +190,9 @@ BasicGame.Boot.prototype =
             var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
             // WHEN CLICKING: Select the tile and make it green, un-select others
             if (game.input.activePointer.isDown && inBounds && !tile.busy){
-                selectedTile = tile
+                selectedTile = tile;
+                // ghostBuilding = game.add.isoSprite(selectedTile.isoX,selectedTile.isoY, 0, 'magic-house-1', 0, ghostGroup);
+                // ghostBuilding.tint = 0x00FF00;
                 tile.tint = 0x00FF00;
                 isoGroup.forEach(function (tile) {tile.ready = false})
                 tile.ready = true
@@ -209,25 +211,6 @@ BasicGame.Boot.prototype =
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
             }
         });
-
-        // buildingGroup.forEach(function(building){
-        //     // var inBounds = building.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-        //     var inBounds = building.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-        //     // debugger;
-        //     // console.log(building.key);
-        //     if (!building.selected && inBounds && game.input.activePointer.isDown) {
-        //         building.selected = true;
-        //         console.log("CLICKED!")
-        //         updateBuilding(building,building.baseTile);
-        //     }
-        //     else if (building.selected && !inBounds ) {
-        //         // debugger;
-        //         console.log("OUTBOUNDS");
-        //         console.log(inBounds);
-        //         console.log(building.isoBounds);
-        //         building.selected = false;
-        //     }
-        // });
     },
 
     // DISPLAY TEXT AND FPS
@@ -371,6 +354,9 @@ function addBuilding() {
 }
 
 // -------- ADD BUILDING FUNCTIONS --------
+function previewBuilding () {
+
+};
 function addMagicHouse1 () {
     selectedTile.buildingName = 'magic-house-1'
     selectedTile.buildingX = -90
@@ -440,7 +426,6 @@ function addCenterFountain () {
     selectedTile.buildingY = 65
     selectedTile.buildingZ = 65
     selectedTile.busy = true;
-
     renderProperly();
 }
 // ---------------------------------------------------
