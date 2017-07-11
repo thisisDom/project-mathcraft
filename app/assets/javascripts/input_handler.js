@@ -36,7 +36,7 @@ var captureUserData_and_manipulateAnimation = function() {
      streak_counter += 1;
 
      if (streak_counter >= 2) {
-        $(".streak_btn").html("<button id=\"streak_counter\" class=\"streak_counter\">" + streak_counter + "\ncombo </button>");
+        $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + streak_counter + "</div><span>combo</span></div>");
       }
     }
     else {

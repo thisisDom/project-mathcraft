@@ -17,9 +17,10 @@ div.hearts {
 }
 
 .streak_counter {
+  display: inline-flex;
   background-image: url('calculator_icons.png');
   background-position: -225px -199px;
-  font-size: 15px;
+  font-size: 30px;
   float: right;
   color: black;
   font-weight: 900;
@@ -31,10 +32,17 @@ div.hearts {
   outline: none;
   cursor: pointer;
   background-color: transparent;
-  display: inline-flex;
+  flex-direction:column;
   justify-content: center;
   align-items: center;
 }
+
+.streak_counter span {
+  position: relative;
+  top: -6px;
+  font-size: 10px;
+}
+
 
 #resource_btn { background-position: -270px -61px; }
 #resource_btn:hover { background-position: -356px -61px; }
