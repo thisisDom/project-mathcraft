@@ -1,6 +1,6 @@
 var wrong_answer_counter = 0;
 var guess_attempts = 0;
-var correct_answer_counter = 0;
+var streak_counter = 0;
 
 $(document).ready(function() {
     updateAnswerBox_withUserInput();
@@ -33,12 +33,15 @@ var captureUserData_and_manipulateAnimation = function() {
     var $user_input = $(".answer_area")[0].innerText;
 
     if ($user_input == gon.answer) {
-     correct_answer_counter += 1;
-     $("#correct_counter").html(correct_answer_counter);
+     streak_counter += 1;
+
+     if (streak_counter >= 2) {
+        $(".streak_btn").html("<button id=\"streak_counter\" class=\"streak_counter\">" + streak_counter + "\ncombo </button>");
+      }
     }
     else {
-      $("#correct_counter").html("0");
-      correct_answer_counter = 0;
+      $("#streak_counter").remove();
+      streak_counter = 0;
       wrong_answer_counter += 1;
       gon.wrong_answer = true;
 

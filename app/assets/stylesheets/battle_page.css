@@ -8,7 +8,7 @@ div.status_bar {
   flex-wrap: wrap;
 }
 
-div.counter_btn {
+div.streak_btn {
   width: 70%;
 }
 
@@ -16,10 +16,10 @@ div.hearts {
   width: 30%;
 }
 
-.correct_counter {
+.streak_counter {
   background-image: url('calculator_icons.png');
   background-position: -225px -199px;
-  font-size: 25px;
+  font-size: 15px;
   float: right;
   color: black;
   font-weight: 900;
