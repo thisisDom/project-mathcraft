@@ -1,7 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Question.create({ title: "What is 1 + 1?", answer: "2" })
+Question.create({ title: "What is 10 x 5?", answer: "50" })
+Question.create({ title: "What is 12 - 8?", answer: "4" })
+Question.create({ title: "What is 30 / 10?", answer: "3" })
+Question.create({ title: "What is 11 + 23?", answer: "34" })
+Question.create({ title: "What is 4 x 25?", answer: "100" })
+Question.create({ title: "What is 55 - 11?", answer: "44" })
+Question.create({ title: "What is 64 / 8?", answer: "8" })
+Question.create({ title: "What is 3 + 1?", answer: "3" })
+Question.create({ title: "What is 11 x 5?", answer: "55" })
+Question.create({ title: "What is 13 - 8?", answer: "5" })
+Question.create({ title: "What is 12 / 6?", answer: "2" })
+Question.create({ title: "What is 50 + 23?", answer: "73" })
+Question.create({ title: "What is 40 x 25?", answer: "1000" })
+Question.create({ title: "What is 11 - 11?", answer: "0" })
+Question.create({ title: "What is 96 / 8?", answer: "12" })
+Question.create({ title: "What is 42 + 1?", answer: "43" })
+Question.create({ title: "What is 5 x 5?", answer: "25" })
+Question.create({ title: "What is 55 - 8?", answer: "47" })
+Question.create({ title: "What is 100 / 10?", answer: "10" })
+Question.create({ title: "What is 33 + 23?", answer: "56" })
+Question.create({ title: "What is 1 x 25?", answer: "25" })
+Question.create({ title: "What is 78 - 11?", answer: "67" })
+Question.create({ title: "What is 32 / 8?", answer: "4" })
