@@ -10,7 +10,7 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 
-Rails.application.config.assets.precompile += %w( input_handler.js )
+Rails.application.config.assets.precompile += %w( battle_page_ajax.js )
 
 Rails.application.config.assets.precompile += %w( phaser.js )
 Rails.application.config.assets.precompile += %w( battle.js )
