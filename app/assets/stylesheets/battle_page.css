@@ -111,11 +111,11 @@ div.calculator_wrapper {
 div.calculator_area {
   text-align: center;
   display: flex;
-  width: 175px;
+  width: 200px;
   flex-wrap: wrap;
   align-items: center;
   align-content: space-between;
-  height: 240px;
+  height: 270px;
   justify-content: space-between;
 }
 
