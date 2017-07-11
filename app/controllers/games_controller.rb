@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   def index
+    # added dev branch
     data = Question.all
     questions_hash = {}
 
