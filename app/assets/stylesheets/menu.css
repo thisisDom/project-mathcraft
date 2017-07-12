@@ -2,9 +2,16 @@
   position: absolute;
   bottom: 0px;
   z-index: 1;
-  height: 270px;
+  height: 230px;
   width: 100%;
   background: grey;
+}
+
+#logo {
+  position: absolute;
+  top: -120px;
+  left: 100px;
+  z-index: -1;
 }
 
 #hide-show-toggle {
@@ -14,17 +21,16 @@
 
 .menu-button {
   border-radius: 25px;
-  padding-top: 30px;
+  padding-top: 5%;
   height: 70%;
-  margin: 20px;
-  margin-right: 45px;
+  margin: 7%;
   background: #98DDFE;
   float: right;
   text-align: center;
 }
 
 .hide-menu {
-  transform: translateY(105%);
+  transform: translateY(135%);
   transition-timing-function: ease-in;
   transition: 0.2s;
 }
