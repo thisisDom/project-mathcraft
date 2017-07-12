@@ -6,7 +6,6 @@ class GamesController < ApplicationController
 
   def level_select
     @levels = get_levels
-    p @levels
   end
 
   def boss_battle
@@ -25,8 +24,7 @@ class GamesController < ApplicationController
   end
 
   def timed_battle_forest
-    @assets = get_level_assets('forest')
-    p @assets
+    @assets = get_level_info('forest', 'assets')
     @questions = get_questions("multiplication", "easy")
 
     current_question = @questions.pop

@@ -4,10 +4,10 @@ module GamesHelper
     return HTTParty.get("http://mathcraft-api.herokuapp.com/generate/?type=#{type}&difficulty=#{difficulty}")['questions']
   end
 
-  def get_level_assets(level_name)
+  def get_level_info(level_name, key)
     levels = get_levels
     level = levels.find { |level| level['title'] == level_name }
-    return level['assets']
+    return level[key]
   end
 
   def get_levels
