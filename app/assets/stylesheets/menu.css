@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 0px;
   z-index: 1;
-  height: 350px;
+  height: 270px;
   width: 100%;
   background: grey;
 }
@@ -13,13 +13,14 @@
 }
 
 .menu-button {
-  margin: 50px;
-  width: 100px;
-  height: 100px;
-  /*border: none;*/
-  /*outline: none;*/
-  background: green;
-  display: inline-flex;
+  border-radius: 25px;
+  padding-top: 30px;
+  height: 70%;
+  margin: 20px;
+  margin-right: 45px;
+  background: #98DDFE;
+  float: right;
+  text-align: center;
 }
 
 .hide-menu {
