@@ -26,7 +26,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 15, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -49,7 +49,7 @@ function findStumpy() {
 
 function update() {
     var style = { font: "30px Arial", fill: "white", align: "center" };
-    var text = game.add.text(game.world.centerX, game.world.centerY-50, "GAME OVER!", style);
+    var text = game.add.text(game.world.centerX, game.world.centerY-50, "ROUND OVER!", style);
     text.anchor.set(0.5);
     text.alpha = 0;
 
@@ -61,34 +61,12 @@ function update() {
         game.world.scale.set(worldScale);
     };
 
-    if (gon.wrong_answer == true) {
-        if (gon.scene == 'temple') {
-            createExplosion();
-        }
-
-        if (gon.game_over == true) {
-            timer.stop();
-            game.camera.shake(0.05, 500);
-            game.add.tween(text).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-            if (gon.scene == 'temple') {
-                boss.animations.stop(null, true);
-                boss.alpha = 0;
-                bossDeath();
-            }
-            else if (gon.scene == 'forest') {
-                stumpy.animations.stop(null, true);
-            }
-            else {
-                golem.animations.stop(null, true);
-            }
-
-            gon.wrong_answer = false;
-        }
-        else {
-            game.camera.shake(0.05, 500);
-            gon.wrong_answer = false;
-        }
+    if (gon.forest_user_wrong_answer == true) {
+        game.camera.shake(0.05, 500);
+        gon.forest_user_wrong_answer = false;
+    }
+    else if (gon.forest_user_right_answer == true) {
+        // SPROUT RESOURCES
     }
 }
 
@@ -107,11 +85,9 @@ function endTimer() {
 
     text.anchor.set(0.5);
 
-    if (gon.scene == 'temple') { boss.animations.stop(null, true); boss}
-    else if (gon.scene == 'forest') { stumpy.animations.stop(null, true); }
-    else { golem.animations.stop(null, true); }
+    stumpy.animations.stop(null, true);
 
-    gon.game_over = true;
+    gon.forest_round_over = true;
 }
 
 function formatTime(s) {

@@ -1,5 +1,5 @@
 var wrong_answer_counter = 0;
-var right_answer_counter = 0;
+var streak_counter = 0;
 
 $(document).ready(function() {
     gon.forest_round_over = false;
@@ -40,30 +40,18 @@ var captureUserData_and_manipulateAnimation = function() {
 
       if ($user_input == gon.answer) {
         gon.forest_user_right_answer = true;
-        right_answer_counter += 1;
+        updateQuestionsviaAJAX();
+        streak_counter += 1;
 
-        $(".streak_btn").html(right_answer_counter);
-
-        if (right_answer_counter == 5) {
-          gon.boss_game_over = true;
-        }
-        else {
-          updateQuestionsviaAJAX();
-          gon.bb_user_right_answer = true;
+        if (streak_counter >= 2) {
+          $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + streak_counter + "</div><span>combo</span></div>");
         }
       }
       else {
-        wrong_answer_counter += 1;
+        $(".streak_counter").remove();
+        streak_counter = 0;
 
-        $find_hearts[$find_hearts.length-1].remove();
-
-        if (wrong_answer_counter == 5) {
-          gon.bb_user_wrong_answer = true;
-          gon.user_game_over = true;
-        }
-        else {
-          gon.bb_user_wrong_answer = true;
-        }
+        gon.forest_user_wrong_answer = true;
       }
     }
   })
