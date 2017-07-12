@@ -1,21 +1,32 @@
 <%= render "navbar" %>
-
+<br>
+<br>
+<br>
 <div id="townArea" class="phaser_area">
   <%= javascript_include_tag 'town.js' %>
 </div>
 
 <div id="stageMenu" class="show-menu hide-menu">
-  <a href="/level-select">
-  <button class="menu-button">Harvest</button>
-  </a>
-  <button id="built" class="menu-button">Built</button>
+  <div>
+   <img id="logo" src="/images/logo.png">
+  </div>
+  <div class="menu-button" id="build">
+   <img id="tools" src="/images/buttons/tools.png">
+  <div>BUILD</div>
+  </div>
+  <div class="menu-button" id="harvest">
+    <a href="/level-select">
+    <img id="tools" src="/images/buttons/harvest.png">
+    </a>
+  <div>HARVEST</div>
+  </div>
 </div>
 
 
 
 <script type="text/javascript">
   var menu = document.getElementById("stageMenu");
-  var builtButton = document.getElementById("built");
+  var builtButton = document.getElementById("build");
   builtButton.addEventListener("click", function() {
     menu.classList.toggle("show-menu");
   });

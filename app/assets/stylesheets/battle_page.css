@@ -19,10 +19,10 @@ div.hearts {
 .streak_counter {
   display: inline-flex;
   background-image: url('calculator_icons.png');
-  background-position: -225px -199px;
+  background-position: -162px -199px;
   font-size: 30px;
   float: right;
-  color: black;
+  color: #0000ff;
   font-weight: 900;
   font-family: "Comic Sans MS", "Comic Sans", cursive;
   z-index: 4;

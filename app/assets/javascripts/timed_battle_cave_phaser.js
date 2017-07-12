@@ -1,4 +1,4 @@
-var stumpy;
+var golem;
 var timer, timerEvent, text;
 var background;
 
@@ -17,12 +17,21 @@ function preload() {
     // Load Background
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
+    game.load.image('stone', 'images/resources/stone_sprout.png');
+    game.load.image('popup', 'images/sprites/popup.png');
+
     // Load Sprites
     game.load.spritesheet('golem', 'images/sprites/golem.png', 142.3, 140, 11);
+
+    // Load Rock Resource
+    game.load.image('cave-background', 'images/backgrounds/cave.png');
 }
 
 function create() {
     timer = game.time.create();
+
+    golem = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
+    golem.alpha = 0
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -47,11 +56,6 @@ function findGolem() {
 }
 
 function update() {
-    var style = { font: "30px Arial", fill: "white", align: "center" };
-    var text = game.add.text(game.world.centerX, game.world.centerY-50, "ROUND OVER!", style);
-    text.anchor.set(0.5);
-    text.alpha = 0;
-
     // MAKE THE IMAGE ZOOM IN
     if (worldScale < 1.2){
         worldScale += 0.0015;
@@ -65,7 +69,8 @@ function update() {
         gon.cave_user_wrong_answer = false;
     }
     else if (gon.cave_user_right_answer == true) {
-        // SPROUT RESOURCES
+        sproutResources();
+        gon.cave_user_right_answer = false;
     }
 }
 
@@ -82,11 +87,16 @@ function endTimer() {
     var style = { font: "30px Arial", fill: "white", align: "center" };
     var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
 
+    $(".streak_counter").remove();
+
     text.anchor.set(0.5);
 
     golem.animations.stop(null, true);
+    golem.alpha = 0;
 
     gon.cave_round_over = true;
+
+    popup();
 }
 
 function formatTime(s) {
@@ -94,4 +104,38 @@ function formatTime(s) {
     var minutes = "0" + Math.floor(s / 60);
     var seconds = "0" + (s - minutes * 60);
     return minutes.substr(-2) + ":" + seconds.substr(-2);
+}
+
+function sproutResources() {
+    var stone_sprite = game.add.sprite(golem.x, golem.y, 'stone');
+    stone_sprite.alpha = 0;
+    var stoneTween = game.add.tween(stone_sprite).to({ alpha: 1, x: stone_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
+
+    stoneTween.onComplete.add(function() {
+        stone_sprite.x = golem.x; stone_sprite.y = golem.y;
+        stone_sprite.alpha = 0;
+    });
+    stoneTween.start();
+}
+
+function popup() {
+    popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
+    popup.scale.set(0.1);
+    game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
+
+    popup.alpha = 0.8
+    // popup.scale.set(0.1);
+    // // debugger
+
+    // // TEXT
+    var ipsum = "Resources gained: 100 Wood!";
+    var style = { font: "12px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    text = game.add.text(popup.x/2, popup.y/2, ipsum, style);
+    text.setTextBounds(popup.x, popup.y);
+    // // Center align
+    // text.anchor.set(0.5);
+    text.align = 'center';
+    // //  Stroke color and thickness
+    text.stroke = '#000000';
+    text.strokeThickness = 4;
 }

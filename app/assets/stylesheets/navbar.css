@@ -18,14 +18,14 @@
 
 .resource-amount {
   margin-top: 20px;
-  margin-right: 5px;
+  margin-right: 1px;
   color: black;
   font-size: 1em;
   float: right;
 }
 
 #home {
-  margin-top: 10px;
+  margin-top: 3px;
   margin-left: 5px;
   float: left;
 }
