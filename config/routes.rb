@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/town', to: "games#town"
   get '/level-select', to:"games#level_select"
 
-  get '/boss-battle', to: 'games#boss_battle'
+  get '/temple', to: 'games#boss_battle'
   get '/forest', to: 'games#timed_battle_forest'
   get '/cave', to: 'games#timed_battle_cave'
 end
