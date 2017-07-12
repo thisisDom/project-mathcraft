@@ -17,12 +17,19 @@ function preload() {
     // Load Background
     game.load.image('forest-background', 'images/backgrounds/forest.png');
 
+    //Load Resource Sprite
+    game.load.image('wood', 'images/resources/Wood.png');
+
     // Load Sprites
     game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
 }
 
 function create() {
     timer = game.time.create();
+
+    // invisible stumpy
+    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
+    stumpy.alpha = 0
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -43,7 +50,7 @@ function findStumpy() {
     stumpy.animations.play('walk', 8, true);
     stumpy.alpha = 0;
     stumpy.scale.set(0.9);
-    game.add.tween(stumpy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+    game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
     stumpy.anchor.setTo(0.3, 0.4);
 }
 
@@ -66,7 +73,8 @@ function update() {
         gon.forest_user_wrong_answer = false;
     }
     else if (gon.forest_user_right_answer == true) {
-        // SPROUT RESOURCES
+        sproutResources();
+        gon.forest_user_right_answer = false;
     }
 }
 
@@ -96,3 +104,19 @@ function formatTime(s) {
     var seconds = "0" + (s - minutes * 60);
     return minutes.substr(-2) + ":" + seconds.substr(-2);
 }
+
+
+function sproutResources() {
+    var wood_sprite = game.add.sprite(stumpy.x, stumpy.y, 'wood');
+    wood_sprite.alpha = 0;
+    var woodTween = game.add.tween(wood_sprite).to({ alpha: 1, x: wood_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
+    // game.add.tween(stumpy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+
+    woodTween.onComplete.add(function() {
+        wood_sprite.x = stumpy.x; wood_sprite.y = stumpy.y;
+        wood_sprite.alpha = 0;
+    });
+    woodTween.start();
+}
+
+

@@ -201,6 +201,28 @@ function formatTime(s) {
 }
 
 
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+    preload: preload,
+    create: create
+});
+
+function preload() {
+    game.load.image('sprite', 'sprite.png');
+}
+
+function create() {
+    var sprite = game.add.sprite(100, 100, 'sprite');
+    var demoTween = game.add.tween(sprite).to({x:400,y:400},1000);
+
+    demoTween.onComplete.add(function() {
+        sprite.x = 100; sprite.y = 100;
+        demoTween.start();
+    });
+
+    demoTween.start();
+}
+
+
 
 // ----------------------- OLD CODE -----------------------
 //  --- CREATE
