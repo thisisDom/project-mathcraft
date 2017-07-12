@@ -1,6 +1,13 @@
 class GamesController < ApplicationController
+  include GamesHelper
 
   def index
+  end
+
+  def level_select
+    @levels = HTTParty.get("http://mathcraft-api.herokuapp.com/levels")
+    p "*" * 80
+    p @levels
   end
 
   def boss_battle
@@ -22,6 +29,8 @@ class GamesController < ApplicationController
   end
 
   def timed_battle_forest
+    @questions = get_questions("addition", "easy")
+    p @questions
     # added dev branch
     data = Question.all
     questions_hash = {}
