@@ -7,17 +7,21 @@ var woodAmount = $("#wood-amount").html();
 var stoneAmount = $("#stone-amount").html();
 var goldAmount = $("#gold-amount").html();
 
-var magicHouse1Price = 5;
-var magicHouse2Price = 5;
-var magicHouse3Price = 10;
+var house1Price = 5;
+var house2Price = 5;
+var house3Price = 10;
 
-var alchemyLab1Price = 3;
-var alchemyLab2Price = 5;
-var alchemyLab3Price = 10;
+var lab1Price = 3;
+var lab2Price = 5;
+var lab3Price = 10;
 
-var teslaHouse1Price = 2;
-var teslaHouse2Price = 5;
-var teslaHouse3Price = 10;
+var factory1Price = 2;
+var factory2Price = 5;
+var factory3Price = 10;
+
+// TEST - ADDING A PRE-MADE BUILDING
+serverBuildingName = 'alchemy-lab-1';
+serverBuildingTile = 1;
 
 
 var game = new Phaser.Game($("#townArea").width(),$("#townArea").height(), Phaser.AUTO, 'townArea', null, true, false);
@@ -131,9 +135,7 @@ BasicGame.Boot.prototype =
         buildingPreviewName.anchor.set(0.5, 0,5);
         buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2,'wood');
         buildingPreviewResource.scale.set(2);
-        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " +magicHouse1Price, { fill: '#ffffff', font: "50px Arial" });
-
-        //
+        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial" });
 
         // INVISIBLE SPRITES (intial reference for .destroy )
         ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
@@ -163,10 +165,7 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].busy = true;
         isoGroup.children[12].alpha = 0;
 
-        // TEST - ADDING A PRE-MADE BUILDING
-        serverBuildingName = 'alchemy-lab-1';
-        serverBuildingTile = 1;
-
+        // SEVER INFO
         selectedTile = isoGroup.children[serverBuildingTile];
         addAlchemyLab1 ();
     },
@@ -340,19 +339,19 @@ function loadBuildingPreview() {
         buildingPreview.loadTexture('magic-house-1', 0);
         buildingPreviewName.text = "MAGIC HOUSE";
         buildingPreviewResource.loadTexture('wood',0);
-        buildingPreviewPrice.text = "x " + magicHouse1Price;
+        buildingPreviewPrice.text = "x " + house1Price;
         break;
       case 2:
         buildingPreview.loadTexture('alchemy-lab-1', 0);
         buildingPreviewName.text = "ALCHEMY LAB";
         buildingPreviewResource.loadTexture('stone',0);
-        buildingPreviewPrice.text = "x " + alchemyLab1Price;
+        buildingPreviewPrice.text = "x " + lab1Price;
         break;
       case 3:
         buildingPreview.loadTexture('tesla-house-1', 0);
         buildingPreviewName.text = "TESLA FACORY";
         buildingPreviewResource.loadTexture('gold',0);
-        buildingPreviewPrice.text = "x " + teslaHouse1Price;
+        buildingPreviewPrice.text = "x " + factory1Price;
         break;
       default:
         i = 1;
@@ -371,14 +370,15 @@ function addBuilding() {
     switch (buildingPreview.key) {
       case 'magic-house-1':
         addMagicHouse1();
-        removeWood(magicHouse1Price);
+        removeWood(house1Price);
         break;
       case 'magic-house-2':
         addMagicHouse2();
+        removeWood(house2Price);
         break;
       case 'magic-house-3':
         addMagicHouse3();
-        removeWood(magicHouse3Price);
+        removeWood(house3Price);
         break;
       case 'alchemy-lab-1':
         addAlchemyLab1();
@@ -399,9 +399,6 @@ function addBuilding() {
 }
 
 // -------- ADD BUILDING FUNCTIONS --------
-function previewBuilding () {
-
-};
 function addMagicHouse1 () {
     selectedTile.buildingName = 'magic-house-1'
     selectedTile.buildingX = -90
