@@ -17,7 +17,7 @@ function preload() {
     // Load Background
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
-    game.load.image('stone', 'images/resources/stone.png');
+    game.load.image('stone', 'images/resources/stone_sprout.png');
     game.load.image('popup', 'images/sprites/popup.png');
 
     // Load Sprites
