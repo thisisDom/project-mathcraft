@@ -7,31 +7,6 @@
   background: blue;
 }
 
-.level-select {
-  height: 1472px;
-  width: 828px;
-  background: black;
-}
-
-.level-button {
-  background: yellow;
-  width: 100%;
-  height: 150px;
-  margin-top: 10px;
-}
-
-#forest-level {
-  background-image: url(forest.png);
-}
-
-#cave-level {
-  background-image: url(cave.png);
-}
-
-#boss-level {
-  background-image: url(temple.jpg);
-}
-
 #hide-show-toggle {
   background: yellow;
   text-align: center;
