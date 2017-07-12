@@ -14,6 +14,6 @@ module GamesHelper
     return HTTParty.get("http://mathcraft-api.herokuapp.com/levels")['levels']
   end
 
-
+  
 
 end

@@ -6,7 +6,21 @@ class GamesController < ApplicationController
 
   def level_select
     @levels = get_levels
+    session[:levels] = @levels
   end
+
+  def show
+    id = params[:id]
+    p session[:levels]
+    @level = session[:levels].find { |level| level['position'] == id.to_i }
+    render json: { level: @level }
+    # request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
+  end
+
+  def update
+    # request = "/players/#{session[:id]}/playerslevels/complete", params[:players_level_id] , response + { player: {...} }}
+  end
+
 
   def boss_battle
     @assets = get_level_info('temple','assets')
