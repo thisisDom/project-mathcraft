@@ -18,9 +18,10 @@ function preload() {
     game.load.image('forest-background', 'images/backgrounds/forest.png');
 
     //Load Resource Sprite
-    game.load.image('wood', 'images/resources/Wood.png');
+    game.load.image('wood', 'images/resources/wood.png');
+    game.load.image('popup', 'images/sprites/popup.png')
 
-    // Load Sprites
+    // Load Enemy Sprites
     game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
 }
 
@@ -55,11 +56,6 @@ function findStumpy() {
 }
 
 function update() {
-    var style = { font: "30px Arial", fill: "white", align: "center" };
-    var text = game.add.text(game.world.centerX, game.world.centerY-50, "ROUND OVER!", style);
-    text.anchor.set(0.5);
-    text.alpha = 0;
-
     // MAKE THE IMAGE ZOOM IN
     if (worldScale < 1.2){
         worldScale += 0.0015;
@@ -90,12 +86,16 @@ function endTimer() {
     timer.stop();
     var style = { font: "30px Arial", fill: "white", align: "center" };
     var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
+    $(".streak_counter").remove();
 
     text.anchor.set(0.5);
 
     stumpy.animations.stop(null, true);
+    stumpy.alpha = 0;
 
     gon.forest_round_over = true;
+
+    popup();
 }
 
 function formatTime(s) {
@@ -119,4 +119,23 @@ function sproutResources() {
     woodTween.start();
 }
 
+function popup() {
+    popup = game.add.sprite(game.world.centerX+50, game.world.centerY-200, 'popup');
+    popup.anchor.set(0.5);
+    popup.alpha = 0.8
+    popup.scale.set(0.1);
+    game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
+    // debugger
 
+    // TEXT
+    var ipsum = "Resources gained: 100 Wood!";
+    var style = { font: "30px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    text = game.add.text(0, 0, ipsum, style);
+    text.setTextBounds(popup.x, popup.y);
+    // Center align
+    text.anchor.set(0.5);
+    text.align = 'center';
+    //  Stroke color and thickness
+    text.stroke = '#000000';
+    text.strokeThickness = 4;
+}
