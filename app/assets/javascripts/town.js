@@ -7,6 +7,8 @@ var worldScale = 1;
 var woodAmount = $("#wood-amount").html();
 var stoneAmount = $("#stone-amount").html();
 var goldAmount = $("#gold-amount").html();
+
+        // testing ajax GET
         var alchemyLab3 = {};
         var alchemyLab1 = {};
 
@@ -80,13 +82,7 @@ BasicGame.Boot.prototype =
         upgradePopup = game.add.sprite(0,0, 'upgrade-button');
         upgradePopup.alpha = 0;
 
-
         // BUILDING ISOMETRIC OFFSET (SO THEY DISPLAY ON THE FLOOR ON TOP OF THE TILE)
-        alchemyLab1.x = -80;
-        alchemyLab1.y = -10;
-
-        alchemyLab3.x = -150;
-        alchemyLab3.y = -60;
 
         // BORDER WALLS
         // game.add.isoSprite(40,630,100,'wall-SW');
@@ -109,13 +105,6 @@ BasicGame.Boot.prototype =
         rButton.scale.set(2.2);
         rButton.inputEnabled = true;
         rButton.events.onInputDown.add(nextBuilding, this);
-
-        // BUILD BUTTON --- REPLACED WITH CONFIRM BUILDING
-        // addButton = game.add.sprite(game.world.width/2,game.world.height/2 + 110, 'build-button');
-        // addButton.anchor.set(0.5, 0.5);
-        // addButton.scale.set(0.6);
-        // addButton.inputEnabled = true;
-        // addButton.events.onInputDown.add(addBuilding, this);
 
         // ACCEPT BUTTON
         acceptButton = game.add.sprite(game.world.width/2,game.world.height - 200, 'accept-button');
@@ -149,6 +138,21 @@ BasicGame.Boot.prototype =
 
         // Let's make a load of tiles on a grid.
         this.spawnTiles();
+
+        // Add the Fountain to the center tile
+        isoGroup.children[12].buildingName = 'center-fountain';
+        isoGroup.children[12].buildingX = -10;
+        isoGroup.children[12].buildingY = 65;
+        isoGroup.children[12].buildingZ = 75;
+        isoGroup.children[12].busy = true;
+        isoGroup.children[12].alpha = 0;
+
+        // TEST - ADDING A PRE-MADE BUILDING
+        serverBuildingName = 'alchemy-lab-1';
+        serverBuildingTile = 1;
+
+        selectedTile = isoGroup.children[serverBuildingTile];
+        addAlchemyLab1 ();
 
         // Provide a 3D position for the cursor
         cursorPos = new Phaser.Plugin.Isometric.Point3();
@@ -189,26 +193,7 @@ BasicGame.Boot.prototype =
         // Create a cursor
         game.iso.unproject(game.input.activePointer.position, cursorPos);
 
-        // Add the Fountain to the center tile
-        isoGroup.children[12].buildingName = 'center-fountain';
-        isoGroup.children[12].buildingX = -10;
-        isoGroup.children[12].buildingY = 65;
-        isoGroup.children[12].buildingZ = 75;
-        isoGroup.children[12].busy = true;
-        isoGroup.children[12].alpha = 0;
 
-        // TEST - ADDING A PRE-MADE BUILDING
-        serverBuildingName = 'alchemy-lab-1'
-        serverBuildingTile = 9
-        serverBuildingX = 15
-        serverBuildingY = 95
-
-        isoGroup.children[serverBuildingTile].buildingName = serverBuildingName
-        isoGroup.children[serverBuildingTile].buildingX = serverBuildingX
-        isoGroup.children[serverBuildingTile].buildingY = serverBuildingY
-        isoGroup.children[serverBuildingTile].buildingZ = 75
-        isoGroup.children[serverBuildingTile].busy = true
-        isoGroup.children[serverBuildingTile].alpha = 0
 
 
         // Loop through all tiles
@@ -230,23 +215,20 @@ BasicGame.Boot.prototype =
                 selectedTile = tile;
                 tile.tint = 0x00FF00;
 
-                // Desstroy previous preview, create a new one
+                // Destroy previous preview, create a new one
                 ghostBuilding.destroy();
                 confirmBuilding.destroy();
                 ghostBuilding = game.add.isoSprite(selectedTile.isoX + buildingPreviewX, selectedTile.isoY + buildingPreviewY, 0, buildingPreview.key, 0, ghostGroup);
                 ghostBuilding.alpha = 0.7;
+                // Create the 'BUILD' pop-up
                 confirmBuilding = game.add.isoSprite(selectedTile.isoX - 85, selectedTile.isoY, 130, 'build-here');
-                // confirmBuilding.scale.set(1.2);
                 confirmBuilding.scale.set(0.1);
                 game.add.tween(confirmBuilding.scale).to( { x: 1.2, y: 1.2 }, 1000, Phaser.Easing.Elastic.Out, true);
                 confirmBuilding.alpha = 0.7;
                 confirmBuilding.inputEnabled = true;
                 confirmBuilding.events.onInputDown.add(addBuilding, this);
 
-                // debugger;
-
-
-                // Do the ease out animation
+                // Do the ease out animation for other tiles
                 isoGroup.forEach(function (tile) {tile.ready = false})
                 tile.ready = true
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
@@ -477,8 +459,8 @@ function addTeslaHouse3 () {
 }
 function addAlchemyLab1 () {
     selectedTile.buildingName = 'alchemy-lab-1';
-    selectedTile.buildingX = alchemyLab1.x;
-    selectedTile.buildingY = alchemyLab1.y;
+    selectedTile.buildingX = -80;
+    selectedTile.buildingY = -10;
     selectedTile.busy = true;
     renderProperly();
 }
@@ -491,8 +473,8 @@ function addAlchemyLab2 () {
 }
 function addAlchemyLab3 () {
     selectedTile.buildingName = 'alchemy-lab-3';
-    selectedTile.buildingX = alchemyLab3.x;
-    selectedTile.buildingY = alchemyLab3.y;
+    selectedTile.buildingX = -150;
+    selectedTile.buildingY = -60;
     selectedTile.busy = true;
     renderProperly();
 }
