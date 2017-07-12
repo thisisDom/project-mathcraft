@@ -60,7 +60,7 @@ var captureUserData_and_manipulateAnimation = function() {
 
 var updateQuestionsviaAJAX = function() {
   $.ajax({
-    url: "/forest",
+    url: "/levels/" + gon.level_name,
     method: 'GET'
   })
   .done(function(response) {
