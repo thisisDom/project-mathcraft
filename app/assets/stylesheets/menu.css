@@ -7,6 +7,13 @@
   background: grey;
 }
 
+#logo {
+  position: absolute;
+  top: -120px;
+  left: 100px;
+  z-index: -1;
+}
+
 #hide-show-toggle {
   background: yellow;
   text-align: center;
@@ -16,14 +23,14 @@
   border-radius: 25px;
   padding-top: 5%;
   height: 70%;
-  margin: 6%;
+  margin: 7%;
   background: #98DDFE;
   float: right;
   text-align: center;
 }
 
 .hide-menu {
-  transform: translateY(105%);
+  transform: translateY(135%);
   transition-timing-function: ease-in;
   transition: 0.2s;
 }
