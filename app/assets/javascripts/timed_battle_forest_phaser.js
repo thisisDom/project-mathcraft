@@ -86,6 +86,7 @@ function endTimer() {
     timer.stop();
     var style = { font: "30px Arial", fill: "white", align: "center" };
     var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
+
     $(".streak_counter").remove();
 
     text.anchor.set(0.5);

@@ -1,4 +1,4 @@
-var stumpy;
+var golem;
 var timer, timerEvent, text;
 var background;
 
@@ -26,6 +26,9 @@ function preload() {
 
 function create() {
     timer = game.time.create();
+
+    golem = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
+    golem.alpha = 0
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -63,7 +66,8 @@ function update() {
         gon.cave_user_wrong_answer = false;
     }
     else if (gon.cave_user_right_answer == true) {
-        // SPROUT RESOURCES
+        sproutResources();
+        gon.cave_user_right_answer = false;
     }
 }
 
@@ -85,6 +89,7 @@ function endTimer() {
     text.anchor.set(0.5);
 
     golem.animations.stop(null, true);
+    golem.alpha = 0;
 
     gon.cave_round_over = true;
 
@@ -99,12 +104,12 @@ function formatTime(s) {
 }
 
 function sproutResources() {
-    var stone_sprite = game.add.sprite(stumpy.x, stumpy.y, 'stone');
+    var stone_sprite = game.add.sprite(golem.x, golem.y, 'stone');
     stone_sprite.alpha = 0;
     var stoneTween = game.add.tween(stone_sprite).to({ alpha: 1, x: stone_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
     stoneTween.onComplete.add(function() {
-        stone_sprite.x = stumpy.x; stone_sprite.y = stumpy.y;
+        stone_sprite.x = golem.x; stone_sprite.y = golem.y;
         stone_sprite.alpha = 0;
     });
     stoneTween.start();
