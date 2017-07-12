@@ -17,11 +17,11 @@ class GamesController < ApplicationController
   end
 
   def show
-    id = params[:id]
+    name = params[:name]
     p session[:levels]
-    @level = session[:levels].find { |level| level['position'] == id.to_i }
-    # request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
-    render json: { level: @level, player_level: @player_level }
+    @assets = get_level_info( name,'assets')
+    request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
+    render json: { assets: @assets, player_level: @player_level }
   end
 
   def update
