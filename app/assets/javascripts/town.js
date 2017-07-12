@@ -7,17 +7,23 @@ var woodAmount = $("#wood-amount").html();
 var stoneAmount = $("#stone-amount").html();
 var goldAmount = $("#gold-amount").html();
 
-var magicHouse1Price = 5;
-var magicHouse2Price = 5;
-var magicHouse3Price = 10;
+var house1Price = 5;
+var house2Price = 5;
+var house3Price = 10;
 
-var alchemyLab1Price = 3;
-var alchemyLab2Price = 5;
-var alchemyLab3Price = 10;
+var lab1Price = 3;
+var lab2Price = 5;
+var lab3Price = 10;
 
-var teslaHouse1Price = 2;
-var teslaHouse2Price = 5;
-var teslaHouse3Price = 10;
+var factory1Price = 2;
+var factory2Price = 5;
+var factory3Price = 10;
+
+// INFO SERVER
+
+// TEST - ADDING A PRE-MADE BUILDING
+serverBuildingName = 'alchemy-lab-1';
+serverBuildingTile = 1;
 
 
 var game = new Phaser.Game($("#townArea").width(),$("#townArea").height(), Phaser.AUTO, 'townArea', null, true, false);
@@ -111,7 +117,7 @@ BasicGame.Boot.prototype =
         // acceptButton.width = 600;
         acceptButton.anchor.set(0.5, 0);
         acceptButton.inputEnabled = true;
-        acceptButton.events.onInputDown.add(addBuilding, this);
+        acceptButton.events.onInputDown.add(createBuilding, this);
 
         // CANCEL BUTTON
         cancelButton = game.add.sprite(game.world.width/2,game.world.height - 350, 'cancel-button');
@@ -131,9 +137,7 @@ BasicGame.Boot.prototype =
         buildingPreviewName.anchor.set(0.5, 0,5);
         buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2,'wood');
         buildingPreviewResource.scale.set(2);
-        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " +magicHouse1Price, { fill: '#ffffff', font: "50px Arial" });
-
-        //
+        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial" });
 
         // INVISIBLE SPRITES (intial reference for .destroy )
         ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
@@ -163,10 +167,7 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].busy = true;
         isoGroup.children[12].alpha = 0;
 
-        // TEST - ADDING A PRE-MADE BUILDING
-        serverBuildingName = 'alchemy-lab-1';
-        serverBuildingTile = 1;
-
+        // SEVER INFO
         selectedTile = isoGroup.children[serverBuildingTile];
         addAlchemyLab1 ();
     },
@@ -206,7 +207,7 @@ BasicGame.Boot.prototype =
                 game.add.tween(confirmBuilding.scale).to( { x: 1.2, y: 1.2 }, 1000, Phaser.Easing.Elastic.Out, true);
                 confirmBuilding.alpha = 0.7;
                 confirmBuilding.inputEnabled = true;
-                confirmBuilding.events.onInputDown.add(addBuilding, this);
+                confirmBuilding.events.onInputDown.add(createBuilding, this);
 
                 // Do the ease out animation for other tiles
                 isoGroup.forEach(function (tile) {tile.ready = false})
@@ -263,54 +264,6 @@ function upgradeOption(building){
     upgradePopup.events.onInputDown.add(upgradeBuilding, {building: building});
 }
 
-function upgradeBuilding() {
-    upgradePopup.destroy();
-    building = this.building;
-    selectedTile = isoGroup.children[building.baseTile];
-
-    switch (building.key) {
-      case 'magic-house-1':
-        addMagicHouse2();
-        removeWood(magicHouse2Price);
-        break;
-      case 'magic-house-2':
-        addMagicHouse3();
-        break;
-      case 'tesla-house-1':
-        addTeslaHouse2();
-        break;
-      case 'tesla-house-2':
-        addTeslaHouse3();
-        break;
-      case 'alchemy-lab-1':
-        addAlchemyLab2();
-        break;
-      case 'alchemy-lab-2':
-        addAlchemyLab3();
-        break;
-
-      default:
-        console.log("Can't upgrade:" + building.key);
-        break;
-    }
-
-    // popup.anchor.set(0.5);
-    // popup.alpha = 0.8
-    // popup.scale.set(0.1);
-    // game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
-
-    // // TEXT
-    // var ipsum = "Building to be updated:" + building;
-    // var style = { font: "30px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
-    // text = game.add.text(0, 0, ipsum, style);
-    // text.setTextBounds(popup.x, popup.y);
-    // // Center align
-    // text.anchor.set(0.5);
-    // text.align = 'center';
-    // //  Stroke color and thickness
-    // text.stroke = '#000000';
-    // text.strokeThickness = 4;
-}
 
 function renderProperly (){
     isoGroup.forEach(function (tile) {tile.tint = 0xffffff;})
@@ -340,19 +293,19 @@ function loadBuildingPreview() {
         buildingPreview.loadTexture('magic-house-1', 0);
         buildingPreviewName.text = "MAGIC HOUSE";
         buildingPreviewResource.loadTexture('wood',0);
-        buildingPreviewPrice.text = "x " + magicHouse1Price;
+        buildingPreviewPrice.text = "x " + house1Price;
         break;
       case 2:
         buildingPreview.loadTexture('alchemy-lab-1', 0);
         buildingPreviewName.text = "ALCHEMY LAB";
         buildingPreviewResource.loadTexture('stone',0);
-        buildingPreviewPrice.text = "x " + alchemyLab1Price;
+        buildingPreviewPrice.text = "x " + lab1Price;
         break;
       case 3:
         buildingPreview.loadTexture('tesla-house-1', 0);
         buildingPreviewName.text = "TESLA FACORY";
         buildingPreviewResource.loadTexture('gold',0);
-        buildingPreviewPrice.text = "x " + teslaHouse1Price;
+        buildingPreviewPrice.text = "x " + factory1Price;
         break;
       default:
         i = 1;
@@ -361,8 +314,40 @@ function loadBuildingPreview() {
     }
 }
 
+function upgradeBuilding() {
+    upgradePopup.destroy();
+    building = this.building;
+    selectedTile = isoGroup.children[building.baseTile];
 
-function addBuilding() {
+    switch (building.key) {
+      case 'magic-house-1':
+        addMagicHouse2();
+        removeWood(house2Price);
+        break;
+      case 'magic-house-2':
+        addMagicHouse3();
+        removeWood(house3Price);
+        break;
+      case 'tesla-house-1':
+        addTeslaHouse2();
+        break;
+      case 'tesla-house-2':
+        addTeslaHouse3();
+        break;
+      case 'alchemy-lab-1':
+        addAlchemyLab2();
+        break;
+      case 'alchemy-lab-2':
+        addAlchemyLab3();
+        break;
+
+      default:
+        console.log("Can't upgrade:" + building.key);
+        break;
+    }
+}
+
+function createBuilding() {
     // Remove previews
     ghostBuilding.destroy();
     confirmBuilding.destroy();
@@ -370,38 +355,30 @@ function addBuilding() {
     // Build based on the preview
     switch (buildingPreview.key) {
       case 'magic-house-1':
-        addMagicHouse1();
-        removeWood(magicHouse1Price);
-        break;
-      case 'magic-house-2':
-        addMagicHouse2();
-        break;
-      case 'magic-house-3':
-        addMagicHouse3();
-        removeWood(magicHouse3Price);
+        addBuilding('magic-house-1',-90,-10);
+        removeWood(house1Price);
         break;
       case 'alchemy-lab-1':
         addAlchemyLab1();
-        break;
-      case 'alchemy-lab-2':
-        addAlchemyLab2();
-        break;
-      case 'alchemy-lab-3':
-        addAlchemyLab3();
         break;
       case 'tesla-house-1':
         addTeslaHouse1();
         break;
       default:
-        console.log("Couldn't add Building: " + buildingPreview.key);
+        console.log("Couldn't create building: " + buildingPreview.key);
         break;
     }
 }
 
 // -------- ADD BUILDING FUNCTIONS --------
-function previewBuilding () {
-
+function addBuilding(name,offsetX,offsetY){
+    selectedTile.buildingName = name;
+    selectedTile.buildingX = offsetX;
+    selectedTile.buildingY = offsetY;
+    selectedTile.busy = true;
+    renderProperly();
 };
+
 function addMagicHouse1 () {
     selectedTile.buildingName = 'magic-house-1'
     selectedTile.buildingX = -90
@@ -568,3 +545,20 @@ game.state.start('Boot');
 
 // // set our world scale as needed
 // game.world.scale.set(worldScale);
+
+// popup.anchor.set(0.5);
+// popup.alpha = 0.8
+// popup.scale.set(0.1);
+// game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
+
+// // TEXT
+// var ipsum = "Building to be updated:" + building;
+// var style = { font: "30px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+// text = game.add.text(0, 0, ipsum, style);
+// text.setTextBounds(popup.x, popup.y);
+// // Center align
+// text.anchor.set(0.5);
+// text.align = 'center';
+// //  Stroke color and thickness
+// text.stroke = '#000000';
+// text.strokeThickness = 4;
