@@ -3,8 +3,8 @@
 <div id="townArea" class="phaser_area">
   <%= javascript_include_tag 'town.js' %>
 </div>
+
 <div id="stageMenu" class="show-menu hide-menu">
-  <div id="hide-show-toggle"> HIDE / SHOW </div>
   <a href="/level-select">
   <button class="menu-button">Harvest</button>
   </a>
@@ -17,6 +17,6 @@
   var menu = document.getElementById("stageMenu");
   var builtButton = document.getElementById("built");
   builtButton.addEventListener("click", function() {
-    menu.classList.toggle("hide-menu");
+    menu.classList.toggle("show-menu");
   });
 </script>
