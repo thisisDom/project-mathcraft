@@ -8,18 +8,19 @@ div.status_bar {
   flex-wrap: wrap;
 }
 
-div.counter_btn {
-  width: 70%;
+div.streak_btn {
+  width: 50%;
 }
 
 div.hearts {
-  width: 30%;
+  width: 50%;
 }
 
-.correct_counter {
+.streak_counter {
+  display: inline-flex;
   background-image: url('calculator_icons.png');
   background-position: -225px -199px;
-  font-size: 25px;
+  font-size: 30px;
   float: right;
   color: black;
   font-weight: 900;
@@ -31,10 +32,17 @@ div.hearts {
   outline: none;
   cursor: pointer;
   background-color: transparent;
-  display: inline-flex;
+  flex-direction:column;
   justify-content: center;
   align-items: center;
 }
+
+.streak_counter span {
+  position: relative;
+  top: -6px;
+  font-size: 10px;
+}
+
 
 #resource_btn { background-position: -270px -61px; }
 #resource_btn:hover { background-position: -356px -61px; }
@@ -49,7 +57,6 @@ div.game_wrapper {
 }
 
 div.phaser_area {
-  background-color: red;
   background-position: -3056px -948px;
   z-index: 3;
   width: 100%;
@@ -63,7 +70,7 @@ div.user_interface {
 }
 
 div.question_area {
-  background-color: red;
+
   height: 100px;
   width: 70%;
   display:flex;
@@ -78,7 +85,7 @@ div.question_area {
 }
 
 div.answer_area {
-  background-color: black;
+
   height: 100px;
   width: 30%;
   display:flex;
@@ -93,7 +100,6 @@ div.answer_area {
 }
 
 div.calculator_wrapper {
-  background-image: url('forest.png');
   display: flex;
   justify-content: center;
   height: 300px;
@@ -103,11 +109,11 @@ div.calculator_wrapper {
 div.calculator_area {
   text-align: center;
   display: flex;
-  width: 175px;
+  width: 200px;
   flex-wrap: wrap;
   align-items: center;
   align-content: space-between;
-  height: 240px;
+  height: 270px;
   justify-content: space-between;
 }
 

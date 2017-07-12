@@ -3,6 +3,8 @@ var stumpy;
 var boss;
 var explode;
 var timer, timerEvent, text;
+var deadboss;
+var background;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
@@ -28,7 +30,8 @@ function preload() {
     game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
     game.load.spritesheet('golem', 'images/sprites/golem.png', 142.3, 140, 11);
     game.load.spritesheet('boss', 'images/sprites/boss-stomp.png', 192, 172, 6);
-    game.load.spritesheet('boss2', 'images/sprites/boss-shoot.png', 192, 172, 6);
+    game.load.spritesheet('boss-shoot', 'images/sprites/boss-shoot.png', 192, 172, 6);
+    game.load.spritesheet('boss-death', 'images/sprites/boss-death.png', 238.85, 170, 7);
     game.load.spritesheet('explosion', 'images/sprites/explosion.png', 100, 100, 37);
 }
 
@@ -40,11 +43,12 @@ function create() {
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
 
-    // Create a delayed event 30s from now
-    timerEvent = timer.add(Phaser.Timer.SECOND * 60, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
 
-    // Start the timer
-    timer.start();
+    // Start the timer if not boss level
+    if (gon.scene != 'temple') {
+        timer.start();
+    }
 
     switch (scene) {
       case 'cave':
@@ -70,24 +74,13 @@ function create() {
     }
 }
 
-function createExplosion() {
-    explode = game.add.sprite(game.world.centerX, game.world.centerY+10, 'explosion');
-    var test = explode.animations.add('walk');
-
-    // 3rd param - loop once, 4th param - destroy sprite after playing once
-    explode.animations.play('walk', 30, false, true);
-    explode.alpha = 0;
-
-    game.add.tween(explode).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
-}
-
 function findBoss() {
     boss = game.add.sprite(game.world.centerX-40, game.world.centerY-30, 'boss');
     var walk = boss.animations.add('walk');
     boss.animations.play('walk', 4, true);
     boss.scale.set(1);
     boss.alpha = 0;
-    game.add.tween(boss).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(boss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
 }
 
 function findStumpy() {
@@ -96,7 +89,7 @@ function findStumpy() {
     stumpy.animations.play('walk', 8, true);
     stumpy.alpha = 0;
     stumpy.scale.set(0.9);
-    game.add.tween(stumpy).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(stumpy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
     stumpy.anchor.setTo(0.3, 0.4);
 }
 
@@ -109,11 +102,35 @@ function findGolem() {
     golem.anchor.setTo(0.3, 0.4);
 }
 
+function createExplosion() {
+    explode = game.add.sprite(game.world.centerX, game.world.centerY+10, 'explosion');
+    explode.animations.add('walk');
+
+    // 3rd param - loop once, 4th param - destroy sprite after playing once
+    explode.animations.play('walk', 30, false, true);
+    explode.alpha = 0;
+
+    game.add.tween(explode).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+}
+
+function bossDeath() {
+    deadboss = game.add.sprite(game.world.centerX-40, game.world.centerY-30, 'boss-death');
+    deadboss.animations.add('walk');
+
+    // 3rd param - loop once, 4th param - destroy sprite after playing once
+    deadboss.animations.play('walk', 3, false);
+    // deadboss.alpha = 0;
+
+    game.add.tween(deadboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+}
+
 function update() {
     var style = { font: "30px Arial", fill: "white", align: "center" };
     var text = game.add.text(game.world.centerX, game.world.centerY-50, "GAME OVER!", style);
     text.anchor.set(0.5);
     text.alpha = 0;
+
+
 
     // MAKE THE IMAGE ZOOM IN
     if (worldScale < 1.2){
@@ -124,17 +141,30 @@ function update() {
     };
 
     if (gon.wrong_answer == true) {
-        if (gon.game_over == true) {
+        if (gon.scene == 'temple') {
             createExplosion();
+        }
+
+        if (gon.game_over == true) {
+            timer.stop();
             game.camera.shake(0.05, 500);
             game.add.tween(text).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-            //golem.animations.stop(null, true);
-            stumpy.animations.stop(null, true);
-            //boss.animations.stop(null, true);
+
+            if (gon.scene == 'temple') {
+                boss.animations.stop(null, true);
+                boss.alpha = 0;
+                bossDeath();
+            }
+            else if (gon.scene == 'forest') {
+                stumpy.animations.stop(null, true);
+            }
+            else {
+                golem.animations.stop(null, true);
+            }
+
             gon.wrong_answer = false;
         }
         else {
-            createExplosion();
             game.camera.shake(0.05, 500);
             gon.wrong_answer = false;
         }
@@ -142,22 +172,25 @@ function update() {
 }
 
 function render() {
-    // game.debug.text("counter", game.world.centerX+150, game.world.centerY-150, "#ff0");
-    // If our timer is running, show the time in a nicely formatted way, else show 'GAME OVER!'
+    // If our timer is running, show countdown'
     if (timer.running) {
         game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), game.world.centerX-20, game.world.centerY-100, "#ff0");
-    }
-    else {
-        // game.debug.text("Round Over!", game.world.centerX, game.world.centerY-50, "#0f0");
-        var style = { font: "30px Arial", fill: "white", align: "center" };
-        var text = game.add.text(game.world.centerX, game.world.centerY-80, "GAME OVER!", style);
-        text.anchor.set(0.5);
     }
 }
 
 function endTimer() {
     // Stop the timer when the delayed event triggers
     timer.stop();
+    var style = { font: "30px Arial", fill: "white", align: "center" };
+    var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
+
+    text.anchor.set(0.5);
+
+    if (gon.scene == 'temple') { boss.animations.stop(null, true); boss}
+    else if (gon.scene == 'forest') { stumpy.animations.stop(null, true); }
+    else { golem.animations.stop(null, true); }
+
+    gon.game_over = true;
 }
 
 function formatTime(s) {

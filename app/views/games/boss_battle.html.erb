@@ -1,0 +1,47 @@
+<%= javascript_include_tag 'boss_battle_ajax' %>
+
+<div class="container">
+  <div class="status_bar">
+    <div class="hearts">
+        <img id="heart1" alt="heart" src="/images/heart.gif">
+        <img id="heart2" alt="heart" src="/images/heart.gif">
+        <img id="heart3" alt="heart" src="/images/heart.gif">
+        <img id="heart4" alt="heart" src="/images/heart.gif">
+        <img id="heart5" alt="heart" src="/images/heart.gif">
+    </div>
+  </div>
+
+  <div class="game_wrapper">
+    <div id="gameArea" class="phaser_area">
+      <%= javascript_include_tag 'boss_battle_phaser' %>
+    </div>
+
+    <div class="user_interface">
+      <div class="question_area">
+        <%= @question %>
+      </div>
+      <div class="answer_area">
+      </div>
+    </div>
+  </div>
+
+  <div class="calculator_wrapper">
+    <div class="calculator_area">
+      <button class="calculator">1</button>
+      <button class="calculator">2</button>
+      <button class="calculator">3</button>
+
+      <button class="calculator">4</button>
+      <button class="calculator">5</button>
+      <button class="calculator">6</button>
+
+      <button class="calculator">7</button>
+      <button class="calculator">8</button>
+      <button class="calculator">9</button>
+
+      <button class="calculator-cancel"></button>
+      <button class="calculator">0</button>
+      <button class="calculator-submit"></button>
+    </div>
+  </div>
+</div>
