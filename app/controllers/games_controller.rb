@@ -10,7 +10,6 @@ class GamesController < ApplicationController
 
   def boss_battle
     @assets = get_level_info('temple','assets')
-    p @assets
     # added dev branch
     @questions = get_questions('addition', 'medium')
 
