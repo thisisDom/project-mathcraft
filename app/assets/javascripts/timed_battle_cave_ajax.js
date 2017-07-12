@@ -48,6 +48,7 @@ var captureUserData_and_manipulateAnimation = function() {
         }
       }
       else {
+        updateQuestionsviaAJAX();
         $(".streak_counter").remove();
         streak_counter = 0;
 
