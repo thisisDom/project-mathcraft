@@ -12,5 +12,5 @@ Rails.application.routes.draw do
   get '/forest', to: 'games#timed_battle_forest'
   get '/cave', to: 'games#timed_battle_cave'
 
-  get '/levels/:id', to: "games#show"
+  get '/levels/:name', to: "games#show"
 end
