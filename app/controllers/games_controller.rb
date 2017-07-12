@@ -9,9 +9,10 @@ class GamesController < ApplicationController
   end
 
   def boss_battle
+    @assets = get_level_info('temple','assets')
+    p @assets
     # added dev branch
-    @questions = get_questions("addition", "medium")
-    p @questions
+    @questions = get_questions('addition', 'medium')
 
     current_question = @questions.pop
 
@@ -25,7 +26,7 @@ class GamesController < ApplicationController
 
   def timed_battle_forest
     @assets = get_level_info('forest', 'assets')
-    @questions = get_questions("multiplication", "easy")
+    @questions = get_questions('multiplication', 'easy')
 
     current_question = @questions.pop
 
@@ -38,9 +39,10 @@ class GamesController < ApplicationController
   end
 
   def timed_battle_cave
-    @assets = get_level_assets('cave')
+    @assets = get_level_info('cave','assets')
+
     # added dev branch
-    @questions = get_questions("addition", "hard")
+    @questions = get_questions('addition', 'hard')
 
     current_question = @questions.pop
 
