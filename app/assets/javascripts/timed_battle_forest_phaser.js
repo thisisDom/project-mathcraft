@@ -19,7 +19,7 @@ function preload() {
 
     //Load Resource Sprite
     game.load.image('wood', 'images/resources/wood.png');
-    game.load.image('popup', 'images/sprites/popup.png')
+    game.load.image('popup', 'images/sprites/popup.png');
 
     // Load Enemy Sprites
     game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
@@ -34,7 +34,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 15, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -110,7 +110,6 @@ function sproutResources() {
     var wood_sprite = game.add.sprite(stumpy.x, stumpy.y, 'wood');
     wood_sprite.alpha = 0;
     var woodTween = game.add.tween(wood_sprite).to({ alpha: 1, x: wood_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
-    // game.add.tween(stumpy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
 
     woodTween.onComplete.add(function() {
         wood_sprite.x = stumpy.x; wood_sprite.y = stumpy.y;
@@ -120,22 +119,23 @@ function sproutResources() {
 }
 
 function popup() {
-    popup = game.add.sprite(game.world.centerX+50, game.world.centerY-200, 'popup');
-    popup.anchor.set(0.5);
-    popup.alpha = 0.8
+    popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
     popup.scale.set(0.1);
-    game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
-    // debugger
+    game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
 
-    // TEXT
+    popup.alpha = 0.8
+    // popup.scale.set(0.1);
+    // // debugger
+
+    // // TEXT
     var ipsum = "Resources gained: 100 Wood!";
-    var style = { font: "30px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
-    text = game.add.text(0, 0, ipsum, style);
+    var style = { font: "12px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    text = game.add.text(popup.x/2, popup.y/2, ipsum, style);
     text.setTextBounds(popup.x, popup.y);
-    // Center align
-    text.anchor.set(0.5);
+    // // Center align
+    // text.anchor.set(0.5);
     text.align = 'center';
-    //  Stroke color and thickness
+    // //  Stroke color and thickness
     text.stroke = '#000000';
     text.strokeThickness = 4;
 }

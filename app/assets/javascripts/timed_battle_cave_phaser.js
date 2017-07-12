@@ -17,6 +17,9 @@ function preload() {
     // Load Background
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
+    game.load.image('stone', 'images/resources/stone.png');
+    game.load.image('popup', 'images/sprites/popup.png');
+
     // Load Sprites
     game.load.spritesheet('golem', 'images/sprites/golem.png', 142.3, 140, 11);
 }
@@ -95,23 +98,36 @@ function formatTime(s) {
     return minutes.substr(-2) + ":" + seconds.substr(-2);
 }
 
-function popup() {
-    popup = game.add.sprite(game.world.centerX+50, game.world.centerY-200, 'popup');
-    popup.anchor.set(0.5);
-    popup.alpha = 0.8
-    popup.scale.set(0.1);
-    game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
-    // debugger
+function sproutResources() {
+    var stone_sprite = game.add.sprite(stumpy.x, stumpy.y, 'stone');
+    stone_sprite.alpha = 0;
+    var stoneTween = game.add.tween(stone_sprite).to({ alpha: 1, x: stone_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
-    // TEXT
+    stoneTween.onComplete.add(function() {
+        stone_sprite.x = stumpy.x; stone_sprite.y = stumpy.y;
+        stone_sprite.alpha = 0;
+    });
+    stoneTween.start();
+}
+
+function popup() {
+    popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
+    popup.scale.set(0.1);
+    game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
+
+    popup.alpha = 0.8
+    // popup.scale.set(0.1);
+    // // debugger
+
+    // // TEXT
     var ipsum = "Resources gained: 100 Wood!";
-    var style = { font: "30px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
-    text = game.add.text(0, 0, ipsum, style);
+    var style = { font: "12px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    text = game.add.text(popup.x/2, popup.y/2, ipsum, style);
     text.setTextBounds(popup.x, popup.y);
-    // Center align
-    text.anchor.set(0.5);
+    // // Center align
+    // text.anchor.set(0.5);
     text.align = 'center';
-    //  Stroke color and thickness
+    // //  Stroke color and thickness
     text.stroke = '#000000';
     text.strokeThickness = 4;
 }
