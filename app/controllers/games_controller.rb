@@ -5,9 +5,10 @@ class GamesController < ApplicationController
   end
 
   def town
-    id = session[:id] = 1
-    p id
+    session[:id] = 1
+    id = session[:id]
     @player_info = get_player(id)
+    p "* #{@player_info}"
     session[:player] = @player_info
   end
 
@@ -18,10 +19,39 @@ class GamesController < ApplicationController
 
   def show
     name = params[:name]
-    p session[:levels]
-    @assets = get_level_info( name,'assets')
-    request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
-    render json: { assets: @assets, player_level: @player_level }
+    gon.level_name = name
+
+    @level = session[:levels].find { |level| level['title'] == name }
+    @assets = get_level_info(name, 'assets')
+    # request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
+    # render json: { assets: @assets }
+
+    case name
+    when "forest"
+      @questions = get_questions('multiplication', 'easy')
+    when "cave"
+      @questions = get_questions('addition', 'hard')
+    when "temple"
+      @questions = get_questions('addition', 'medium')
+    end
+
+    current_question = @questions.pop
+
+    @problem = current_question['problem']
+    gon.answer = current_question['answer']
+
+    if request.xhr?
+       render json: { problem: @problem, answer: gon.answer }.to_json
+    else
+      case name
+      when "forest"
+        render "timed_battle_forest"
+      when "cave"
+        render "timed_battle_cave"
+      when "temple"
+        render "boss_battle"
+      end
+    end
   end
 
   def update
@@ -30,48 +60,47 @@ class GamesController < ApplicationController
 
 
   def boss_battle
-    @assets = get_level_info('temple','assets')
-    # added dev branch
-    @questions = get_questions('addition', 'medium')
+    # @assets = get_level_info('temple','assets')
+    # # added dev branch
+    # @questions = get_questions('addition', 'medium')
 
-    current_question = @questions.pop
+    # current_question = @questions.pop
 
-    @problem = current_question['problem']
-    gon.answer = current_question['answer']
+    # @problem = current_question['problem']
+    # gon.answer = current_question['answer']
 
-    if request.xhr?
-      render json: { problem: @problem, answer: gon.answer }.to_json
-    end
+    # if request.xhr?
+    #   render json: { problem: @problem, answer: gon.answer }.to_json
+    # end
   end
 
   def timed_battle_forest
-    @assets = get_level_info('forest', 'assets')
-    @questions = get_questions('multiplication', 'easy')
+    # @assets = get_level_info('forest', 'assets')
+    # @questions = get_questions('multiplication', 'easy')
 
-    current_question = @questions.pop
+    # current_question = @questions.pop
 
-    @problem = current_question['problem']
-    gon.answer = current_question['answer']
+    # @problem = current_question['problem']
+    # gon.answer = current_question['answer']
 
-    if request.xhr?
-      render json: { problem: @problem, answer: gon.answer }.to_json
-    end
+    # if request.xhr?
+    #   render json: { problem: @problem, answer: gon.answer }.to_json
+    # end
   end
 
   def timed_battle_cave
-    @assets = get_level_info('cave','assets')
+    # @assets = get_level_info('cave','assets')
 
-    # added dev branch
-    @questions = get_questions('addition', 'hard')
+    # # added dev branch
+    # @questions = get_questions('addition', 'hard')
 
-    current_question = @questions.pop
+    # current_question = @questions.pop
 
-    @problem = current_question['problem']
-    gon.answer = current_question['answer']
+    # @problem = current_question['problem']
+    # gon.answer = current_question['answer']
 
-    if request.xhr?
-      render json: { problem: @problem, answer: gon.answer }.to_json
-    end
-
+    # if request.xhr?
+    #   render json: { problem: @problem, answer: gon.answer }.to_json
+    # end
   end
 end
