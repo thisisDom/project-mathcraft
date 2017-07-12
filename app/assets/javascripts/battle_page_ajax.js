@@ -1,5 +1,4 @@
 var wrong_answer_counter = 0;
-var guess_attempts = 0;
 var streak_counter = 0;
 
 $(document).ready(function() {
@@ -36,15 +35,15 @@ var captureUserData_and_manipulateAnimation = function() {
     if (gon.game_over == false) {
       updateQuestionsviaAJAX();
 
-      guess_attempts += 1;
-
       var $user_input = $(".answer_area")[0].innerText;
 
       if ($user_input == gon.answer) {
        streak_counter += 1;
 
        if (streak_counter >= 2) {
-          $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + streak_counter + "</div><span>combo</span></div>");
+          if (gon.scene != 'temple') {
+             $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + streak_counter + "</div><span>combo</span></div>");
+          }
         }
       }
       else {
@@ -61,7 +60,9 @@ var captureUserData_and_manipulateAnimation = function() {
         }
 
         if (wrong_answer_counter == 3) {
-          gon.game_over = true;
+          if (gon.scene == 'temple') {
+             gon.game_over = true;
+          }
         }
       }
     }
