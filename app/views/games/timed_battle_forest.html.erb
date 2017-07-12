@@ -1,25 +1,15 @@
-<%= javascript_include_tag 'battle_page_ajax' %>
+<%= javascript_include_tag 'timed_battle_forest_ajax' %>
 
 <div class="container">
   <div class="status_bar">
     <div class="hearts">
-      <% if @scene == 'temple' %>
-        <img id="heart1" alt="heart" src="/images/heart.gif">
-        <img id="heart2" alt="heart" src="/images/heart.gif">
-        <img id="heart3" alt="heart" src="/images/heart.gif">
-      <% end %>
     </div>
     <div class="streak_btn"></div>
   </div>
 
-<!-- <button id="resource_btn" class="icons">LIVES</button> -->
-<!-- <button id="menu_btn" class="icons"></button>
-    <button id="pause_btn" class="icons"></button>
-    <button id="settings_btn" class="icons"></button> -->
-
   <div class="game_wrapper">
     <div id="gameArea" class="phaser_area">
-      <%= javascript_include_tag 'battle' %>
+      <%= javascript_include_tag 'timed_battle_forest_phaser' %>
     </div>
 
     <div class="user_interface">
