@@ -3,12 +3,13 @@
   background: grey;
   top: 0px;
   width: 100%;
-  height: 100px;
+  height: 80px;
   z-index: 2;
 }
 
 .resource {
   margin: 1px;
+  margin-top: 10px;
   margin-left: 10px;
   padding-right: 5px;
   background: #98DDFE;
@@ -16,14 +17,15 @@
 }
 
 .resource-amount {
-  margin-top: 25px;
+  margin-top: 20px;
   margin-right: 5px;
   color: black;
-  font-size: 2.2em;
+  font-size: 1em;
   float: right;
 }
 
 #home {
-  margin-top: 4px;
+  margin-top: 10px;
+  margin-left: 5px;
   float: left;
 }

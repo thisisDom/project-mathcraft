@@ -4,7 +4,7 @@
   z-index: 1;
   height: 350px;
   width: 100%;
-  background: blue;
+  background: grey;
 }
 
 #hide-show-toggle {
@@ -22,15 +22,15 @@
   display: inline-flex;
 }
 
-.show-menu {
-  transform: translateY(85%);
+.hide-menu {
+  transform: translateY(105%);
   transition-timing-function: ease-in;
   transition: 0.2s;
 }
-
-.hide-menu {
+.show-menu {
   transition: 0.25s;
   transition-timing-function: ease-out;
   transform: translateY(0);
   opacity: 1;
 }
+

@@ -7,6 +7,8 @@ var worldScale = 1;
 var woodAmount = $("#wood-amount").html();
 var stoneAmount = $("#stone-amount").html();
 var goldAmount = $("#gold-amount").html();
+        var alchemyLab3 = {};
+        var alchemyLab1 = {};
 
 var game = new Phaser.Game($("#townArea").width(),$("#townArea").height(), Phaser.AUTO, 'townArea', null, true, false);
 var BasicGame = function (game) { };
@@ -49,6 +51,7 @@ BasicGame.Boot.prototype =
         game.load.image('accept-button', "images/buttons/accept-button.png");
         game.load.image('cancel-button', "images/buttons/cancel-button.png");
         game.load.image('build-here', "images/buttons/build-here.png");
+        game.load.image('upgrade-button', "images/buttons/upgrade-button.png");
 
 
         game.load.image('background-image', "images/backgrounds/green.jpg");
@@ -72,8 +75,18 @@ BasicGame.Boot.prototype =
 
         ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
         ghostBuilding.alpha = 0;
-        confirmBuilding = game.add.isoSprite(0,0, 0, 'confirm-building', 0, ghostGroup);
+        confirmBuilding = game.add.isoSprite(0,0, 0, 'build-here', 0, ghostGroup);
         confirmBuilding.alpha = 0;
+        upgradePopup = game.add.sprite(0,0, 'upgrade-button');
+        upgradeBuilding.alpha = 0;
+
+
+        // BUILDING ISOMETRIC OFFSET (SO THEY DISPLAY ON THE FLOOR ON TOP OF THE TILE)
+        alchemyLab1.x = -80;
+        alchemyLab1.y = -10;
+
+        alchemyLab3.x = -150;
+        alchemyLab3.y = -60;
 
         // BORDER WALLS
         // game.add.isoSprite(40,630,100,'wall-SW');
@@ -177,21 +190,36 @@ BasicGame.Boot.prototype =
         game.iso.unproject(game.input.activePointer.position, cursorPos);
 
         // Add the Fountain to the center tile
-        isoGroup.children[12].buildingName = 'center-fountain'
-        isoGroup.children[12].buildingX = -10
-        isoGroup.children[12].buildingY = 65
-        isoGroup.children[12].buildingZ = 75
-        isoGroup.children[12].busy = true
-        isoGroup.children[12].alpha = 0
+        isoGroup.children[12].buildingName = 'center-fountain';
+        isoGroup.children[12].buildingX = -10;
+        isoGroup.children[12].buildingY = 65;
+        isoGroup.children[12].buildingZ = 75;
+        isoGroup.children[12].busy = true;
+        isoGroup.children[12].alpha = 0;
+
+        // TEST - ADDING A PRE-MADE BUILDING
+        serverBuildingName = 'alchemy-lab-1'
+        serverBuildingTile = 9
+        serverBuildingX = 15
+        serverBuildingY = 95
+
+        isoGroup.children[serverBuildingTile].buildingName = serverBuildingName
+        isoGroup.children[serverBuildingTile].buildingX = serverBuildingX
+        isoGroup.children[serverBuildingTile].buildingY = serverBuildingY
+        isoGroup.children[serverBuildingTile].buildingZ = 75
+        isoGroup.children[serverBuildingTile].busy = true
+        isoGroup.children[serverBuildingTile].alpha = 0
+
 
         // Loop through all tiles
         isoGroup.forEach(function (tile) {
             //  WHEN THE TILE HAS A BUILDING
             if (tile.busy && !tile.buildingAdded){
+                console.log("ADDING BUILDING");
                 building = game.add.isoSprite(tile.isoX + tile.buildingX,tile.isoY + tile.buildingY, tile.buildingZ, tile.buildingName, 0, buildingGroup);
                 building.baseTile = tile.parent.getChildIndex(tile);
                 building.inputEnabled = true;
-                building.events.onInputDown.add(updateBuilding, this);
+                building.events.onInputDown.add(upgradeOption, this);
                 tile.buildingAdded = true;
             }
 
@@ -263,8 +291,23 @@ function removeWood(amount) {
     woodAmount -= amount;
     $("#wood-amount").html(woodAmount);
 }
-function updateBuilding(building) {
+function upgradeOption(building){
     selectedTile = isoGroup.children[building.baseTile];
+
+    upgradePopup.destroy();
+    upgradePopup = game.add.sprite( selectedTile.x -50, selectedTile.y -120, 'upgrade-button');
+    upgradePopup.building = building;
+    upgradePopup.scale.set(0.1);
+    game.add.tween(upgradePopup.scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true);
+    upgradePopup.inputEnabled = true;
+    upgradePopup.events.onInputDown.add(upgradeBuilding, {building: building});
+}
+
+function upgradeBuilding() {
+    upgradePopup.destroy();
+    building = this.building;
+    selectedTile = isoGroup.children[building.baseTile];
+
     switch (building.key) {
       case 'magic-house-1':
         addMagicHouse2();
@@ -286,15 +329,14 @@ function updateBuilding(building) {
         break;
 
       default:
-        console.log("Can't upgade:" + building.key);
+        console.log("Can't upgrade:" + building.key);
         break;
     }
-    // popup = game.add.sprite(game.world.centerX+50, game.world.centerY-200, 'popup');
+
     // popup.anchor.set(0.5);
     // popup.alpha = 0.8
     // popup.scale.set(0.1);
     // game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
-    // // debugger
 
     // // TEXT
     // var ipsum = "Building to be updated:" + building;
@@ -434,23 +476,23 @@ function addTeslaHouse3 () {
     renderProperly();
 }
 function addAlchemyLab1 () {
-    selectedTile.buildingName = 'alchemy-lab-1'
-    selectedTile.buildingX = -80
-    selectedTile.buildingY = -10
+    selectedTile.buildingName = 'alchemy-lab-1';
+    selectedTile.buildingX = alchemyLab1.x;
+    selectedTile.buildingY = alchemyLab1.y;
     selectedTile.busy = true;
     renderProperly();
 }
 function addAlchemyLab2 () {
-    selectedTile.buildingName = 'alchemy-lab-2'
+    selectedTile.buildingName = "alchemy-lab-2"
     selectedTile.buildingX = -120
     selectedTile.buildingY = -30
     selectedTile.busy = true;
     renderProperly();
 }
 function addAlchemyLab3 () {
-    selectedTile.buildingName = 'alchemy-lab-3'
-    selectedTile.buildingX = -150
-    selectedTile.buildingY = -60
+    selectedTile.buildingName = 'alchemy-lab-3';
+    selectedTile.buildingX = alchemyLab3.x;
+    selectedTile.buildingY = alchemyLab3.y;
     selectedTile.busy = true;
     renderProperly();
 }
@@ -518,3 +560,10 @@ game.state.start('Boot');
 // goldAmount = 0;
 // goldSprite = game.add.sprite(450, 120,'gold');
 // goldText = game.add.text(goldSprite.x + goldSprite.width/2 -10, goldSprite.y + goldSprite.height, 2);
+
+// popup = game.add.sprite(game.world.centerX+50, game.world.centerY-200, 'popup');
+// popup.anchor.set(0.5);
+// popup.alpha = 0.8
+// popup.scale.set(0.1);
+// game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
+// // debugger
