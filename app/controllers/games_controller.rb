@@ -6,63 +6,47 @@ class GamesController < ApplicationController
 
   def level_select
     @levels = HTTParty.get("http://mathcraft-api.herokuapp.com/levels")
-    p "*" * 80
-    p @levels
   end
 
   def boss_battle
     # added dev branch
-    data = Question.all
-    questions_hash = {}
+    @questions = get_questions("addition", "medium")
 
-    data.each do |question|
-      questions_hash[question.title] = question.answer
-    end
+    current_question = @questions.pop
 
-    temp = questions_hash.to_a.sample
-    @question = temp[0]
-    gon.answer = temp[1]
+    @problem = current_question['problem']
+    gon.answer = current_question['answer']
 
     if request.xhr?
-      render json: { question: @question, answer: gon.answer }.to_json
+      render json: { problem: @problem, answer: gon.answer }.to_json
     end
   end
 
   def timed_battle_forest
-    @questions = get_questions("addition", "easy")
-    p @questions
-    # added dev branch
-    data = Question.all
-    questions_hash = {}
+    @questions = get_questions("multiplication", "easy")
 
-    data.each do |question|
-      questions_hash[question.title] = question.answer
-    end
+    current_question = @questions.pop
 
-    temp = questions_hash.to_a.sample
-    @question = temp[0]
-    gon.answer = temp[1]
+    @problem = current_question['problem']
+    gon.answer = current_question['answer']
 
     if request.xhr?
-      render json: { question: @question, answer: gon.answer }.to_json
+      render json: { problem: @problem, answer: gon.answer }.to_json
     end
   end
 
   def timed_battle_cave
     # added dev branch
-    data = Question.all
-    questions_hash = {}
+    @questions = get_questions("addition", "hard")
 
-    data.each do |question|
-      questions_hash[question.title] = question.answer
-    end
+    current_question = @questions.pop
 
-    temp = questions_hash.to_a.sample
-    @question = temp[0]
-    gon.answer = temp[1]
+    @problem = current_question['problem']
+    gon.answer = current_question['answer']
 
     if request.xhr?
-      render json: { question: @question, answer: gon.answer }.to_json
+      render json: { problem: @problem, answer: gon.answer }.to_json
     end
+
   end
 end

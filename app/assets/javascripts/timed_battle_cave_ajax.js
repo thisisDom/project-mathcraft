@@ -63,7 +63,7 @@ var updateQuestionsviaAJAX = function() {
     method: 'GET'
   })
   .done(function(response) {
-    $(".question_area").html(response.question);
+    $(".question_area").html(response.problem);
     $(".answer_area")[0].innerText = "";
     gon.answer = response.answer;
   })
