@@ -1,0 +1,29 @@
+#navbar {
+  position: absolute;
+  background: grey;
+  top: 0px;
+  width: 100%;
+  height: 100px;
+  z-index: 2;
+}
+
+.resource {
+  margin: 1px;
+  margin-left: 10px;
+  padding-right: 5px;
+  background: #98DDFE;
+  float: right;
+}
+
+.resource-amount {
+  margin-top: 25px;
+  margin-right: 5px;
+  color: black;
+  font-size: 2.2em;
+  float: right;
+}
+
+#home {
+  margin-top: 4px;
+  float: left;
+}

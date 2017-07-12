@@ -1,8 +1,12 @@
 var apt, sprite;
 var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
+var previewBuildingX, previewBuildingY;
 var lastImage;
 var i = 0;
 var worldScale = 1;
+var woodAmount = $("#wood-amount").html();
+var stoneAmount = $("#stone-amount").html();
+var goldAmount = $("#gold-amount").html();
 
 var game = new Phaser.Game($("#townArea").width(),$("#townArea").height(), Phaser.AUTO, 'townArea', null, true, false);
 var BasicGame = function (game) { };
@@ -10,7 +14,6 @@ BasicGame.Boot = function (game) { };
 BasicGame.Boot.prototype =
 {
     preload: function () {
-
         // Make the game Full Screen
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
@@ -23,7 +26,10 @@ BasicGame.Boot.prototype =
         game.load.image('wall-SE', "images/buildings/border-se.png")
         game.load.image('wall-SW', "images/buildings/border-sw.png")
 
-        game.load.image('coal', "images/resources/Wood.png")
+        game.load.image('wood', "images/resources/wood.png")
+        game.load.image('stone', "images/resources/stone.png")
+        game.load.image('gold', "images/resources/gold.png")
+
 
         game.load.image('magic-house-1', 'images/buildings/magic-house-1.png');
         game.load.image('magic-house-2', 'images/buildings/magic-house-2.png');
@@ -42,11 +48,10 @@ BasicGame.Boot.prototype =
         game.load.image('build-button', "images/buttons/tools.png");
         game.load.image('accept-button', "images/buttons/accept-button.png");
         game.load.image('cancel-button', "images/buttons/cancel-button.png");
+        game.load.image('build-here', "images/buttons/build-here.png");
 
 
         game.load.image('background-image', "images/backgrounds/green.jpg");
-
-         game.load.image('popup', 'graybutton.png');
 
         // Used to show the FPS
         game.time.advancedTiming = true;
@@ -59,18 +64,16 @@ BasicGame.Boot.prototype =
         game.iso.anchor.setTo(0.5, 0.2);
     },
     create: function () {
-        // game.world.pivot.y += 100;
-
         // Green Background
         game.add.tileSprite(-500, -500, 2000,2000, 'background-image');
 
         // Main Building
         game.add.isoSprite(-10,-200,80,'main-building');
 
-        // RESOURCES
-        coalAmount = 20;
-        coalSprite = game.add.sprite(20, 20,'coal');
-        text = game.add.text(coalSprite.x + coalSprite.width/2, coalSprite.y + coalSprite.height, 20);
+        ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
+        ghostBuilding.alpha = 0;
+        confirmBuilding = game.add.isoSprite(0,0, 0, 'confirm-building', 0, ghostGroup);
+        confirmBuilding.alpha = 0;
 
         // BORDER WALLS
         // game.add.isoSprite(40,630,100,'wall-SW');
@@ -83,40 +86,44 @@ BasicGame.Boot.prototype =
         // game.add.isoSprite(-150,430,100,'wall-SE');
 
         // LEFT BUTTON
-        lButton = game.add.sprite(game.world.width/2 -270, game.world.height/2 + 250, 'left-button');
-        lButton.scale.set(2);
+        lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 200, 'left-button');
+        lButton.scale.set(2.2);
         lButton.inputEnabled = true;
         lButton.events.onInputDown.add(previousBuilding, this);
 
         // RIGHT BUTTON
-        rButton = game.add.sprite(game.world.width/2 + 170, game.world.height/2 + 250, 'right-button');
-        rButton.scale.set(2);
+        rButton = game.add.sprite(game.world.width/2 + 190, game.world.height/2 + 200, 'right-button');
+        rButton.scale.set(2.2);
         rButton.inputEnabled = true;
         rButton.events.onInputDown.add(nextBuilding, this);
 
-        // BUILD BUTTON
-        addButton = game.add.sprite(game.world.width/2,game.world.height/2 + 110, 'build-button');
-        addButton.anchor.set(0.5, 0.5);
-        addButton.scale.set(0.6);
-        addButton.inputEnabled = true;
-        addButton.events.onInputDown.add(addBuilding, this);
+        // BUILD BUTTON --- REPLACED WITH CONFIRM BUILDING
+        // addButton = game.add.sprite(game.world.width/2,game.world.height/2 + 110, 'build-button');
+        // addButton.anchor.set(0.5, 0.5);
+        // addButton.scale.set(0.6);
+        // addButton.inputEnabled = true;
+        // addButton.events.onInputDown.add(addBuilding, this);
 
         // ACCEPT BUTTON
-        acceptButton = game.add.sprite(game.world.width/2 + 80,game.world.height/2 + 400, 'accept-button');
+        acceptButton = game.add.sprite(game.world.width/2,game.world.height - 200, 'accept-button');
+        acceptButton.scale.set(2.5);
+        // acceptButton.width = 600;
         acceptButton.anchor.set(0.5, 0);
-        acceptButton.scale.set(2);
         acceptButton.inputEnabled = true;
         acceptButton.events.onInputDown.add(addBuilding, this);
 
         // CANCEL BUTTON
-        cButton = game.add.sprite(game.world.width/2 - 80,game.world.height/2 + 400, 'cancel-button');
-        cButton.anchor.set(0.5, 0);
-        cButton.scale.set(2);
-        cButton.inputEnabled = true;
-        cButton.events.onInputDown.add(onClick, this);
+        cancelButton = game.add.sprite(game.world.width/2,game.world.height - 350, 'cancel-button');
+        cancelButton.scale.set(2.5);
+        // cButton.width = 600;
+        cancelButton.anchor.set(0.5, 0);
+        cancelButton.inputEnabled = true;
+        cancelButton.events.onInputDown.add(reloadPage, this);
 
         // BUILDING PREVIEW
-        buildingPreview = game.add.sprite(game.world.width/2, game.world.height/2 + 150, 'magic-house-1');
+        buildingPreview = game.add.sprite(game.world.width/2 + 20, game.world.height/2 + 100, 'magic-house-1');
+        buildingPreviewX = -90;
+        buildingPreviewY = -10;
         buildingPreview.anchor.set(0.5, 0);
         buildingPreview.scale.set(2);
         buildingPreview.alpha = 0.8;
@@ -156,6 +163,10 @@ BasicGame.Boot.prototype =
             worldScale -= 0.05;
             game.world.pivot.x -= 5;
         }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.Z)) {
+            worldScale = 1;
+            game.world.pivot.x = 0;
+        }
         // set a minimum and maximum scale value
         worldScale = Phaser.Math.clamp(worldScale, 1, 1.5);
 
@@ -173,7 +184,6 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].busy = true
         isoGroup.children[12].alpha = 0
 
-
         // Loop through all tiles
         isoGroup.forEach(function (tile) {
             //  WHEN THE TILE HAS A BUILDING
@@ -182,7 +192,6 @@ BasicGame.Boot.prototype =
                 building.baseTile = tile.parent.getChildIndex(tile);
                 building.inputEnabled = true;
                 building.events.onInputDown.add(updateBuilding, this);
-
                 tile.buildingAdded = true;
             }
 
@@ -191,9 +200,25 @@ BasicGame.Boot.prototype =
             // WHEN CLICKING: Select the tile and make it green, un-select others
             if (game.input.activePointer.isDown && inBounds && !tile.busy){
                 selectedTile = tile;
-                // ghostBuilding = game.add.isoSprite(selectedTile.isoX,selectedTile.isoY, 0, 'magic-house-1', 0, ghostGroup);
-                // ghostBuilding.tint = 0x00FF00;
                 tile.tint = 0x00FF00;
+
+                // Desstroy previous preview, create a new one
+                ghostBuilding.destroy();
+                confirmBuilding.destroy();
+                ghostBuilding = game.add.isoSprite(selectedTile.isoX + buildingPreviewX, selectedTile.isoY + buildingPreviewY, 0, buildingPreview.key, 0, ghostGroup);
+                ghostBuilding.alpha = 0.7;
+                confirmBuilding = game.add.isoSprite(selectedTile.isoX - 85, selectedTile.isoY, 130, 'build-here');
+                // confirmBuilding.scale.set(1.2);
+                confirmBuilding.scale.set(0.1);
+                game.add.tween(confirmBuilding.scale).to( { x: 1.2, y: 1.2 }, 1000, Phaser.Easing.Elastic.Out, true);
+                confirmBuilding.alpha = 0.7;
+                confirmBuilding.inputEnabled = true;
+                confirmBuilding.events.onInputDown.add(addBuilding, this);
+
+                // debugger;
+
+
+                // Do the ease out animation
                 isoGroup.forEach(function (tile) {tile.ready = false})
                 tile.ready = true
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
@@ -231,10 +256,12 @@ BasicGame.Boot.prototype =
 };
 
 // -------- HELPER FUNCTIONS --------
-function onClick(){    window.open("/","_self");}
-function updateCoal() {
-    coalAmount--;
-    text.setText(coalAmount);
+function reloadPage(){ window.open("/town","_self"); }
+function confirmAlterations(){}
+
+function removeWood(amount) {
+    woodAmount -= amount;
+    $("#wood-amount").html(woodAmount);
 }
 function updateBuilding(building) {
     selectedTile = isoGroup.children[building.baseTile];
@@ -308,6 +335,8 @@ function loadBuildingPreview() {
     switch (i) {
       case 1:
         buildingPreview.loadTexture('magic-house-1', 0);
+        previewBuildingX = -90;
+        previewBuildingY = -10;
         break;
       case 2:
         buildingPreview.loadTexture('alchemy-lab-1', 0);
@@ -324,10 +353,15 @@ function loadBuildingPreview() {
 
 
 function addBuilding() {
+    // Remove previews
+    ghostBuilding.destroy();
+    confirmBuilding.destroy();
+
+    // Build based on the preview
     switch (buildingPreview.key) {
       case 'magic-house-1':
         addMagicHouse1();
-        updateCoal();
+        removeWood(3);
         break;
       case 'magic-house-2':
         addMagicHouse2();
@@ -465,3 +499,22 @@ game.state.start('Boot');
 // function rndNum(num) {
 //     return Math.round(Math.random() * num);
 // }
+
+// text = game.add.text(selectedTile.x, selectedTile.y, "10");
+// text.anchor.setTo(0.5, 0.5);
+
+// // RESOURCES
+// // WOOD
+// woodAmount = 20;
+// woodSprite = game.add.sprite(250, 120,'wood');
+// woodText = game.add.text(woodSprite.x + woodSprite.width/2 -10, woodSprite.y + woodSprite.height, 20);
+
+// // STONE
+// stoneAmount = 10;
+// stoneSprite = game.add.sprite(350, 120,'stone');
+// stoneText = game.add.text(stoneSprite.x + stoneSprite.width/2 -10, stoneSprite.y + stoneSprite.height, 10);
+
+// // GOLD
+// goldAmount = 0;
+// goldSprite = game.add.sprite(450, 120,'gold');
+// goldText = game.add.text(goldSprite.x + goldSprite.width/2 -10, goldSprite.y + goldSprite.height, 2);
