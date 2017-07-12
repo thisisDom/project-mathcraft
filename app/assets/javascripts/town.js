@@ -78,7 +78,7 @@ BasicGame.Boot.prototype =
         confirmBuilding = game.add.isoSprite(0,0, 0, 'build-here', 0, ghostGroup);
         confirmBuilding.alpha = 0;
         upgradePopup = game.add.sprite(0,0, 'upgrade-button');
-        upgradeBuilding.alpha = 0;
+        upgradePopup.alpha = 0;
 
 
         // BUILDING ISOMETRIC OFFSET (SO THEY DISPLAY ON THE FLOOR ON TOP OF THE TILE)
