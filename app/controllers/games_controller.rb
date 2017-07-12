@@ -5,7 +5,8 @@ class GamesController < ApplicationController
   end
 
   def level_select
-    @levels = HTTParty.get("http://mathcraft-api.herokuapp.com/levels")
+    @levels = get_levels
+    p @levels
   end
 
   def boss_battle

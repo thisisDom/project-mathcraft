@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   get 'logout', to: 'sessions#delete'
 
   get '/town', to: "games#town"
-  get '/level-select', to:"games#level-select"
+  get '/level-select', to:"games#level_select"
 
-  get '/boss_battle', to: 'games#boss_battle'
+  get '/boss-battle', to: 'games#boss_battle'
   get '/forest', to: 'games#timed_battle_forest'
   get '/cave', to: 'games#timed_battle_cave'
 end
