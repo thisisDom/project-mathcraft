@@ -3,8 +3,14 @@
    <img id="back" src="/images/buttons/home.png">
   </div>
 
-  <div class="resource">
-  <img id="gold" src="/images/resources/gold.png">
+  <% session[:player]['resources'].each do |resource| %>
+    <div class="resource">
+      <img id= "<%=resource['name'] %>" src="/images/resources/<%= resource['asset_link'] %>">
+      <div class="resource-amount" id="<%=resource['name']%>-amount"> <%= resource['quantity'] %></div>
+    </div>
+  <% end %>
+
+  <!-- <img id="gold" src="/images/resources/gold.png">
   <div class="resource-amount" id="gold-amount">10</div>
   </div>
   <div class="resource">
@@ -14,5 +20,5 @@
   <div class="resource">
   <img id="wood" src="/images/resources/wood.png">
   <div class="resource-amount" id="wood-amount">20</div>
-  </div>
+  </div> -->
 </div>

@@ -14,6 +14,9 @@ module GamesHelper
     return HTTParty.get("http://mathcraft-api.herokuapp.com/levels")['levels']
   end
 
-  
+  def get_player(id)
+    return HTTParty.get("http://mathcraft-api.herokuapp.com/players/#{id}")['player']
+  end
+
 
 end

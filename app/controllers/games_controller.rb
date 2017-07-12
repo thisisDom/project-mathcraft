@@ -4,6 +4,13 @@ class GamesController < ApplicationController
   def index
   end
 
+  def town
+    id = session[:id] = 1
+    p id
+    @player_info = get_player(id)
+    session[:player] = @player_info
+  end
+
   def level_select
     @levels = get_levels
     session[:levels] = @levels
@@ -13,8 +20,8 @@ class GamesController < ApplicationController
     id = params[:id]
     p session[:levels]
     @level = session[:levels].find { |level| level['position'] == id.to_i }
-    render json: { level: @level }
     # request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
+    render json: { level: @level, player_level: @player_level }
   end
 
   def update
