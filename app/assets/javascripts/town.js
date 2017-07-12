@@ -1,14 +1,24 @@
 var apt, sprite;
 var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
-var previewBuildingX, previewBuildingY;
 var lastImage;
 var i = 0;
 var worldScale = 1;
 var woodAmount = $("#wood-amount").html();
 var stoneAmount = $("#stone-amount").html();
 var goldAmount = $("#gold-amount").html();
-        var alchemyLab3 = {};
-        var alchemyLab1 = {};
+
+var magicHouse1Price = 5;
+var magicHouse2Price = 5;
+var magicHouse3Price = 10;
+
+var alchemyLab1Price = 3;
+var alchemyLab2Price = 5;
+var alchemyLab3Price = 10;
+
+var teslaHouse1Price = 2;
+var teslaHouse2Price = 5;
+var teslaHouse3Price = 10;
+
 
 var game = new Phaser.Game($("#townArea").width(),$("#townArea").height(), Phaser.AUTO, 'townArea', null, true, false);
 var BasicGame = function (game) { };
@@ -73,21 +83,6 @@ BasicGame.Boot.prototype =
         // Main Building
         game.add.isoSprite(-10,-200,80,'main-building');
 
-        ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
-        ghostBuilding.alpha = 0;
-        confirmBuilding = game.add.isoSprite(0,0, 0, 'build-here', 0, ghostGroup);
-        confirmBuilding.alpha = 0;
-        upgradePopup = game.add.sprite(0,0, 'upgrade-button');
-        upgradeBuilding.alpha = 0;
-
-
-        // BUILDING ISOMETRIC OFFSET (SO THEY DISPLAY ON THE FLOOR ON TOP OF THE TILE)
-        alchemyLab1.x = -80;
-        alchemyLab1.y = -10;
-
-        alchemyLab3.x = -150;
-        alchemyLab3.y = -60;
-
         // BORDER WALLS
         // game.add.isoSprite(40,630,100,'wall-SW');
         // game.add.isoSprite(330,630,100,'wall-SW');
@@ -110,13 +105,6 @@ BasicGame.Boot.prototype =
         rButton.inputEnabled = true;
         rButton.events.onInputDown.add(nextBuilding, this);
 
-        // BUILD BUTTON --- REPLACED WITH CONFIRM BUILDING
-        // addButton = game.add.sprite(game.world.width/2,game.world.height/2 + 110, 'build-button');
-        // addButton.anchor.set(0.5, 0.5);
-        // addButton.scale.set(0.6);
-        // addButton.inputEnabled = true;
-        // addButton.events.onInputDown.add(addBuilding, this);
-
         // ACCEPT BUTTON
         acceptButton = game.add.sprite(game.world.width/2,game.world.height - 200, 'accept-button');
         acceptButton.scale.set(2.5);
@@ -128,7 +116,6 @@ BasicGame.Boot.prototype =
         // CANCEL BUTTON
         cancelButton = game.add.sprite(game.world.width/2,game.world.height - 350, 'cancel-button');
         cancelButton.scale.set(2.5);
-        // cButton.width = 600;
         cancelButton.anchor.set(0.5, 0);
         cancelButton.inputEnabled = true;
         cancelButton.events.onInputDown.add(reloadPage, this);
@@ -140,6 +127,21 @@ BasicGame.Boot.prototype =
         buildingPreview.anchor.set(0.5, 0);
         buildingPreview.scale.set(2);
         buildingPreview.alpha = 0.8;
+        buildingPreviewName = game.add.text(game.world.width/2, game.world.height/2 + 330, 'MAGIC HOUSE', { fill: '#ffffff', font: "40px Arial" });
+        buildingPreviewName.anchor.set(0.5, 0,5);
+        buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2,'wood');
+        buildingPreviewResource.scale.set(2);
+        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " +magicHouse1Price, { fill: '#ffffff', font: "50px Arial" });
+
+        //
+
+        // INVISIBLE SPRITES (intial reference for .destroy )
+        ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
+        ghostBuilding.alpha = 0;
+        confirmBuilding = game.add.isoSprite(0,0, 0, 'build-here', 0, ghostGroup);
+        confirmBuilding.alpha = 0;
+        upgradePopup = game.add.sprite(0,0, 'upgrade-button');
+        upgradePopup.alpha = 0;
 
         // Create a group for our tiles.
         isoGroup = game.add.group();
@@ -152,42 +154,6 @@ BasicGame.Boot.prototype =
 
         // Provide a 3D position for the cursor
         cursorPos = new Phaser.Plugin.Isometric.Point3();
-    },
-    update: function () {
-        if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-          game.world.pivot.y -= 5;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-          game.world.pivot.y += 5;
-        }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-          game.world.pivot.x -= 5;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-          game.world.pivot.x += 5;
-        }
-
-        // zoom
-        if (game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
-            worldScale += 0.05;
-            game.world.pivot.x += 5;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            worldScale -= 0.05;
-            game.world.pivot.x -= 5;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.Z)) {
-            worldScale = 1;
-            game.world.pivot.x = 0;
-        }
-        // set a minimum and maximum scale value
-        worldScale = Phaser.Math.clamp(worldScale, 1, 1.5);
-
-        // set our world scale as needed
-        game.world.scale.set(worldScale);
-
-        // Create a cursor
-        game.iso.unproject(game.input.activePointer.position, cursorPos);
 
         // Add the Fountain to the center tile
         isoGroup.children[12].buildingName = 'center-fountain';
@@ -198,18 +164,16 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].alpha = 0;
 
         // TEST - ADDING A PRE-MADE BUILDING
-        serverBuildingName = 'alchemy-lab-1'
-        serverBuildingTile = 9
-        serverBuildingX = 15
-        serverBuildingY = 95
+        serverBuildingName = 'alchemy-lab-1';
+        serverBuildingTile = 1;
 
-        isoGroup.children[serverBuildingTile].buildingName = serverBuildingName
-        isoGroup.children[serverBuildingTile].buildingX = serverBuildingX
-        isoGroup.children[serverBuildingTile].buildingY = serverBuildingY
-        isoGroup.children[serverBuildingTile].buildingZ = 75
-        isoGroup.children[serverBuildingTile].busy = true
-        isoGroup.children[serverBuildingTile].alpha = 0
+        selectedTile = isoGroup.children[serverBuildingTile];
+        addAlchemyLab1 ();
+    },
+    update: function () {
 
+        // Create a cursor
+        game.iso.unproject(game.input.activePointer.position, cursorPos);
 
         // Loop through all tiles
         isoGroup.forEach(function (tile) {
@@ -225,38 +189,38 @@ BasicGame.Boot.prototype =
 
             // inBounds - Check if cursor is over a tile
             var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
+
             // WHEN CLICKING: Select the tile and make it green, un-select others
             if (game.input.activePointer.isDown && inBounds && !tile.busy){
                 selectedTile = tile;
                 tile.tint = 0x00FF00;
 
-                // Desstroy previous preview, create a new one
+                // Destroy previous preview, create a new one
                 ghostBuilding.destroy();
                 confirmBuilding.destroy();
                 ghostBuilding = game.add.isoSprite(selectedTile.isoX + buildingPreviewX, selectedTile.isoY + buildingPreviewY, 0, buildingPreview.key, 0, ghostGroup);
                 ghostBuilding.alpha = 0.7;
+                // Create the 'BUILD' pop-up
                 confirmBuilding = game.add.isoSprite(selectedTile.isoX - 85, selectedTile.isoY, 130, 'build-here');
-                // confirmBuilding.scale.set(1.2);
                 confirmBuilding.scale.set(0.1);
                 game.add.tween(confirmBuilding.scale).to( { x: 1.2, y: 1.2 }, 1000, Phaser.Easing.Elastic.Out, true);
                 confirmBuilding.alpha = 0.7;
                 confirmBuilding.inputEnabled = true;
                 confirmBuilding.events.onInputDown.add(addBuilding, this);
 
-                // debugger;
-
-
-                // Do the ease out animation
+                // Do the ease out animation for other tiles
                 isoGroup.forEach(function (tile) {tile.ready = false})
                 tile.ready = true
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
             }
+
             // WHEN HOVERING: Do a little animation and tint change.
             else if (!tile.selected && inBounds) {
                 tile.selected = true;
                 tile.tint = 0x86bfda;
                 game.add.tween(tile).to({ isoZ: 4 }, 200, Phaser.Easing.Quadratic.InOut, true);
             }
+
             // WHEN NOT HOVERING: Do the ease-out the animation and remove the tint.
             else if (tile.selected && !inBounds && !tile.ready) {
                 tile.selected = false;
@@ -266,10 +230,6 @@ BasicGame.Boot.prototype =
         });
     },
 
-    // DISPLAY TEXT AND FPS
-    render: function () {
-        game.debug.text("ADD A BUILDING!", 2, 36, "#ffffff");
-    },
     // ADD THE MAP TILES
     spawnTiles: function () {
         var tile;
@@ -311,6 +271,7 @@ function upgradeBuilding() {
     switch (building.key) {
       case 'magic-house-1':
         addMagicHouse2();
+        removeWood(magicHouse2Price);
         break;
       case 'magic-house-2':
         addMagicHouse3();
@@ -377,14 +338,21 @@ function loadBuildingPreview() {
     switch (i) {
       case 1:
         buildingPreview.loadTexture('magic-house-1', 0);
-        previewBuildingX = -90;
-        previewBuildingY = -10;
+        buildingPreviewName.text = "MAGIC HOUSE";
+        buildingPreviewResource.loadTexture('wood',0);
+        buildingPreviewPrice.text = "x " + magicHouse1Price;
         break;
       case 2:
         buildingPreview.loadTexture('alchemy-lab-1', 0);
+        buildingPreviewName.text = "ALCHEMY LAB";
+        buildingPreviewResource.loadTexture('stone',0);
+        buildingPreviewPrice.text = "x " + alchemyLab1Price;
         break;
       case 3:
         buildingPreview.loadTexture('tesla-house-1', 0);
+        buildingPreviewName.text = "TESLA FACORY";
+        buildingPreviewResource.loadTexture('gold',0);
+        buildingPreviewPrice.text = "x " + teslaHouse1Price;
         break;
       default:
         i = 1;
@@ -403,13 +371,14 @@ function addBuilding() {
     switch (buildingPreview.key) {
       case 'magic-house-1':
         addMagicHouse1();
-        removeWood(3);
+        removeWood(magicHouse1Price);
         break;
       case 'magic-house-2':
         addMagicHouse2();
         break;
       case 'magic-house-3':
         addMagicHouse3();
+        removeWood(magicHouse3Price);
         break;
       case 'alchemy-lab-1':
         addAlchemyLab1();
@@ -477,8 +446,8 @@ function addTeslaHouse3 () {
 }
 function addAlchemyLab1 () {
     selectedTile.buildingName = 'alchemy-lab-1';
-    selectedTile.buildingX = alchemyLab1.x;
-    selectedTile.buildingY = alchemyLab1.y;
+    selectedTile.buildingX = -80;
+    selectedTile.buildingY = -10;
     selectedTile.busy = true;
     renderProperly();
 }
@@ -491,8 +460,8 @@ function addAlchemyLab2 () {
 }
 function addAlchemyLab3 () {
     selectedTile.buildingName = 'alchemy-lab-3';
-    selectedTile.buildingX = alchemyLab3.x;
-    selectedTile.buildingY = alchemyLab3.y;
+    selectedTile.buildingX = -150;
+    selectedTile.buildingY = -60;
     selectedTile.busy = true;
     renderProperly();
 }
@@ -567,3 +536,35 @@ game.state.start('Boot');
 // popup.scale.set(0.1);
 // game.add.tween(popup.scale).to( { x: 3, y: 1.8 }, 1500, Phaser.Easing.Elastic.Out, true);
 // // debugger
+
+// // ZOOM and MOVEMENT
+// if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+//   game.world.pivot.y -= 5;
+// }
+// else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+//   game.world.pivot.y += 5;
+// }
+// if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+//   game.world.pivot.x -= 5;
+// }
+// else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+//   game.world.pivot.x += 5;
+// }
+
+// if (game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
+//     worldScale += 0.05;
+//     game.world.pivot.x += 5;
+// }
+// else if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+//     worldScale -= 0.05;
+//     game.world.pivot.x -= 5;
+// }
+// else if (game.input.keyboard.isDown(Phaser.Keyboard.Z)) {
+//     worldScale = 1;
+//     game.world.pivot.x = 0;
+// }
+// // set a minimum and maximum scale value
+// worldScale = Phaser.Math.clamp(worldScale, 1, 1.5);
+
+// // set our world scale as needed
+// game.world.scale.set(worldScale);
