@@ -2,6 +2,7 @@ var wrong_answer_counter = 0;
 var right_answer_counter = 0;
 
 $(document).ready(function() {
+    gon.disable_input = false;
     gon.boss_game_over = false;
     gon.user_game_over = false;
     gon.bb_user_wrong_answer = false;
@@ -18,7 +19,7 @@ var updateAnswerBox_withUserInput = function() {
   $(".calculator").on("click", function(e) {
     e.preventDefault();
 
-    if ((gon.boss_game_over == false) && (gon.user_game_over == false)) {
+    if (gon.disable_input == false) {
       var $number = $(this)[0].innerText;
       $(".answer_area").append($number);
     }
@@ -38,7 +39,7 @@ var captureUserData_and_manipulateAnimation = function() {
 
     var $find_hearts = $(".hearts")[0].children;
 
-    if ((gon.boss_game_over == false) && (gon.user_game_over == false)) {
+    if (gon.disable_input == false) {
       var $user_input = $(".answer_area")[0].innerText;
 
       if ($user_input == gon.answer) {
