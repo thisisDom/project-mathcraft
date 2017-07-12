@@ -43,8 +43,7 @@ function create() {
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
 
-    // Create a delayed event 30s from now
-    timerEvent = timer.add(Phaser.Timer.SECOND * 60, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
 
     // Start the timer if not boss level
     if (gon.scene != 'temple') {
@@ -183,7 +182,7 @@ function endTimer() {
     // Stop the timer when the delayed event triggers
     timer.stop();
     var style = { font: "30px Arial", fill: "white", align: "center" };
-    var text = game.add.text(game.world.centerX, game.world.centerY-80, "GAME OVER!", style);
+    var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
 
     text.anchor.set(0.5);
 

@@ -1,5 +1,9 @@
 class GamesController < ApplicationController
+
   def index
+  end
+
+  def boss_battle
     # added dev branch
     data = Question.all
     questions_hash = {}
@@ -11,9 +15,6 @@ class GamesController < ApplicationController
     temp = questions_hash.to_a.sample
     @question = temp[0]
     gon.answer = temp[1]
-
-    gon.scene = "forest"
-    @scene = "forest"
 
     if request.xhr?
       render json: { question: @question, answer: gon.answer }.to_json
