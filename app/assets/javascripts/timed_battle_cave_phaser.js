@@ -19,6 +19,9 @@ function preload() {
 
     // Load Sprites
     game.load.spritesheet('golem', 'images/sprites/golem.png', 142.3, 140, 11);
+
+    // Load Rock Resource
+    game.load.image('cave-background', 'images/backgrounds/cave.png');
 }
 
 function create() {
