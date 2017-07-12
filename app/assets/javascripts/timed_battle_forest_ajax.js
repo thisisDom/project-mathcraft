@@ -59,11 +59,10 @@ var captureUserData_and_manipulateAnimation = function() {
 
 var updateQuestionsviaAJAX = function() {
   $.ajax({
-    url: "/boss_battle",
+    url: "/forest",
     method: 'GET'
   })
   .done(function(response) {
-    console.log(response)
     $(".question_area").html(response.question);
     $(".answer_area")[0].innerText = "";
     gon.answer = response.answer;
