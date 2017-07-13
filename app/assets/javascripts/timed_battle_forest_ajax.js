@@ -1,7 +1,7 @@
 gon.wrong_answer_counter = 0;
 gon.right_answer_counter = 0;
 var streak_counter = 0;
-
+gon.correct_answers = 0
 $(document).ready(function() {
     gon.forest_round_over = false;
     gon.forest_user_wrong_answer = false;
@@ -42,6 +42,8 @@ var captureUserData_and_manipulateAnimation = function() {
       if ($user_input == gon.answer) {
         gon.right_answer_counter += 1;
         gon.forest_user_right_answer = true;
+
+        gon.correct_answers += 1
 
         updateQuestionsviaAJAX();
         streak_counter += 1;
