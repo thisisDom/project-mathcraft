@@ -1,6 +1,13 @@
 <%= javascript_include_tag 'timed_battle_cave_ajax' %>
 
 <div class="container">
+  <div style="display:none" class="hidden-form">
+    <form id="level-form" action="/complete" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="players_level_id" value="" />
+      <input type="hidden" name="correct_answers" value="" />
+    </form>
+  </div>
   <div class="status_bar">
     <div class="hearts">
     </div>
