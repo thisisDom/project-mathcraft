@@ -16,6 +16,11 @@ class GamesController < ApplicationController
     session[:levels] = @levels
   end
 
+  def accept_town_buildings
+
+
+  end
+
   def start
     request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: 1, player_id: 1 } } )
     p "^" * 100
