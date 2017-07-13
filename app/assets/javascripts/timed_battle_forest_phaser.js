@@ -40,7 +40,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 15, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 1, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -101,12 +101,12 @@ function render() {
 function endTimer() {
     // Stop the timer when the delayed event triggers
     timer.stop();
-    var style = { font: "30px Arial", fill: "white", align: "center" };
-    var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
+    // var style = { font: "30px Arial", fill: "white", align: "center" };
+    // var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
 
     $(".streak_counter").remove();
 
-    text.anchor.set(0.5);
+    // text.anchor.set(0.5);
 
     stumpy.animations.stop(null, true);
     stumpy.alpha = 0;
@@ -114,6 +114,9 @@ function endTimer() {
     gon.forest_round_over = true;
 
     popup();
+
+    gon.wrong_answer_counter = 0;
+    gon.right_answer_counter = 0;
 }
 
 function formatTime(s) {
@@ -155,18 +158,60 @@ function popup() {
     game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
 
     popup.alpha = 0.8
-    // popup.scale.set(0.1);
-    // // debugger
 
-    // // TEXT
-    var ipsum = "Resources gained: 100 Wood!";
-    var style = { font: "12px Arial", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
-    text = game.add.text(popup.x/2, popup.y/2, ipsum, style);
-    text.setTextBounds(popup.x, popup.y);
-    // // Center align
-    // text.anchor.set(0.5);
-    text.align = 'center';
-    // //  Stroke color and thickness
-    text.stroke = '#000000';
-    text.strokeThickness = 4;
+    var result_text = "RESULTS";
+    var newline1_text = "_______"
+    var correct_text = "Correct Answers: " + gon.right_answer_counter;
+    var wrong_text = "Wrong Answers: " + gon.wrong_answer_counter;
+    var levelmult_text = "Level Multiplier: x 1"
+    var newline2_text = "____________"
+    var resourcesgained_text = "Resources Gained: "
+
+    var result_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var newline1_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var correct_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var wrong_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var levelmult_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var newline2_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+    var resourcesgained_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
+
+    var result = game.add.text(popup.x-20, popup.y-55, result_text, result_style);
+    var newline1 = game.add.text(popup.x-20, popup.y-50, newline1_text, newline1_style);
+    var correct = game.add.text(popup.x-38, popup.y-15, correct_text, correct_style);
+    var wrong = game.add.text(popup.x-38, popup.y+5, wrong_text, wrong_style);
+    var levelmult = game.add.text(popup.x-38, popup.y+25, levelmult_text, levelmult_style);
+    var newline2 = game.add.text(popup.x-50, popup.y+35, newline2_text, newline2_style);
+    var resourcesgained = game.add.text(popup.x-38, popup.y+75, resourcesgained_text, resourcesgained_style);
+
+    result.setTextBounds(popup.x, popup.y);
+    newline1.setTextBounds(popup.x, popup.y);
+    correct.setTextBounds(popup.x, popup.y);
+    wrong.setTextBounds(popup.x, popup.y);
+    levelmult.setTextBounds(popup.x, popup.y);
+    newline2.setTextBounds(popup.x, popup.y);
+    resourcesgained.setTextBounds(popup.x, popup.y);
+
+    result.align = 'center';
+    newline1.align = 'center';
+    correct.align = 'center';
+    wrong.align = 'center';
+    levelmult.align = 'center';
+    newline2.align = 'center';
+    resourcesgained.align = 'center';
+
+    result.stroke = '#000000';
+    newline1.stroke = '#00000';
+    correct.stroke = '#000000';
+    wrong.stroke = '#000000';
+    levelmult.stroke = '#000000';
+    newline2.stroke = '#00000';
+    resourcesgained.stroke = '#000000';
+
+    result.strokeThickness = 4;
+    newline1.strokeThickness = 4;
+    correct.strokeThickness = 4;
+    wrong.strokeThickness = 4;
+    levelmult.strokeThickness = 4;
+    newline2.strokeThickness = 4;
+    resourcesgained.strokeThickness = 4;
 }

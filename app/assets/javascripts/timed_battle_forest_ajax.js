@@ -1,4 +1,5 @@
-var wrong_answer_counter = 0;
+gon.wrong_answer_counter = 0;
+gon.right_answer_counter = 0;
 var streak_counter = 0;
 
 $(document).ready(function() {
@@ -39,7 +40,9 @@ var captureUserData_and_manipulateAnimation = function() {
       var $user_input = $(".answer_area")[0].innerText;
 
       if ($user_input == gon.answer) {
+        gon.right_answer_counter += 1;
         gon.forest_user_right_answer = true;
+
         updateQuestionsviaAJAX();
         streak_counter += 1;
 
@@ -48,6 +51,7 @@ var captureUserData_and_manipulateAnimation = function() {
         }
       }
       else {
+        gon.wrong_answer_counter += 1;
         updateQuestionsviaAJAX();
         $(".streak_counter").remove();
         streak_counter = 0;
