@@ -21,24 +21,16 @@ var factory2Price = 5;
 var factory3Price = 10;
 
 // INFO SERVER
-building1 =
-{
-name: 'magic-house-1',
-offsetX:-90,
-offsetY:-10
-}
-building2 =
-{
-name: 'magic-house-2',
-offsetX:-90,
-offsetY:-10
-}
-building3 =
-{
-name: 'magic-house-3',
-offsetX:-90,
-offsetY:-10
-}
+var data = gon.data
+console.log(data);
+
+var buildings = data['buildings'] //DATA FROM SERVER HERE
+console.log(buildings);
+
+console.log(buildings[0].location);
+console.log(buildings[0].name);
+console.log(buildings[0].offsetX);
+console.log(buildings[0].offsetY);
 
 // TEST - ADDING A PRE-MADE BUILDING
 serverBuildingName = 'alchemy-lab-1';
@@ -83,9 +75,9 @@ BasicGame.Boot.prototype =
         game.load.image('alchemy-lab-2', 'images/buildings/alchemy-lab-2.png');
         game.load.image('alchemy-lab-3', 'images/buildings/alchemy-lab-3.png');
 
-        game.load.image('tesla-house-1', 'images/buildings/tesla-house-1.png');
-        game.load.image('tesla-house-2', 'images/buildings/tesla-house-2.png');
-        game.load.image('tesla-house-3', 'images/buildings/tesla-house-3.png');
+        game.load.image('tesla-factory-1', 'images/buildings/tesla-house-1.png');
+        game.load.image('tesla-factory-2', 'images/buildings/tesla-house-2.png');
+        game.load.image('tesla-factory-3', 'images/buildings/tesla-house-3.png');
 
         game.load.image('left-button', "images/buttons/left-button.png");
         game.load.image('right-button', "images/buttons/right-button.png");
@@ -213,15 +205,6 @@ BasicGame.Boot.prototype =
         // Provide a 3D position for the cursor
         cursorPos = new Phaser.Plugin.Isometric.Point3();
 
-        // Add the Fountain to the center tile
-        // centerFountain = game.add.isoSprite(50,50,0,'center-fountain');
-
-        isoGroup.children[12].buildingName = 'center-fountain';
-        isoGroup.children[12].buildingX = -10;
-        isoGroup.children[12].buildingY = 65;
-        isoGroup.children[12].buildingZ = 75;
-        isoGroup.children[12].busy = true;
-        isoGroup.children[12].alpha = 0;
 
         //when the level loads, play the theme
         music = game.add.audio('pokemon');
@@ -229,9 +212,15 @@ BasicGame.Boot.prototype =
         music.play();
         music.volume = 3;
 
-        // SEVER INFO
-        // selectedTile = isoGroup.children[serverBuildingTile];
-        // addBuilding(serverBuildingName,-80,-10);
+        // PLACE USER-OWN BUILDING FROM SERVER
+        console.log(buildings);
+        for(i in buildings){
+            isoGroup.children[buildings[i].location].buildingName = buildings[i].name;
+            isoGroup.children[buildings[i].location].buildingX = buildings[i].offsetX;
+            isoGroup.children[buildings[i].location].buildingY = buildings[i].offsetY;
+            isoGroup.children[buildings[i].location].busy = true;
+            isoGroup.children[buildings[i].location].alpha = 0;
+        }
     },
     update: function () {
         // Create a cursor
