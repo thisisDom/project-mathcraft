@@ -26,7 +26,7 @@ function preload() {
     // Load Rock Resource
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
-    game.load.audio('super-mario', '../audio/super-mario.mp3')
+    game.load.audio('super-mario', '../audio/background/super-mario.mp3')
 
 }
 

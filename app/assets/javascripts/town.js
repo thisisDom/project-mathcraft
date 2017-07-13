@@ -98,6 +98,9 @@ BasicGame.Boot.prototype =
 
         game.load.image('background-image', "images/backgrounds/green.jpg");
 
+        // Load Sound Effects
+        game.load.audio('pokemon', '../audio/background/pokemon.mp3')
+
         // Used to show the FPS
         game.time.advancedTiming = true;
 
@@ -144,12 +147,6 @@ BasicGame.Boot.prototype =
 
         game.add.isoSprite(450,495,-12,'wall-corner');
         // game.add.isoSprite(60,450,0,'wall-tower');
-
-
-
-
-
-
 
         // LEFT BUTTON
         lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 200, 'left-button');
@@ -223,6 +220,12 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].buildingZ = 75;
         isoGroup.children[12].busy = true;
         isoGroup.children[12].alpha = 0;
+
+        //when the level loads, play the theme
+        music = game.add.audio('pokemon');
+
+        music.play();
+        music.volume = 3;
 
         // SEVER INFO
         // selectedTile = isoGroup.children[serverBuildingTile];
