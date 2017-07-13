@@ -133,46 +133,46 @@ BasicGame.Boot.prototype =
         // game.add.isoSprite(60,450,0,'wall-tower');
 
         // LEFT BUTTON
-        lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 200, 'left-button');
+        lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 300, 'left-button');
         lButton.scale.set(2.2);
         lButton.inputEnabled = true;
         lButton.events.onInputDown.add(previousBuilding, this);
 
         // RIGHT BUTTON
-        rButton = game.add.sprite(game.world.width/2 + 190, game.world.height/2 + 200, 'right-button');
+        rButton = game.add.sprite(game.world.width/2 + 190, game.world.height/2 + 300, 'right-button');
         rButton.scale.set(2.2);
         rButton.inputEnabled = true;
         rButton.events.onInputDown.add(nextBuilding, this);
 
-        // ACCEPT BUTTON
-        acceptButton = game.add.sprite(game.world.width/2 + 190,game.world.height - 350, 'accept-button');
-        acceptButton.scale.set(2);
-        acceptButton.height = 200;
-        // acceptButton.width = 600;
-        acceptButton.anchor.set(0.5, 0);
-        acceptButton.inputEnabled = true;
-        acceptButton.events.onInputDown.add(acceptChanges, this);
+        // // ACCEPT BUTTON
+        // acceptButton = game.add.sprite(game.world.width/2 + 190,game.world.height - 350, 'accept-button');
+        // acceptButton.scale.set(2);
+        // acceptButton.height = 200;
+        // // acceptButton.width = 600;
+        // acceptButton.anchor.set(0.5, 0);
+        // acceptButton.inputEnabled = true;
+        // acceptButton.events.onInputDown.add(acceptChanges, this);
 
-        // CANCEL BUTTON
-        cancelButton = game.add.sprite(game.world.width/2 - 190,game.world.height - 350, 'cancel-button');
-        cancelButton.scale.set(2);
-        cancelButton.height = 200;
-        cancelButton.anchor.set(0.5, 0);
-        cancelButton.inputEnabled = true;
-        cancelButton.events.onInputDown.add(reloadPage, this);
+        // // CANCEL BUTTON
+        // cancelButton = game.add.sprite(game.world.width/2 - 190,game.world.height - 350, 'cancel-button');
+        // cancelButton.scale.set(2);
+        // cancelButton.height = 200;
+        // cancelButton.anchor.set(0.5, 0);
+        // cancelButton.inputEnabled = true;
+        // cancelButton.events.onInputDown.add(reloadPage, this);
 
         // BUILDING PREVIEW
-        buildingPreview = game.add.sprite(game.world.width/2 + 20, game.world.height/2 + 100, 'magic-house-1');
+        buildingPreview = game.add.sprite(game.world.width/2 + 20, game.world.height/2 + 200, 'magic-house-1');
         buildingPreviewX = -90;
         buildingPreviewY = -10;
         buildingPreview.anchor.set(0.5, 0);
         buildingPreview.scale.set(2);
         buildingPreview.alpha = 0.8;
-        buildingPreviewName = game.add.text(game.world.width/2, game.world.height/2 + 330, 'MAGIC HOUSE', { fill: '#ffffff', font: "40px Arial" });
+        buildingPreviewName = game.add.text(game.world.width/2, game.world.height/2 + 430, 'MAGIC HOUSE', { fill: '#ffffff', font: "35px Arial", stroke: '#00000', strokeThickness: 6});
         buildingPreviewName.anchor.set(0.5, 0,5);
-        buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2,'wood');
+        buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2 + 100,'wood');
         buildingPreviewResource.scale.set(2);
-        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial" });
+        buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 100, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial", stroke: '#00000', strokeThickness: 6});
         buildingPreviewResource.alpha = 0;
         buildingPreviewPrice.alpha = 0;
 
