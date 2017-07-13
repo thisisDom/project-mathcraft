@@ -41,9 +41,6 @@ class GamesController < ApplicationController
     gon.level_name = name
 
     @level = session[:levels].find { |level| level['title'] == name }
-    p "-" * 80
-    p @level['id']
-    p session[:id]
 
     response = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
 
@@ -83,8 +80,6 @@ class GamesController < ApplicationController
 
   def complete
     request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/complete", query: { data: { players_id: session[:id], players_level_id:  game_params[:players_level_id], correct_answers: game_params[:correct_answers] } } )
-    p "*" * 80
-    p request
   end
 
   private
