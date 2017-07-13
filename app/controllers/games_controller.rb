@@ -2,9 +2,14 @@ class GamesController < ApplicationController
   include GamesHelper
 
   def town
+    session[:player] = nil
     session[:id] = 1
     @player_info = get_player(session[:id])
-    session[:player] = @player_info
+
+    p "* #{@player_info}"
+    session[:resources] = @player_info['resources']
+    gon.data = @player_info
+
   end
 
   def level_select
