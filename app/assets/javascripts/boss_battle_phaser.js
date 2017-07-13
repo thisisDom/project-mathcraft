@@ -23,7 +23,7 @@ function preload() {
     game.load.spritesheet('explosion', 'images/sprites/explosion.png', 100, 100, 37);
 
     // Load audio
-    game.load.audio('zelda','../audio/zelda.mp3')
+    game.load.audio('zelda','../audio/background/zelda.mp3')
 }
 
 function create() {

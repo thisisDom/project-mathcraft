@@ -31,7 +31,7 @@ function preload() {
     game.load.spritesheet('tree4', 'images/sprites/tree4.png', 72.25, 64, 4);
 
     // Load Sound Effects
-    game.load.audio('tetris', '../audio/tetris.mp3')
+    game.load.audio('tetris', '../audio/background/tetris.mp3')
 }
 
 
