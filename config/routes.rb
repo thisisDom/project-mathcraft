@@ -17,4 +17,8 @@ Rails.application.routes.draw do
   post '/complete', to: "games#complete"
 
   get '/test', to: "games#start"
+
+  post '/build', to: "buildings#build"
+  post '/upgrade', to: "buildings#upgrade"
+
 end
