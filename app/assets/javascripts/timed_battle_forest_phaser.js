@@ -26,7 +26,7 @@ function preload() {
     // Load Enemy Sprites
     game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
     game.load.spritesheet('tree1', 'images/sprites/tree1.png', 73, 85, 4);
-    game.load.spritesheet('tree2', 'images/sprites/tree2.png', 129.66, 150, 12);
+    game.load.spritesheet('tree2', 'images/sprites/tree2.png', 67, 64, 4);
     game.load.spritesheet('tree3', 'images/sprites/tree3.png', 85.5, 87, 4);
     game.load.spritesheet('tree4', 'images/sprites/tree4.png', 72.25, 64, 4);
 
@@ -45,7 +45,8 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 30, this.endTimer, this);
+
+    timerEvent = timer.add(Phaser.Timer.SECOND * 20, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -53,6 +54,7 @@ function create() {
     background = game.add.sprite(0, 0, 'forest-background');
     background.height = game.world.height;
     background.width = game.world.width;
+
     game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
 //    game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
 
@@ -62,27 +64,55 @@ function create() {
     music.play();
     music.volume = 3;
 
+    // game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
+    // game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
+    game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
+
 }
 
-function findStumpy() {
-    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
-    var walk = stumpy.animations.add('walk');
-    stumpy.animations.play('walk', 8, true);
-    stumpy.alpha = 0;
-    stumpy.scale.set(0.9);
-    game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
-    stumpy.anchor.setTo(0.3, 0.4);
-}
-
-// function findTree1() {
-//     stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'tree1');
+// function findStumpy() {
+//     stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
 //     var walk = stumpy.animations.add('walk');
-//     stumpy.animations.play('walk', 4, true);
+//     stumpy.animations.play('walk', 8, true);
 //     stumpy.alpha = 0;
-//     stumpy.scale.set(1);
+//     stumpy.scale.set(0.9);
 //     game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
 //     stumpy.anchor.setTo(0.3, 0.4);
 // }
+function findEnemy (){
+    // randomEnemy = rndNum(4);
+    randomEnemy = 2;
+    switch(randomEnemy){
+        case 1:
+            enemyName = 'tree1';
+            break;
+        case 2:
+            enemyName = 'tree2';
+            break;
+        case 3:
+            enemyName = 'tree3';
+            break;
+        case 4:
+            enemyName = 'stumpy';
+            break;
+    };
+
+    enemy = game.add.sprite(game.world.centerX-20, game.world.centerY, enemyName);
+    var walk = enemy.animations.add('walk');
+    enemy.animations.play('walk',4,true);
+    enemy.alpha = 0;
+    game.add.tween(enemy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+    enemy.anchor.setTo(0.3, 0.4);
+}
+function findTree1() {
+    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'tree1');
+    var walk = stumpy.animations.add('walk');
+    stumpy.animations.play('walk', 4, true);
+    stumpy.alpha = 0;
+    stumpy.scale.set(1);
+    game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
+    stumpy.anchor.setTo(0.3, 0.4);
+}
 
 function update() {
     // MAKE THE IMAGE ZOOM IN
@@ -128,21 +158,20 @@ function endTimer() {
 
     gon.forest_round_over = true;
 
+    gon.net_correct_answers = gon.right_answer_counter - gon.wrong_answer_counter
+
     var data = new Object();
     data.players_level_id = gon.players_level_id
     data.correct_answers = gon.net_correct_answers
 
+    console.log(data)
     popup();
 
-    $.ajax({
-      url: '/gamecomplete',
-      method: 'POST',
-      data: data
-    })
-
+    $("input[name='players_level_id']").val(gon.players_level_id)
+    $("input[name='correct_answers']").val(gon.net_correct_answers)
     gon.wrong_answer_counter = 0;
     gon.right_answer_counter = 0;
-
+    $("#level-form").submit();
 }
 
 function formatTime(s) {
@@ -248,20 +277,23 @@ function popup() {
     popup.events.onInputDown.add(redirect_to_town, this)
 }
 
-function update_data() {
-  $.ajax({
-    url: "/town",
-    method: 'POST',
-    data: 1
-  })
-  .done(function(response) {
-    console.log("success");
-  })
-  .fail(function(response) {
-    console.log("something went wrong!", response);
-  });
-}
+// function update_data() {
+//   $.ajax({
+//     url: "/town",
+//     method: 'POST',
+//     data: 1
+//   })
+//   .done(function(response) {
+//     console.log("success");
+//   })
+//   .fail(function(response) {
+//     console.log("something went wrong!", response);
+//   });
+// }
 
 function redirect_to_town() {
     window.open("/town","_self");
+}
+function rndNum(num) {
+    return Math.round(Math.random() * num);
 }
