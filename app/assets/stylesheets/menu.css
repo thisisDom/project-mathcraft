@@ -1,5 +1,7 @@
 #stageMenu {
   position: absolute;
+  display: flex;
+  justify-content: space-around;
   bottom: 0px;
   z-index: 1;
   height: 250px;
@@ -25,7 +27,6 @@
   height: 70%;
   margin: 7%;
   background: #98DDFE;
-  float: right;
   text-align: center;
 }
 
