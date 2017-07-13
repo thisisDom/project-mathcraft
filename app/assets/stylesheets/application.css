@@ -13,7 +13,15 @@
  *= require_tree .
  *= require_self
  */
+ *, a:-webkit-any-link, img {
+  -webkit-user-select:none;
+  -o-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+ }
 
+html, body {margin: 0; height: 100%; overflow: hidden}
  body {
   background-color: black;
   z-index: 0;
