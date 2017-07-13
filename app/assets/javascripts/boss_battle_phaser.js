@@ -72,6 +72,7 @@ function update() {
         boss.animations.stop(null, true);
         game.add.tween(user_lost_text).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
         gon.user_game_over = false;
+        gon.disable_input = true;
     }
 
     if (gon.boss_game_over == true) {
@@ -80,6 +81,7 @@ function update() {
         bossDeath();
         game.add.tween(boss_lost_text).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
         gon.boss_game_over = false;
+        gon.disable_input = true;
     }
 }
 
