@@ -40,12 +40,12 @@ class GamesController < ApplicationController
     p @level['id']
     @assets = @level['assets']
     p @assets
-    request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevel/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
-    p "^" * 100
-    body = JSON.parse(request.body)
-    p "fuck"*20
-    number = body['player_level']['id'].to_i
-    p number
+    # request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevel/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
+    # p "^" * 100
+    # body = JSON.parse(request.body)
+    # p "fuck"*20
+    # number = body['player_level']['id'].to_i
+    # p number
 
     case name
     when "forest"
@@ -61,18 +61,18 @@ class GamesController < ApplicationController
     @problem = current_question['problem']
     gon.answer = current_question['answer']
 
-    gon.players_level_id = number
+    # gon.players_level_id = number
 
     if request.xhr?
        render json: { problem: @problem, answer: gon.answer }.to_json
     else
       case name
       when "forest"
-        render "timed_battle_forest", json: { assets: @assets }
+        render "timed_battle_forest"
       when "cave"
-        render "timed_battle_cave", json: { assets: @assets }
+        render "timed_battle_cave"
       when "temple"
-      render "boss_battle", json: { assets: @assets }
+      render "boss_battle"
       end
     end
   end
