@@ -1,3 +1,4 @@
+var appeared = false;
 var apt, sprite;
 var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
 var lastImage;
@@ -61,6 +62,13 @@ BasicGame.Boot.prototype =
 
         game.load.image('wall-SE', "images/buildings/border-se.png")
         game.load.image('wall-SW', "images/buildings/border-sw.png")
+        game.load.image('inside-wall', "images/buildings/small-wall-inside.png")
+        game.load.image('inside-wall-flip', "images/buildings/small-wall-inside-flip.png")
+        game.load.image('outside-wall', "images/buildings/small-wall-outside.png")
+        game.load.image('outside-wall-flip', "images/buildings/small-wall-outside-flip.png")
+        game.load.image('wall-tower', "images/buildings/wall-tower.png")
+        game.load.image('wall-corner', "images/buildings/wall-corner.png")
+
 
         game.load.image('wood', "images/resources/wood.png")
         game.load.image('stone', "images/resources/stone.png")
@@ -90,6 +98,9 @@ BasicGame.Boot.prototype =
 
         game.load.image('background-image', "images/backgrounds/green.jpg");
 
+        // Load Sound Effects
+        game.load.audio('pokemon', '../audio/background/pokemon.mp3')
+
         // Used to show the FPS
         game.time.advancedTiming = true;
 
@@ -108,14 +119,34 @@ BasicGame.Boot.prototype =
         game.add.isoSprite(-10,-200,80,'main-building');
 
         // BORDER WALLS
-        // game.add.isoSprite(40,630,100,'wall-SW');
-        // game.add.isoSprite(330,630,100,'wall-SW');
+        game.add.isoSprite(-110,-70,20,'wall-corner');
 
-        // game.add.isoSprite(450,130,100,'wall-SE');
-        // game.add.isoSprite(450,430,100,'wall-SE');
+        game.add.isoSprite(-150,-20,0,'inside-wall-flip');
+        game.add.isoSprite(-150,80,0,'inside-wall-flip');
+        game.add.isoSprite(-150,180,0,'inside-wall-flip');
+        game.add.isoSprite(-150,280,0,'inside-wall-flip');
+        game.add.isoSprite(-150,380,0,'inside-wall-flip');
 
-        // game.add.isoSprite(-150,130,100,'wall-SE');
-        // game.add.isoSprite(-150,430,100,'wall-SE');
+        game.add.isoSprite(-90,-80,0,'inside-wall');
+        game.add.isoSprite(10,-80,0,'inside-wall');
+        game.add.isoSprite(210,-80,0,'inside-wall');
+        game.add.isoSprite(310,-80,0,'inside-wall');
+
+        game.add.isoSprite(0,520,0,'outside-wall');
+        game.add.isoSprite(60,520,0,'outside-wall');
+        game.add.isoSprite(250,520,0,'outside-wall');
+        game.add.isoSprite(350,520,0,'outside-wall');
+        game.add.isoSprite(380,520,0,'outside-wall');
+
+
+        game.add.isoSprite(450,50,0,'outside-wall-flip');
+        game.add.isoSprite(450,150,0,'outside-wall-flip');
+        game.add.isoSprite(450,250,0,'outside-wall-flip');
+        game.add.isoSprite(450,350,0,'outside-wall-flip');
+        game.add.isoSprite(450,450,0,'outside-wall-flip');
+
+        game.add.isoSprite(450,495,-12,'wall-corner');
+        // game.add.isoSprite(60,450,0,'wall-tower');
 
         // LEFT BUTTON
         lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 200, 'left-button');
@@ -158,6 +189,9 @@ BasicGame.Boot.prototype =
         buildingPreviewResource = game.add.sprite(game.world.width/2 - 80, game.world.height/2,'wood');
         buildingPreviewResource.scale.set(2);
         buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial" });
+        buildingPreviewResource.alpha = 0;
+        buildingPreviewPrice.alpha = 0;
+
 
         // INVISIBLE SPRITES (intial reference for .destroy )
         ghostBuilding = game.add.isoSprite(0,0,0,'magic-house-1');
@@ -187,6 +221,12 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].busy = true;
         isoGroup.children[12].alpha = 0;
 
+        //when the level loads, play the theme
+        music = game.add.audio('pokemon');
+
+        music.play();
+        music.volume = 3;
+
         // SEVER INFO
         // selectedTile = isoGroup.children[serverBuildingTile];
         // addBuilding(serverBuildingName,-80,-10);
@@ -209,7 +249,11 @@ BasicGame.Boot.prototype =
 
             // inBounds - Check if cursor is over a tile
             var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-
+            if (inBounds && !appeared){
+                buildingPreviewResource.alpha = 1;
+                buildingPreviewPrice.alpha = 1;
+                appeared = true;
+            }
             // WHEN CLICKING: Select the tile and make it green, un-select others
             if (game.input.activePointer.isDown && inBounds && !tile.busy){
                 selectedTile = tile;
@@ -248,6 +292,9 @@ BasicGame.Boot.prototype =
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
             }
         });
+        game.add.isoSprite(60,450,-20,'wall-tower');
+
+
     },
 
     // ADD THE MAP TILES
@@ -264,7 +311,15 @@ BasicGame.Boot.prototype =
 };
 
 // -------- BUILDING PREVIEW FUNCTIONS -------
-function nextBuilding() {i += 1; loadBuildingPreview();}
+function nextBuilding() {
+    i += 1;
+    loadBuildingPreview();
+  if (!appeared){
+            buildingPreviewResource.alpha = 1;
+            buildingPreviewPrice.alpha = 1;
+            appeared = true;
+        }
+}
 function previousBuilding() {i -= 1; loadBuildingPreview();}
 
 function loadBuildingPreview() {

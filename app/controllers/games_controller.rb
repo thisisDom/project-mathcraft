@@ -17,7 +17,6 @@ class GamesController < ApplicationController
     gon.level_name = name
 
     @level = session[:levels].find { |level| level['title'] == name }
-    # @assets = @level['assets']
 
     response = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
 
