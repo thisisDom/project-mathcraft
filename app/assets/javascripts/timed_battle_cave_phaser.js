@@ -35,7 +35,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 3, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -123,7 +123,7 @@ function popup() {
     popup.inputEnabled = true;
 
     popup.scale.set(0.1);
-    game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
+    popupDisplay = game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
 
     popup.alpha = 0.8
 
@@ -133,7 +133,8 @@ function popup() {
     var wrong_text = "Wrong Answers: " + gon.wrong_answer_counter;
     var levelmult_text = "Level Multiplier: x 1"
     var newline2_text = "____________"
-    var resourcesgained_text = "= (" + gon.right_answer_counter + " - " + gon.wrong_answer_counter + ") x " + "1"
+    // var resourcesgained_text = "= (" + gon.right_answer_counter + " - " + gon.wrong_answer_counter + ") x " + "1"
+    var resourcesgained_text = "5"
 
     var result_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var newline1_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
@@ -149,9 +150,14 @@ function popup() {
     var wrong = game.add.text(popup.x-38, popup.y+5, wrong_text, wrong_style);
     var levelmult = game.add.text(popup.x-38, popup.y+25, levelmult_text, levelmult_style);
     var newline2 = game.add.text(popup.x-50, popup.y+35, newline2_text, newline2_style);
-    var wood_summary = game.add.sprite(popup.x+20, popup.y+140, 'stone');
-    wood_summary.scale.set(0.5)
-    var resourcesgained = game.add.text(popup.x-38, popup.y+75, resourcesgained_text, resourcesgained_style);
+
+    // var wood_summary = game.add.sprite(popup.x + 80, popup.y+140, 'stone');
+    // wood_summary.scale.set(0.5)
+    // var resourcesgained = game.add.text(popup.x-38, popup.y+75, resourcesgained_text, resourcesgained_style);
+
+    var finalResourceIcon = game.add.sprite(170,210, 'stone');
+    var finalResourceAmount = game.add.text(finalResourceIcon.x, finalResourceIcon.y, "5",{fill: "#ffffff"});
+    finalResourceAmount.anchor.set(-1.0,0);
 
     result.setTextBounds(popup.x, popup.y);
     newline1.setTextBounds(popup.x, popup.y);
@@ -159,7 +165,7 @@ function popup() {
     wrong.setTextBounds(popup.x, popup.y);
     levelmult.setTextBounds(popup.x, popup.y);
     newline2.setTextBounds(popup.x, popup.y);
-    resourcesgained.setTextBounds(popup.x, popup.y);
+    // resourcesgained.setTextBounds(popup.x, popup.y);
 
     result.align = 'center';
     newline1.align = 'center';
@@ -167,7 +173,7 @@ function popup() {
     wrong.align = 'center';
     levelmult.align = 'center';
     newline2.align = 'center';
-    resourcesgained.align = 'center';
+    // resourcesgained.align = 'center';
 
     result.stroke = '#000000';
     newline1.stroke = '#00000';
@@ -175,7 +181,7 @@ function popup() {
     wrong.stroke = '#000000';
     levelmult.stroke = '#000000';
     newline2.stroke = '#00000';
-    resourcesgained.stroke = '#000000';
+    finalResourceAmount.stroke = '#00000';
 
     result.strokeThickness = 4;
     newline1.strokeThickness = 4;
@@ -183,7 +189,7 @@ function popup() {
     wrong.strokeThickness = 4;
     levelmult.strokeThickness = 4;
     newline2.strokeThickness = 4;
-    resourcesgained.strokeThickness = 4;
+    finalResourceAmount.strokeThickness = 4;
 
     popup.events.onInputDown.add(redirect_to_town, this)
 }
