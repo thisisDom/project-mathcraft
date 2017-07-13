@@ -40,7 +40,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 20, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -146,10 +146,10 @@ function endTimer() {
     gon.net_correct_answers = gon.right_answer_counter - gon.wrong_answer_counter
 
     var data = new Object();
-    data.players_level_id = gon.players_level_id
-    data.correct_answers = gon.net_correct_answers
+    data.players_level_id = gon.players_level_id;
+    data.correct_answers = gon.net_correct_answers;
 
-    console.log(data)
+    console.log(data);
     popup();
 
     $("input[name='players_level_id']").val(gon.players_level_id)
