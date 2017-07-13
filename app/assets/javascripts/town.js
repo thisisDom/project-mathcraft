@@ -214,6 +214,8 @@ BasicGame.Boot.prototype =
         cursorPos = new Phaser.Plugin.Isometric.Point3();
 
         // Add the Fountain to the center tile
+        // centerFountain = game.add.isoSprite(50,50,0,'center-fountain');
+
         isoGroup.children[12].buildingName = 'center-fountain';
         isoGroup.children[12].buildingX = -10;
         isoGroup.children[12].buildingY = 65;
@@ -242,6 +244,8 @@ BasicGame.Boot.prototype =
                 console.log("ADDING BUILDING");
                 building = game.add.isoSprite(tile.isoX + tile.buildingX,tile.isoY + tile.buildingY, tile.buildingZ, tile.buildingName, 0, buildingGroup);
                 building.baseTile = tile.parent.getChildIndex(tile);
+                building.baseX = tile.buildingX;
+                building.baseY = tile.buildingY;
                 building.inputEnabled = true;
                 building.events.onInputDown.add(addUpgradePopup, this);
                 tile.buildingAdded = true;
@@ -293,8 +297,6 @@ BasicGame.Boot.prototype =
             }
         });
         game.add.isoSprite(60,450,-20,'wall-tower');
-
-
     },
 
     // ADD THE MAP TILES
@@ -352,7 +354,20 @@ function loadBuildingPreview() {
 // ----------------------------------
 
 // -------- HELPER FUNCTIONS --------
-function acceptChanges(){console.log("THIS WILL PUSH THE CHANGES TO THE API");};
+
+// SEND THINGS TO API
+function acceptChanges(){
+    buildingsData = {};
+    buildingGroup.forEach(function (building) {
+        console.log("----------------");
+        buildingsData.name = building.key;
+        buildingsData.tile = building.baseTile;
+        buildingsData.X = building.baseX;
+        buildingsData.Y = building.baseY;
+    })
+    console.log(buildingsData);
+};
+
 function reloadPage(){ window.open("/town","_self"); }
 function confirmAlterations(){}
 
