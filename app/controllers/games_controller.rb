@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   def town
     session[:player] = nil
-    session[:id] = 1
+    session[:id] = 2
     @player_info = get_player(session[:id])
 
     p "* #{@player_info}"

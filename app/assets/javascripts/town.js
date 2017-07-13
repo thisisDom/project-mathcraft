@@ -20,17 +20,9 @@ var factory1Price = 2;
 var factory2Price = 5;
 var factory3Price = 10;
 
-// INFO SERVER
+//DATA FROM SERVER HERE INFO
 var data = gon.data
-console.log(data);
-
-var buildings = data['buildings'] //DATA FROM SERVER HERE
-console.log(buildings);
-
-console.log(buildings[0].location);
-console.log(buildings[0].name);
-console.log(buildings[0].offsetX);
-console.log(buildings[0].offsetY);
+var buildings = data['buildings']
 
 // TEST - ADDING A PRE-MADE BUILDING
 serverBuildingName = 'alchemy-lab-1';
@@ -311,7 +303,10 @@ function nextBuilding() {
             appeared = true;
         }
 }
-function previousBuilding() {i -= 1; loadBuildingPreview();}
+function previousBuilding() {
+    if(i==1){i=4};
+    i -= 1;
+    loadBuildingPreview();}
 
 function loadBuildingPreview() {
     console.log(i);
@@ -329,7 +324,7 @@ function loadBuildingPreview() {
         buildingPreviewPrice.text = "x " + lab1Price;
         break;
       case 3:
-        buildingPreview.loadTexture('tesla-house-1', 0);
+        buildingPreview.loadTexture('tesla-factory-1', 0);
         buildingPreviewName.text = "TESLA FACTORY";
         buildingPreviewResource.loadTexture('gold',0);
         buildingPreviewPrice.text = "x " + factory1Price;
@@ -353,8 +348,8 @@ function acceptChanges(){
         buildingsData.tile = building.baseTile;
         buildingsData.X = building.baseX;
         buildingsData.Y = building.baseY;
+        console.log(buildingsData);
     })
-    console.log(buildingsData);
 };
 
 function reloadPage(){ window.open("/town","_self"); }
@@ -403,11 +398,25 @@ function renderProperly (){
 
 // -------- ADD BUILDING FUNCTIONS --------
 function addBuilding(name,offsetX,offsetY){
-    selectedTile.buildingName = name;
-    selectedTile.buildingX = offsetX;
-    selectedTile.buildingY = offsetY;
-    selectedTile.busy = true;
-    renderProperly();
+    var data = new Object();
+    data.building_name = name;
+    data.location = isoGroup.getChildIndex(selectedTile);
+
+    var options = new Object();
+    options.url = '/build';
+    options.data = { building_name: name, location: isoGroup.getChildIndex(selectedTile) }
+    options.method = 'POST';
+
+    var xhr = $.ajax(options).done(function(){
+        selectedTile.buildingName = name;
+        selectedTile.buildingX = offsetX;
+        selectedTile.buildingY = offsetY;
+        selectedTile.busy = true;
+        renderProperly();
+    })
+    console.log(xhr)
+
+
 };
 
 function createBuilding() {
@@ -425,8 +434,8 @@ function createBuilding() {
         addBuilding('alchemy-lab-1',-80,-10);
         removeResource('stone',lab1Price);
         break;
-      case 'tesla-house-1':
-        addBuilding('tesla-house-1',-90,0);
+      case 'tesla-factory-1':
+        addBuilding('tesla-factory-1',-90,0);
         removeResource('gold',factory1Price);
         break;
       default:
@@ -434,6 +443,27 @@ function createBuilding() {
         break;
     }
 }
+function updateBuilding(name,offsetX,offsetY) {
+    var data = new Object();
+    data.building_name = name;
+    data.location = isoGroup.getChildIndex(selectedTile);
+
+    var options = new Object();
+    options.url = '/upgrade';
+    options.data = { building_name: name, location: isoGroup.getChildIndex(selectedTile) }
+    options.method = 'POST';
+
+    var xhr = $.ajax(options).done(function(){
+        selectedTile.buildingName = name;
+        selectedTile.buildingX = offsetX;
+        selectedTile.buildingY = offsetY;
+        selectedTile.busy = true;
+        renderProperly();
+    })
+    console.log(xhr)
+};
+
+
 
 function upgradeBuilding() {
     upgradePopup.destroy();
@@ -442,27 +472,27 @@ function upgradeBuilding() {
 
     switch (building.key) {
       case 'magic-house-1':
-        addBuilding('magic-house-2',-100,-20);
+        updateBuilding('magic-house-2',-100,-20);
         removeResource('wood',house2Price);
         break;
       case 'magic-house-2':
-        addBuilding('magic-house-3',-105,-25);
+        updateBuilding('magic-house-3',-105,-25);
         removeResource('wood',house3Price);
         break;
-      case 'tesla-house-1':
-        addBuilding('tesla-house-2',-140,-60);
+      case 'tesla-factory-1':
+        updateBuilding('tesla-factory-2',-140,-60);
         removeResource('gold',factory2Price);
         break;
-      case 'tesla-house-2':
-        addBuilding('tesla-house-3',-160,-70);
+      case 'tesla-factory-2':
+        updateBuilding('tesla-factory-3',-160,-70);
         removeResource('gold',factory3Price);
         break;
       case 'alchemy-lab-1':
-        addBuilding('alchemy-lab-2',-120,-30);
+        updateBuilding('alchemy-lab-2',-120,-30);
         removeResource('stone',lab2Price);
         break;
       case 'alchemy-lab-2':
-        addBuilding('alchemy-lab-3',-150,-60);
+        updateBuilding('alchemy-lab-3',-150,-60);
         removeResource('stone',lab3Price);
         break;
 
@@ -472,15 +502,6 @@ function upgradeBuilding() {
     }
 }
 
-// Easy function to add the fountain in the middle
-function addCenterFountain () {
-    selectedTile.buildingName = 'center-fountain'
-    selectedTile.buildingX = -10
-    selectedTile.buildingY = 65
-    selectedTile.buildingZ = 65
-    selectedTile.busy = true;
-    renderProperly();
-}
 // ---------------------------------------------------
 // START THE GAME
 game.state.add('Boot', BasicGame.Boot);
