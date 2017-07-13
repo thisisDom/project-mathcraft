@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   get '/cave', to: 'games#timed_battle_cave'
 
   get '/levels/:name', to: "games#show"
+
+  post '/complete' to: "games#complete"
+
+  get '/test', to: "games#start"
 end
