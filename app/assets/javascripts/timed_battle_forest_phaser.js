@@ -24,14 +24,14 @@ function preload() {
     game.load.image('popup', 'images/sprites/popup.png');
 
     // Load Enemy Sprites
-    game.load.spritesheet('stumpy', 'images/sprites/stumpy.png', 200, 220, 12);
-    game.load.spritesheet('tree1', 'images/sprites/tree1.png', 73, 85, 4);
-    game.load.spritesheet('tree2', 'images/sprites/tree2.png', 67, 64, 4);
-    game.load.spritesheet('tree3', 'images/sprites/tree3.png', 85.5, 87, 4);
-    game.load.spritesheet('tree4', 'images/sprites/tree4.png', 72.25, 64, 4);
+    game.load.spritesheet('stumpy', '../images/sprites/stumpy.png', 200, 220, 12);
+    game.load.spritesheet('tree1', '../images/sprites/tree1.png', 73, 85, 4);
+    game.load.spritesheet('tree2', '../images/sprites/tree2.png', 75, 61, 4);
+    game.load.spritesheet('tree3', '../images/sprites/tree3.png', 73, 85, 4);
+    game.load.spritesheet('tree4', '../images/sprites/tree4.png', 72.25, 64, 4);
 
-    // Load Sound Effects
     game.load.audio('tetris', '../audio/background/tetris.mp3')
+
 }
 
 
@@ -80,8 +80,7 @@ function create() {
 //     stumpy.anchor.setTo(0.3, 0.4);
 // }
 function findEnemy (){
-    // randomEnemy = rndNum(4);
-    randomEnemy = 2;
+    randomEnemy = rndNum(5);
     switch(randomEnemy){
         case 1:
             enemyName = 'tree1';
@@ -93,13 +92,16 @@ function findEnemy (){
             enemyName = 'tree3';
             break;
         case 4:
+            enemyName = 'tree4';
+            break;
+        case 5:
             enemyName = 'stumpy';
             break;
     };
 
-    enemy = game.add.sprite(game.world.centerX-20, game.world.centerY, enemyName);
+    enemy = game.add.sprite(game.world.centerX-20, game.world.centerY+30, enemyName);
     var walk = enemy.animations.add('walk');
-    enemy.animations.play('walk',4,true);
+    enemy.animations.play('walk',3,true);
     enemy.alpha = 0;
     game.add.tween(enemy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
     enemy.anchor.setTo(0.3, 0.4);
@@ -129,6 +131,8 @@ function update() {
     }
     else if (gon.forest_user_right_answer == true) {
         sproutResources();
+        enemy.destroy();
+        findEnemy();
         gon.forest_user_right_answer = false;
     }
 }
@@ -294,6 +298,7 @@ function popup() {
 function redirect_to_town() {
     window.open("/town","_self");
 }
+
 function rndNum(num) {
     return Math.round(Math.random() * num);
 }

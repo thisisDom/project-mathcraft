@@ -21,7 +21,9 @@ function preload() {
     game.load.image('popup', 'images/sprites/popup.png');
 
     // Load Sprites
-    game.load.spritesheet('golem', 'images/sprites/golem.png', 142.3, 140, 11);
+    game.load.spritesheet('golem', '../images/sprites/golem.png', 142.3, 140, 11);
+    game.load.spritesheet('golem2', '../images/sprites/golem2.png', 87, 94, 6);
+
 
     // Load Rock Resource
     game.load.image('cave-background', 'images/backgrounds/cave.png');
@@ -38,7 +40,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * 3, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 30, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -46,7 +48,8 @@ function create() {
     background = game.add.sprite(0, 0, 'cave-background');
     background.height = game.world.height;
     background.width = game.world.width;
-    game.time.events.add(Phaser.Timer.SECOND * 2, findGolem, this);
+
+    game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
 
     //when the level loads, play the theme
     music = game.add.audio('super-mario');
@@ -55,6 +58,26 @@ function create() {
     music.volume = 3;
 }
 
+function findEnemy() {
+    randomEnemy = rndNum(2);
+    switch(randomEnemy){
+        case 1:
+            enemyName = 'golem';
+            break;
+        case 2:
+            enemyName = 'golem2';
+            break;
+        default:
+            enemyName = 'golem';
+            break;
+    };
+    enemy = game.add.sprite(game.world.centerX, game.world.centerY+50, enemyName);
+    var walk = enemy.animations.add('walk');
+    enemy.animations.play('walk', 5, true);
+    enemy.alpha = 0;
+    game.add.tween(enemy).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    enemy.anchor.setTo(0.3, 0.4);
+}
 function findGolem() {
     golem = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
     var walk = golem.animations.add('walk');
@@ -79,6 +102,8 @@ function update() {
     }
     else if (gon.cave_user_right_answer == true) {
         sproutResources();
+        enemy.destroy();
+        findEnemy();
         gon.cave_user_right_answer = false;
     }
 }
@@ -219,4 +244,7 @@ function update_data() {
 
 function redirect_to_town() {
     window.open("/town","_self");
+}
+function rndNum(num) {
+    return Math.round(Math.random() * num);
 }
