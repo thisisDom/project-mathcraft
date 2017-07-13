@@ -1,4 +1,4 @@
-var stumpy;
+var enemy_position;
 var tree1;
 var timer, timerEvent, text;
 var background;
@@ -40,8 +40,8 @@ function create() {
     timer = game.time.create();
 
     // invisible stumpy
-    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
-    stumpy.alpha = 0
+    enemy_position = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
+    enemy_position.alpha = 0
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -158,8 +158,8 @@ function formatTime(s) {
 function sproutResources() {
     var style = { font: "15px Arial", fill: "white", align: "center" };
 
-    var wood_sprite = game.add.sprite(stumpy.x, stumpy.y, 'wood');
-    var text_sprite = game.add.text(stumpy.x+20, stumpy.y, "x 1", style);
+    var wood_sprite = game.add.sprite(enemy_position.x, enemy_position.y, 'wood');
+    var text_sprite = game.add.text(enemy_position.x+20, enemy_position.y, "x 1", style);
 
     wood_sprite.alpha = 0;
     text_sprite.alpha = 0;
@@ -168,13 +168,13 @@ function sproutResources() {
     var textTween = game.add.tween(text_sprite).to({ alpha: 1, x: text_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
     woodTween.onComplete.add(function() {
-        wood_sprite.x = stumpy.x; wood_sprite.y = stumpy.y;
+        wood_sprite.x = enemy_position.x; wood_sprite.y = enemy_position.y;
         wood_sprite.alpha = 0;
     });
     woodTween.start();
 
     textTween.onComplete.add(function() {
-        text_sprite.x = stumpy.x+20; text_sprite.y = stumpy.y;
+        text_sprite.x = enemy_position.x+20; text_sprite.y = enemy_position.y;
         text_sprite.alpha = 0;
     });
     textTween.start();

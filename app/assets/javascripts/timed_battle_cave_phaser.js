@@ -1,4 +1,4 @@
-var golem;
+var enemy_position;
 var timer, timerEvent, text;
 var background;
 gon.level_multiplier = 1;
@@ -39,8 +39,8 @@ function preload() {
 function create() {
     timer = game.time.create();
 
-    golem = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
-    golem.alpha = 0
+    enemy_position = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
+    enemy_position.alpha = 0
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -83,14 +83,6 @@ function findEnemy() {
     enemy.anchor.setTo(0.3, 0.4);
 }
 
-function findGolem() {
-    golem = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
-    var walk = golem.animations.add('walk');
-    golem.animations.play('walk', 8, true);
-    golem.alpha = 0;
-    game.add.tween(golem).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    golem.anchor.setTo(0.3, 0.4);
-}
 
 function update() {
     // MAKE THE IMAGE ZOOM IN
@@ -156,8 +148,8 @@ function formatTime(s) {
 function sproutResources() {
     var style = { font: "15px Arial", fill: "white", align: "center" };
 
-    var stone_sprite = game.add.sprite(golem.x, golem.y, 'stone');
-    var text_sprite = game.add.text(golem.x+20, golem.y, "x 1", style);
+    var stone_sprite = game.add.sprite(enemy_position.x, enemy_position.y, 'stone');
+    var text_sprite = game.add.text(enemy_position.x+20, enemy_position.y, "x 1", style);
 
     stone_sprite.alpha = 0;
     text_sprite.alpha = 0;
@@ -166,13 +158,13 @@ function sproutResources() {
     var textTween = game.add.tween(text_sprite).to({ alpha: 1, x: text_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
     stoneTween.onComplete.add(function() {
-        stone_sprite.x = golem.x; stone_sprite.y = golem.y;
+        stone_sprite.x = enemy_position.x; stone_sprite.y = enemy_position.y;
         stone_sprite.alpha = 0;
     });
     stoneTween.start();
 
     textTween.onComplete.add(function() {
-        text_sprite.x = golem.x+20; text_sprite.y = golem.y;
+        text_sprite.x = enemy_position.x+20; text_sprite.y = enemy_position.y;
         text_sprite.alpha = 0;
     });
     textTween.start();
