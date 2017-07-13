@@ -21,6 +21,9 @@ function preload() {
     game.load.spritesheet('boss-shoot', 'images/sprites/boss-shoot.png', 192, 172, 6);
     game.load.spritesheet('boss-death', 'images/sprites/boss-death.png', 238.85, 170, 7);
     game.load.spritesheet('explosion', 'images/sprites/explosion.png', 100, 100, 37);
+
+    // Load audio
+    game.load.audio('zelda','../audio/background/zelda.mp3')
 }
 
 function create() {
@@ -30,6 +33,11 @@ function create() {
     background.height = game.world.height;
     background.width = game.world.width;
     game.time.events.add(Phaser.Timer.SECOND * 2, findBoss, this);
+
+    music = game.add.audio('zelda');
+
+    music.play();
+    music.volume = 3;
 }
 
 function findBoss() {

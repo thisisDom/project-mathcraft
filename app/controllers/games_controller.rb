@@ -39,6 +39,7 @@ class GamesController < ApplicationController
     p session[:id]
     @assets = @level['assets']
     p @assets
+
     response = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
     p "^" * 100
     p response
@@ -72,7 +73,7 @@ class GamesController < ApplicationController
       when "cave"
         render "timed_battle_cave"
       when "temple"
-      render "boss_battle", json: { assets: @assets }
+      render "boss_battle"
       end
     end
   end
