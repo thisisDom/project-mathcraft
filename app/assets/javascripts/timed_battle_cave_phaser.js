@@ -25,6 +25,9 @@ function preload() {
 
     // Load Rock Resource
     game.load.image('cave-background', 'images/backgrounds/cave.png');
+
+    game.load.audio('super-mario', '../audio/super-mario.mp3')
+
 }
 
 function create() {
@@ -44,6 +47,12 @@ function create() {
     background.height = game.world.height;
     background.width = game.world.width;
     game.time.events.add(Phaser.Timer.SECOND * 2, findGolem, this);
+
+    //when the level loads, play the theme
+    music = game.add.audio('super-mario');
+
+    music.play();
+    music.volume = 3;
 }
 
 function findGolem() {

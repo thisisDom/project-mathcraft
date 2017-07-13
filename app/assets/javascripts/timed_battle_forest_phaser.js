@@ -29,7 +29,12 @@ function preload() {
     game.load.spritesheet('tree2', 'images/sprites/tree2.png', 67, 64, 4);
     game.load.spritesheet('tree3', 'images/sprites/tree3.png', 85.5, 87, 4);
     game.load.spritesheet('tree4', 'images/sprites/tree4.png', 72.25, 64, 4);
+
+    // Load Sound Effects
+    game.load.audio('tetris', '../audio/tetris.mp3')
 }
+
+
 
 function create() {
     timer = game.time.create();
@@ -40,6 +45,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+
     timerEvent = timer.add(Phaser.Timer.SECOND * 20, this.endTimer, this);
 
     // Start the timer if not boss level
@@ -48,6 +54,16 @@ function create() {
     background = game.add.sprite(0, 0, 'forest-background');
     background.height = game.world.height;
     background.width = game.world.width;
+
+    game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
+//    game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
+
+    //when the level loads, play the theme
+    music = game.add.audio('tetris');
+
+    music.play();
+    music.volume = 3;
+
     // game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
     // game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
     game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
@@ -118,11 +134,14 @@ function update() {
 }
 
 function render() {
+    game.debug.soundInfo(music, 20, 32);
     // If our timer is running, show countdown
     if (timer.running) {
         game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), game.world.centerX-20, game.world.centerY-100, "#ff0");
     }
+
 }
+
 
 function endTimer() {
     // Stop the timer when the delayed event triggers
