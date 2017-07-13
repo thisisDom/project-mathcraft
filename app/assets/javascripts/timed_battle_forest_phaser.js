@@ -4,6 +4,7 @@ var timer, timerEvent, text;
 var background;
 gon.level_multiplier = 1;
 var enemy;
+var time_limit = 20;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
@@ -45,7 +46,7 @@ function create() {
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
 
-    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * time_limit, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
