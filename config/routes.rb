@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   get '/levels/:name', to: "games#show"
 
-  post '/complete' to: "games#complete"
+  post '/complete', to: "games#complete"
 
   get '/test', to: "games#start"
 end
