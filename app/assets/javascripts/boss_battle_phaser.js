@@ -33,7 +33,7 @@ function create() {
     background.height = game.world.height;
     background.width = game.world.width;
     game.time.events.add(Phaser.Timer.SECOND * 2, findBoss, this);
-
+    
     music = game.add.audio('zelda');
 
     music.play();

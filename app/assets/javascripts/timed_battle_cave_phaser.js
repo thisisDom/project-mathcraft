@@ -4,6 +4,8 @@ var background;
 gon.level_multiplier = 1;
 var enemy;
 var time_limit = 20;
+var coin;
+var music;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
@@ -33,10 +35,12 @@ function preload() {
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
     game.load.audio('super-mario', '../audio/background/super-mario.mp3')
+    game.load.audio('coin', '../audio/sfx/coin.mp3')
 
 }
 
 function create() {
+
     timer = game.time.create();
 
     enemy_position = game.add.sprite(game.world.centerX, game.world.centerY+50, 'golem');
@@ -56,10 +60,12 @@ function create() {
     game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
 
     //when the level loads, play the theme
-    music = game.add.audio('super-mario');
 
+    music = game.add.audio('super-mario');
     music.play();
-    music.volume = 3;
+    music.volume = 1;
+
+    coin = game.add.audio('coin');
 }
 
 function findEnemy() {
@@ -85,6 +91,7 @@ function findEnemy() {
 
 
 function update() {
+
     // MAKE THE IMAGE ZOOM IN
     if (worldScale < 1.2){
         worldScale += 0.0015;
@@ -101,11 +108,13 @@ function update() {
         sproutResources();
         enemy.destroy();
         findEnemy();
+        coin_noise();
         gon.cave_user_right_answer = false;
     }
 }
 
 function render() {
+
     // If our timer is running, show countdown
     if (timer.running) {
         game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), game.world.centerX-20, game.world.centerY-100, "#ff0");
@@ -254,6 +263,10 @@ function popup() {
     popup.events.onInputDown.add(redirect_to_town, this)
 }
 
+function coin_noise() {
+  coin.play();
+  coin.volume = 1;
+}
 
 function redirect_to_town() {
     window.open("/town", "_self");
