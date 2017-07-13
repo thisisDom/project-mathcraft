@@ -7,6 +7,7 @@
   <% @levels.each do |level| %>
     <div class="level-button" id="<%=level['title']%>-level">
       <a href="/levels/<%=level['title']%>"><div class="level-text"> <%= level['title'].capitalize %> </div></a>
+      <br>
       <div class="level-text"> Required Level: <%=level['level_requirement'] %> </div>
     </div>
   <% end %>

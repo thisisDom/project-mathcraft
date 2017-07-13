@@ -21,6 +21,8 @@ Rails.application.config.assets.precompile += %w( boss_battle_phaser.js )
 Rails.application.config.assets.precompile += %w( timed_battle_forest_phaser.js )
 Rails.application.config.assets.precompile += %w( timed_battle_cave_phaser.js )
 
+Rails.application.config.assets.precompile += %w( home.js )
+
 
 
 

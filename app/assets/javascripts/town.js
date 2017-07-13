@@ -136,7 +136,7 @@ BasicGame.Boot.prototype =
         // acceptButton.width = 600;
         acceptButton.anchor.set(0.5, 0);
         acceptButton.inputEnabled = true;
-        acceptButton.events.onInputDown.add(createBuilding, this);
+        acceptButton.events.onInputDown.add(acceptChanges, this);
 
         // CANCEL BUTTON
         cancelButton = game.add.sprite(game.world.width/2 - 190,game.world.height - 350, 'cancel-button');
@@ -188,8 +188,8 @@ BasicGame.Boot.prototype =
         isoGroup.children[12].alpha = 0;
 
         // SEVER INFO
-        selectedTile = isoGroup.children[serverBuildingTile];
-        addBuilding(serverBuildingName,-80,-10);
+        // selectedTile = isoGroup.children[serverBuildingTile];
+        // addBuilding(serverBuildingName,-80,-10);
     },
     update: function () {
         // Create a cursor
@@ -297,6 +297,7 @@ function loadBuildingPreview() {
 // ----------------------------------
 
 // -------- HELPER FUNCTIONS --------
+function acceptChanges(){console.log("THIS WILL PUSH THE CHANGES TO THE API");};
 function reloadPage(){ window.open("/town","_self"); }
 function confirmAlterations(){}
 
