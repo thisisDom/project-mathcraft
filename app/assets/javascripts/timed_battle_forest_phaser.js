@@ -113,7 +113,17 @@ function endTimer() {
 
     gon.forest_round_over = true;
 
+    var data = new Object();
+    data.players_level_id = gon.players_level_id
+    data.correct_answers = gon.net_correct_answers
+
     popup();
+    
+    $.ajax({
+      url: '/gamecomplete',
+      method: 'POST',
+      data: data
+    })
 }
 
 function formatTime(s) {

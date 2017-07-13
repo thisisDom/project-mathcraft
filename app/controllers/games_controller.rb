@@ -6,8 +6,7 @@ class GamesController < ApplicationController
 
   def town
     session[:id] = 1
-    id = session[:id]
-    @player_info = get_player(id)
+    @player_info = get_player(session[:id])
     p "* #{@player_info}"
     session[:player] = @player_info
   end
@@ -17,14 +16,36 @@ class GamesController < ApplicationController
     session[:levels] = @levels
   end
 
+  def start
+    request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: 1, player_id: 1 } } )
+    p "^" * 100
+    body = JSON.parse(request.body)
+    p body
+    p "*" * 100
+    number = body['player_level']['id'].to_i
+    p number
+
+    other_request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/complete", query: { data: { players_id: 1, players_level_id: number, correct_answers: 20 } } )
+    p other_request.body
+    p ":)" * 100
+
+
+  end
+
   def show
     name = params[:name]
     gon.level_name = name
 
     @level = session[:levels].find { |level| level['title'] == name }
-    @assets = get_level_info(name, 'assets')
-    # request = "/players/#{session[:id]}/playerslevels/start", params[:level_id],  response = { players_level: :id }
-    # render json: { assets: @assets }
+    p @level['id']
+    @assets = @level['assets']
+    p @assets
+    request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevel/start", query: { data: { level_id: @level['id'], player_id: session[:id] } } )
+    p "^" * 100
+    body = JSON.parse(request.body)
+    p "fuck"*20
+    number = body['player_level']['id'].to_i
+    p number
 
     case name
     when "forest"
@@ -40,22 +61,26 @@ class GamesController < ApplicationController
     @problem = current_question['problem']
     gon.answer = current_question['answer']
 
+    gon.players_level_id = number
+
     if request.xhr?
        render json: { problem: @problem, answer: gon.answer }.to_json
     else
       case name
       when "forest"
-        render "timed_battle_forest"
+        render "timed_battle_forest", json: { assets: @assets }
       when "cave"
-        render "timed_battle_cave"
+        render "timed_battle_cave", json: { assets: @assets }
       when "temple"
-        render "boss_battle"
+      render "boss_battle", json: { assets: @assets }
       end
     end
   end
 
-  def update
-    # request = "/players/#{session[:id]}/playerslevels/complete", params[:players_level_id] , response + { player: {...} }}
+  def complete
+    p game_params
+    request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevel/complete", query: { data: { players_id: session[:id], players_level_id:  game_params[:players_level_id], correct_answers: games_params[:correct_answers] } } )
+    p request
   end
 
 
@@ -103,4 +128,11 @@ class GamesController < ApplicationController
     #   render json: { problem: @problem, answer: gon.answer }.to_json
     # end
   end
+
+  private
+
+  def game_params
+    params.permit(:players_level_id, :correct_answers)
+  end
+
 end
