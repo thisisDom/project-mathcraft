@@ -48,29 +48,29 @@ function create() {
     background = game.add.sprite(0, 0, 'forest-background');
     background.height = game.world.height;
     background.width = game.world.width;
-//    game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
-    game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
+    game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
+//    game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
 }
 
-// function findStumpy() {
-//     stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
-//     var walk = stumpy.animations.add('walk');
-//     stumpy.animations.play('walk', 8, true);
-//     stumpy.alpha = 0;
-//     stumpy.scale.set(0.9);
-//     game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
-//     stumpy.anchor.setTo(0.3, 0.4);
-// }
-
-function findTree1() {
-    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'tree1');
+function findStumpy() {
+    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
     var walk = stumpy.animations.add('walk');
-    stumpy.animations.play('walk', 4, true);
+    stumpy.animations.play('walk', 8, true);
     stumpy.alpha = 0;
-    stumpy.scale.set(1);
+    stumpy.scale.set(0.9);
     game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
     stumpy.anchor.setTo(0.3, 0.4);
 }
+
+// function findTree1() {
+//     stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'tree1');
+//     var walk = stumpy.animations.add('walk');
+//     stumpy.animations.play('walk', 4, true);
+//     stumpy.alpha = 0;
+//     stumpy.scale.set(1);
+//     game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
+//     stumpy.anchor.setTo(0.3, 0.4);
+// }
 
 function update() {
     // MAKE THE IMAGE ZOOM IN
@@ -125,15 +125,28 @@ function formatTime(s) {
 
 
 function sproutResources() {
+    var style = { font: "15px Arial", fill: "white", align: "center" };
+
     var wood_sprite = game.add.sprite(stumpy.x, stumpy.y, 'wood');
+    var text_sprite = game.add.text(stumpy.x+20, stumpy.y, "x 1", style);
+
     wood_sprite.alpha = 0;
+    text_sprite.alpha = 0;
+
     var woodTween = game.add.tween(wood_sprite).to({ alpha: 1, x: wood_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
+    var textTween = game.add.tween(text_sprite).to({ alpha: 1, x: text_sprite.x , y: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
     woodTween.onComplete.add(function() {
         wood_sprite.x = stumpy.x; wood_sprite.y = stumpy.y;
         wood_sprite.alpha = 0;
     });
     woodTween.start();
+
+    textTween.onComplete.add(function() {
+        text_sprite.x = stumpy.x+20; text_sprite.y = stumpy.y;
+        text_sprite.alpha = 0;
+    });
+    textTween.start();
 }
 
 function popup() {
