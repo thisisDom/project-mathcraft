@@ -51,9 +51,9 @@ class GamesController < ApplicationController
     when "forest"
       @questions = get_questions('multiplication', 'easy')
     when "cave"
-      @questions = get_questions('addition', 'hard')
-    when "temple"
       @questions = get_questions('addition', 'medium')
+    when "temple"
+      @questions = get_questions('addition', 'hard')
     end
 
     current_question = @questions.pop

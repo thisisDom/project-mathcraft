@@ -165,6 +165,8 @@ function sproutResources() {
 
 function popup() {
     popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
+    popup.inputEnabled = true;
+
     popup.scale.set(0.1);
     game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
 
@@ -176,7 +178,7 @@ function popup() {
     var wrong_text = "Wrong Answers: " + gon.wrong_answer_counter;
     var levelmult_text = "Level Multiplier: x 1"
     var newline2_text = "____________"
-    var resourcesgained_text = "Resources Gained: "
+    var resourcesgained_text = "= (" + gon.right_answer_counter + " - " + gon.wrong_answer_counter + ") x " + "1"
 
     var result_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var newline1_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
@@ -192,6 +194,8 @@ function popup() {
     var wrong = game.add.text(popup.x-38, popup.y+5, wrong_text, wrong_style);
     var levelmult = game.add.text(popup.x-38, popup.y+25, levelmult_text, levelmult_style);
     var newline2 = game.add.text(popup.x-50, popup.y+35, newline2_text, newline2_style);
+    var wood_summary = game.add.sprite(popup.x+20, popup.y+140, 'wood');
+    wood_summary.scale.set(0.5)
     var resourcesgained = game.add.text(popup.x-38, popup.y+75, resourcesgained_text, resourcesgained_style);
 
     result.setTextBounds(popup.x, popup.y);
@@ -225,4 +229,24 @@ function popup() {
     levelmult.strokeThickness = 4;
     newline2.strokeThickness = 4;
     resourcesgained.strokeThickness = 4;
+
+    popup.events.onInputDown.add(redirect_to_town, this)
+}
+
+function update_data() {
+  $.ajax({
+    url: "/town",
+    method: 'POST',
+    data: 1
+  })
+  .done(function(response) {
+    console.log("success");
+  })
+  .fail(function(response) {
+    console.log("something went wrong!", response);
+  });
+}
+
+function redirect_to_town() {
+    window.open("/town","_self");
 }
