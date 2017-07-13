@@ -20,6 +20,24 @@ var factory2Price = 5;
 var factory3Price = 10;
 
 // INFO SERVER
+building1 =
+{
+name: 'magic-house-1',
+offsetX:-90,
+offsetY:-10
+}
+building2 =
+{
+name: 'magic-house-2',
+offsetX:-90,
+offsetY:-10
+}
+building3 =
+{
+name: 'magic-house-3',
+offsetX:-90,
+offsetY:-10
+}
 
 // TEST - ADDING A PRE-MADE BUILDING
 serverBuildingName = 'alchemy-lab-1';
@@ -112,16 +130,18 @@ BasicGame.Boot.prototype =
         rButton.events.onInputDown.add(nextBuilding, this);
 
         // ACCEPT BUTTON
-        acceptButton = game.add.sprite(game.world.width/2,game.world.height - 200, 'accept-button');
-        acceptButton.scale.set(2.5);
+        acceptButton = game.add.sprite(game.world.width/2 + 190,game.world.height - 350, 'accept-button');
+        acceptButton.scale.set(2);
+        acceptButton.height = 200;
         // acceptButton.width = 600;
         acceptButton.anchor.set(0.5, 0);
         acceptButton.inputEnabled = true;
         acceptButton.events.onInputDown.add(createBuilding, this);
 
         // CANCEL BUTTON
-        cancelButton = game.add.sprite(game.world.width/2,game.world.height - 350, 'cancel-button');
-        cancelButton.scale.set(2.5);
+        cancelButton = game.add.sprite(game.world.width/2 - 190,game.world.height - 350, 'cancel-button');
+        cancelButton.scale.set(2);
+        cancelButton.height = 200;
         cancelButton.anchor.set(0.5, 0);
         cancelButton.inputEnabled = true;
         cancelButton.events.onInputDown.add(reloadPage, this);
@@ -140,11 +160,11 @@ BasicGame.Boot.prototype =
         buildingPreviewPrice = game.add.text(buildingPreviewResource.x + 115, buildingPreviewResource.y + 30, "x " + house1Price, { fill: '#ffffff', font: "50px Arial" });
 
         // INVISIBLE SPRITES (intial reference for .destroy )
-        ghostBuilding = game.add.isoSprite(0,0, 0, 'magic-house-1', 0, ghostGroup);
+        ghostBuilding = game.add.isoSprite(0,0,0,'magic-house-1');
         ghostBuilding.alpha = 0;
-        confirmBuilding = game.add.isoSprite(0,0, 0, 'build-here', 0, ghostGroup);
+        confirmBuilding = game.add.isoSprite(0,0,0, 'build-here');
         confirmBuilding.alpha = 0;
-        upgradePopup = game.add.sprite(0,0, 'upgrade-button');
+        upgradePopup = game.add.sprite(0,0,'upgrade-button');
         upgradePopup.alpha = 0;
 
         // Create a group for our tiles.
@@ -169,10 +189,9 @@ BasicGame.Boot.prototype =
 
         // SEVER INFO
         selectedTile = isoGroup.children[serverBuildingTile];
-        addAlchemyLab1 ();
+        addBuilding(serverBuildingName,-80,-10);
     },
     update: function () {
-
         // Create a cursor
         game.iso.unproject(game.input.activePointer.position, cursorPos);
 
@@ -184,7 +203,7 @@ BasicGame.Boot.prototype =
                 building = game.add.isoSprite(tile.isoX + tile.buildingX,tile.isoY + tile.buildingY, tile.buildingZ, tile.buildingName, 0, buildingGroup);
                 building.baseTile = tile.parent.getChildIndex(tile);
                 building.inputEnabled = true;
-                building.events.onInputDown.add(upgradeOption, this);
+                building.events.onInputDown.add(addUpgradePopup, this);
                 tile.buildingAdded = true;
             }
 
@@ -244,47 +263,9 @@ BasicGame.Boot.prototype =
 
 };
 
-// -------- HELPER FUNCTIONS --------
-function reloadPage(){ window.open("/town","_self"); }
-function confirmAlterations(){}
-
-function removeWood(amount) {
-    woodAmount -= amount;
-    $("#wood-amount").html(woodAmount);
-}
-function upgradeOption(building){
-    selectedTile = isoGroup.children[building.baseTile];
-
-    upgradePopup.destroy();
-    upgradePopup = game.add.sprite( selectedTile.x -50, selectedTile.y -120, 'upgrade-button');
-    upgradePopup.building = building;
-    upgradePopup.scale.set(0.1);
-    game.add.tween(upgradePopup.scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true);
-    upgradePopup.inputEnabled = true;
-    upgradePopup.events.onInputDown.add(upgradeBuilding, {building: building});
-}
-
-
-function renderProperly (){
-    isoGroup.forEach(function (tile) {tile.tint = 0xffffff;})
-
-    // Removes all the sprites and things on the group
-    buildingGroup.forEach(function (building) {buildingGroup.remove(building);});
-    buildingGroup.forEach(function (building) {building.destroy();});
-
-    // Set the building added as false so the building are re-rendered in the right order
-    isoGroup.forEach(function (tile) {tile.buildingAdded = false});
-};
-
-function nextBuilding() {
-    i += 1;
-    loadBuildingPreview();
-}
-
-function previousBuilding() {
-    i -= 1;
-    loadBuildingPreview();
-}
+// -------- BUILDING PREVIEW FUNCTIONS -------
+function nextBuilding() {i += 1; loadBuildingPreview();}
+function previousBuilding() {i -= 1; loadBuildingPreview();}
 
 function loadBuildingPreview() {
     console.log(i);
@@ -303,13 +284,93 @@ function loadBuildingPreview() {
         break;
       case 3:
         buildingPreview.loadTexture('tesla-house-1', 0);
-        buildingPreviewName.text = "TESLA FACORY";
+        buildingPreviewName.text = "TESLA FACTORY";
         buildingPreviewResource.loadTexture('gold',0);
         buildingPreviewPrice.text = "x " + factory1Price;
         break;
       default:
         i = 1;
         loadBuildingPreview();
+        break;
+    }
+}
+// ----------------------------------
+
+// -------- HELPER FUNCTIONS --------
+function reloadPage(){ window.open("/town","_self"); }
+function confirmAlterations(){}
+
+function removeResource(type,amount) {
+    console.log("will remove " + amount + type)
+    switch (type) {
+        case 'wood':
+            woodAmount -= amount;
+            $("#wood-amount").html(woodAmount);
+            break;
+        case 'stone':
+            stoneAmount -= amount;
+            $("#stone-amount").html(stoneAmount);
+            break;
+        case 'gold':
+            goldAmount -= amount;
+            $("#gold-amount").html(goldAmount);
+            break;
+    }
+}
+
+function addUpgradePopup(building){
+    selectedTile = isoGroup.children[building.baseTile];
+
+    upgradePopup.destroy();
+    upgradePopup = game.add.sprite( selectedTile.x -50, selectedTile.y -120, 'upgrade-button');
+    upgradePopup.building = building;
+    upgradePopup.scale.set(0.1);
+    game.add.tween(upgradePopup.scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true);
+    upgradePopup.inputEnabled = true;
+    upgradePopup.events.onInputDown.add(upgradeBuilding, {building: building});
+}
+
+function renderProperly (){
+    isoGroup.forEach(function (tile) {tile.tint = 0xffffff;})
+
+    // Removes all the sprites and things on the group
+    buildingGroup.forEach(function (building) {buildingGroup.remove(building);});
+    buildingGroup.forEach(function (building) {building.destroy();});
+
+    // Set the building added as false so the building are re-rendered in the right order
+    isoGroup.forEach(function (tile) {tile.buildingAdded = false});
+};
+
+// -------- ADD BUILDING FUNCTIONS --------
+function addBuilding(name,offsetX,offsetY){
+    selectedTile.buildingName = name;
+    selectedTile.buildingX = offsetX;
+    selectedTile.buildingY = offsetY;
+    selectedTile.busy = true;
+    renderProperly();
+};
+
+function createBuilding() {
+    // Remove previews
+    ghostBuilding.destroy();
+    confirmBuilding.destroy();
+
+    // Build based on the preview
+    switch (buildingPreview.key) {
+      case 'magic-house-1':
+        addBuilding('magic-house-1',-90,-10);
+        removeResource('wood',house1Price);
+        break;
+      case 'alchemy-lab-1':
+        addBuilding('alchemy-lab-1',-80,-10);
+        removeResource('stone',lab1Price);
+        break;
+      case 'tesla-house-1':
+        addBuilding('tesla-house-1',-90,0);
+        removeResource('gold',factory1Price);
+        break;
+      default:
+        console.log("Couldn't create building: " + buildingPreview.key);
         break;
     }
 }
@@ -321,24 +382,28 @@ function upgradeBuilding() {
 
     switch (building.key) {
       case 'magic-house-1':
-        addMagicHouse2();
-        removeWood(house2Price);
+        addBuilding('magic-house-2',-100,-20);
+        removeResource('wood',house2Price);
         break;
       case 'magic-house-2':
-        addMagicHouse3();
-        removeWood(house3Price);
+        addBuilding('magic-house-3',-105,-25);
+        removeResource('wood',house3Price);
         break;
       case 'tesla-house-1':
-        addTeslaHouse2();
+        addBuilding('tesla-house-2',-140,-60);
+        removeResource('gold',factory2Price);
         break;
       case 'tesla-house-2':
-        addTeslaHouse3();
+        addBuilding('tesla-house-3',-160,-70);
+        removeResource('gold',factory3Price);
         break;
       case 'alchemy-lab-1':
-        addAlchemyLab2();
+        addBuilding('alchemy-lab-2',-120,-30);
+        removeResource('stone',lab2Price);
         break;
       case 'alchemy-lab-2':
-        addAlchemyLab3();
+        addBuilding('alchemy-lab-3',-150,-60);
+        removeResource('stone',lab3Price);
         break;
 
       default:
@@ -347,101 +412,7 @@ function upgradeBuilding() {
     }
 }
 
-function createBuilding() {
-    // Remove previews
-    ghostBuilding.destroy();
-    confirmBuilding.destroy();
-
-    // Build based on the preview
-    switch (buildingPreview.key) {
-      case 'magic-house-1':
-        addBuilding('magic-house-1',-90,-10);
-        removeWood(house1Price);
-        break;
-      case 'alchemy-lab-1':
-        addAlchemyLab1();
-        break;
-      case 'tesla-house-1':
-        addTeslaHouse1();
-        break;
-      default:
-        console.log("Couldn't create building: " + buildingPreview.key);
-        break;
-    }
-}
-
-// -------- ADD BUILDING FUNCTIONS --------
-function addBuilding(name,offsetX,offsetY){
-    selectedTile.buildingName = name;
-    selectedTile.buildingX = offsetX;
-    selectedTile.buildingY = offsetY;
-    selectedTile.busy = true;
-    renderProperly();
-};
-
-function addMagicHouse1 () {
-    selectedTile.buildingName = 'magic-house-1'
-    selectedTile.buildingX = -90
-    selectedTile.buildingY = -10
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addMagicHouse2 () {
-    selectedTile.buildingName = 'magic-house-2'
-    selectedTile.buildingX = -90
-    selectedTile.buildingY = -20
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addMagicHouse3 () {
-    selectedTile.buildingName = 'magic-house-3'
-    selectedTile.buildingX = -90
-    selectedTile.buildingY = -20
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addTeslaHouse1 () {
-    selectedTile.buildingName = 'tesla-house-1'
-    selectedTile.buildingX = -90
-    selectedTile.buildingY = 0
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addTeslaHouse2 () {
-    selectedTile.buildingName = 'tesla-house-2'
-    selectedTile.buildingX = -140
-    selectedTile.buildingY = -60
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addTeslaHouse3 () {
-    selectedTile.buildingName = 'tesla-house-3'
-    selectedTile.buildingX = -160
-    selectedTile.buildingY = -70
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addAlchemyLab1 () {
-    selectedTile.buildingName = 'alchemy-lab-1';
-    selectedTile.buildingX = -80;
-    selectedTile.buildingY = -10;
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addAlchemyLab2 () {
-    selectedTile.buildingName = "alchemy-lab-2"
-    selectedTile.buildingX = -120
-    selectedTile.buildingY = -30
-    selectedTile.busy = true;
-    renderProperly();
-}
-function addAlchemyLab3 () {
-    selectedTile.buildingName = 'alchemy-lab-3';
-    selectedTile.buildingX = -150;
-    selectedTile.buildingY = -60;
-    selectedTile.busy = true;
-    renderProperly();
-}
+// Easy function to add the fountain in the middle
 function addCenterFountain () {
     selectedTile.buildingName = 'center-fountain'
     selectedTile.buildingX = -10
@@ -451,12 +422,11 @@ function addCenterFountain () {
     renderProperly();
 }
 // ---------------------------------------------------
-
-
-// ---------------------------------
 // START THE GAME
 game.state.add('Boot', BasicGame.Boot);
 game.state.start('Boot');
+
+
 
 // -------------- OLD CODE -----------------
 // cE.events.onInputOver.add(onDown, this);
@@ -562,3 +532,79 @@ game.state.start('Boot');
 // //  Stroke color and thickness
 // text.stroke = '#000000';
 // text.strokeThickness = 4;
+
+
+
+
+// function addMagicHouse1 () {
+//     selectedTile.buildingName = 'magic-house-1'
+//     selectedTile.buildingX = -90
+//     selectedTile.buildingY = -10
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addMagicHouse2 () {
+//     selectedTile.buildingName = 'magic-house-2'
+//     selectedTile.buildingX = -90
+//     selectedTile.buildingY = -20
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addMagicHouse3 () {
+//     selectedTile.buildingName = 'magic-house-3'
+//     selectedTile.buildingX = -90
+//     selectedTile.buildingY = -20
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addTeslaHouse1 () {
+//     selectedTile.buildingName = 'tesla-house-1'
+//     selectedTile.buildingX = -90
+//     selectedTile.buildingY = 0
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addTeslaHouse2 () {
+//     selectedTile.buildingName = 'tesla-house-2'
+//     selectedTile.buildingX = -140
+//     selectedTile.buildingY = -60
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addTeslaHouse3 () {
+//     selectedTile.buildingName = 'tesla-house-3'
+//     selectedTile.buildingX = -160
+//     selectedTile.buildingY = -70
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addAlchemyLab1 () {
+//     selectedTile.buildingName = 'alchemy-lab-1';
+//     selectedTile.buildingX = -80;
+//     selectedTile.buildingY = -10;
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addAlchemyLab2 () {
+//     selectedTile.buildingName = "alchemy-lab-2"
+//     selectedTile.buildingX = -120
+//     selectedTile.buildingY = -30
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+// function addAlchemyLab3 () {
+//     selectedTile.buildingName = 'alchemy-lab-3';
+//     selectedTile.buildingX = -150;
+//     selectedTile.buildingY = -60;
+//     selectedTile.busy = true;
+//     renderProperly();
+// }
+
+// INTERPOLATED RUBY FOR CREATE BUILDING
+// <% buildings.each do |building| %>
+//     addBuilding('<%= building.name %>',<%= building.offsetX %>,<%= building.offsetY %>);
+//     <% building.resources.each do |resource| %>
+//     removeResource('<%= resource.name %>', <%= resource.quantity %>);
+//     <% end %>
+//     break;
+// <% end %>
