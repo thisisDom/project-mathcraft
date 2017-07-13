@@ -2,7 +2,8 @@ var stumpy;
 var tree1;
 var timer, timerEvent, text;
 var background;
-var enemy_arr;
+gon.level_multiplier = 1;
+var enemy;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
@@ -22,6 +23,7 @@ function preload() {
     //Load Resource Sprite
     game.load.image('wood', 'images/resources/wood.png');
     game.load.image('popup', 'images/sprites/popup.png');
+    game.load.image('back', '../images/buttons/back_button.png');
 
     // Load Enemy Sprites
     game.load.spritesheet('stumpy', '../images/sprites/stumpy.png', 200, 220, 12);
@@ -31,10 +33,7 @@ function preload() {
     game.load.spritesheet('tree4', '../images/sprites/tree4.png', 72.25, 64, 4);
 
     game.load.audio('tetris', '../audio/background/tetris.mp3')
-
 }
-
-
 
 function create() {
     timer = game.time.create();
@@ -46,7 +45,7 @@ function create() {
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
 
-    timerEvent = timer.add(Phaser.Timer.SECOND * 20, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -55,31 +54,16 @@ function create() {
     background.height = game.world.height;
     background.width = game.world.width;
 
-    game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
-//    game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
-
-    //when the level loads, play the theme
     music = game.add.audio('tetris');
 
     music.play();
     music.volume = 3;
 
-    // game.time.events.add(Phaser.Timer.SECOND * 1, findStumpy, this);
-    // game.time.events.add(Phaser.Timer.SECOND * 1, findTree1, this);
     game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
 
 }
 
-// function findStumpy() {
-//     stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'stumpy');
-//     var walk = stumpy.animations.add('walk');
-//     stumpy.animations.play('walk', 8, true);
-//     stumpy.alpha = 0;
-//     stumpy.scale.set(0.9);
-//     game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
-//     stumpy.anchor.setTo(0.3, 0.4);
-// }
-function findEnemy (){
+function findEnemy() {
     randomEnemy = rndNum(5);
     switch(randomEnemy){
         case 1:
@@ -106,15 +90,6 @@ function findEnemy (){
     game.add.tween(enemy).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
     enemy.anchor.setTo(0.3, 0.4);
 }
-function findTree1() {
-    stumpy = game.add.sprite(game.world.centerX-20, game.world.centerY, 'tree1');
-    var walk = stumpy.animations.add('walk');
-    stumpy.animations.play('walk', 4, true);
-    stumpy.alpha = 0;
-    stumpy.scale.set(1);
-    game.add.tween(stumpy).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
-    stumpy.anchor.setTo(0.3, 0.4);
-}
 
 function update() {
     // MAKE THE IMAGE ZOOM IN
@@ -138,27 +113,21 @@ function update() {
 }
 
 function render() {
-    game.debug.soundInfo(music, 20, 32);
     // If our timer is running, show countdown
     if (timer.running) {
         game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), game.world.centerX-20, game.world.centerY-100, "#ff0");
     }
-
 }
 
 
 function endTimer() {
     // Stop the timer when the delayed event triggers
     timer.stop();
-    // var style = { font: "30px Arial", fill: "white", align: "center" };
-    // var text = game.add.text(game.world.centerX, game.world.centerY-80, "ROUND OVER!", style);
 
     $(".streak_counter").remove();
 
-    // text.anchor.set(0.5);
-
-    stumpy.animations.stop(null, true);
-    stumpy.alpha = 0;
+    enemy.animations.stop(null, true);
+    enemy.alpha = 0;
 
     gon.forest_round_over = true;
 
@@ -184,7 +153,6 @@ function formatTime(s) {
     var seconds = "0" + (s - minutes * 60);
     return minutes.substr(-2) + ":" + seconds.substr(-2);
 }
-
 
 function sproutResources() {
     var style = { font: "15px Arial", fill: "white", align: "center" };
@@ -212,21 +180,31 @@ function sproutResources() {
 }
 
 function popup() {
+    var res_gained;
+    var temp = (gon.right_answer_counter - gon.wrong_answer_counter) * gon.level_multiplier;
+
+    if (temp < 0) {
+        res_gained = 0;
+    }
+    else {
+        res_gained = temp;
+    }
+
     popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
     popup.inputEnabled = true;
 
     popup.scale.set(0.1);
-    game.add.tween(popup.scale).to( { x: 1, y: 1.5 }, 2000, Phaser.Easing.Elastic.Out, true);
+    popupDisplay = game.add.tween(popup.scale).to( { x: 1, y: 1.8 }, 2000, Phaser.Easing.Elastic.Out, true);
 
-    popup.alpha = 0.8
+    popup.alpha = 0.8;
 
     var result_text = "RESULTS";
     var newline1_text = "_______"
     var correct_text = "Correct Answers: " + gon.right_answer_counter;
     var wrong_text = "Wrong Answers: " + gon.wrong_answer_counter;
-    var levelmult_text = "Level Multiplier: x 1"
-    var newline2_text = "____________"
-    var resourcesgained_text = "= (" + gon.right_answer_counter + " - " + gon.wrong_answer_counter + ") x " + "1"
+    var levelmult_text = "Level Multiplier: x " + gon.level_multiplier;
+    var newline2_text = "____________";
+    var resourcesgained_text = "Gained = " + res_gained;
 
     var result_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var newline1_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
@@ -242,9 +220,16 @@ function popup() {
     var wrong = game.add.text(popup.x-38, popup.y+5, wrong_text, wrong_style);
     var levelmult = game.add.text(popup.x-38, popup.y+25, levelmult_text, levelmult_style);
     var newline2 = game.add.text(popup.x-50, popup.y+35, newline2_text, newline2_style);
-    var wood_summary = game.add.sprite(popup.x+20, popup.y+140, 'wood');
-    wood_summary.scale.set(0.5)
-    var resourcesgained = game.add.text(popup.x-38, popup.y+75, resourcesgained_text, resourcesgained_style);
+
+    var finalResourceIcon = game.add.sprite(120, 200, 'wood');
+    finalResourceIcon.scale.set(0.9);
+
+    var backButtonIcon = game.add.sprite(155, 250, 'back');
+    backButtonIcon.scale.set(0.6);
+    backButtonIcon.alpha = 0;
+    game.add.tween(backButtonIcon).to( { alpha: 1 }, 3000, 'Linear', true);
+
+    var finalResourceAmount = game.add.text(finalResourceIcon.x+50, finalResourceIcon.y+10, resourcesgained_text, {font: "15px Verdana", fill: "#ffffff"});
 
     result.setTextBounds(popup.x, popup.y);
     newline1.setTextBounds(popup.x, popup.y);
@@ -252,7 +237,6 @@ function popup() {
     wrong.setTextBounds(popup.x, popup.y);
     levelmult.setTextBounds(popup.x, popup.y);
     newline2.setTextBounds(popup.x, popup.y);
-    resourcesgained.setTextBounds(popup.x, popup.y);
 
     result.align = 'center';
     newline1.align = 'center';
@@ -260,7 +244,6 @@ function popup() {
     wrong.align = 'center';
     levelmult.align = 'center';
     newline2.align = 'center';
-    resourcesgained.align = 'center';
 
     result.stroke = '#000000';
     newline1.stroke = '#00000';
@@ -268,7 +251,7 @@ function popup() {
     wrong.stroke = '#000000';
     levelmult.stroke = '#000000';
     newline2.stroke = '#00000';
-    resourcesgained.stroke = '#000000';
+    finalResourceAmount.stroke = '#00000';
 
     result.strokeThickness = 4;
     newline1.strokeThickness = 4;
@@ -276,27 +259,13 @@ function popup() {
     wrong.strokeThickness = 4;
     levelmult.strokeThickness = 4;
     newline2.strokeThickness = 4;
-    resourcesgained.strokeThickness = 4;
+    finalResourceAmount.strokeThickness = 4;
 
     popup.events.onInputDown.add(redirect_to_town, this)
 }
 
-// function update_data() {
-//   $.ajax({
-//     url: "/town",
-//     method: 'POST',
-//     data: 1
-//   })
-//   .done(function(response) {
-//     console.log("success");
-//   })
-//   .fail(function(response) {
-//     console.log("something went wrong!", response);
-//   });
-// }
-
 function redirect_to_town() {
-    window.open("/town","_self");
+    window.open("/town", "_self");
 }
 
 function rndNum(num) {
