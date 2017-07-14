@@ -28,9 +28,9 @@ class GamesController < ApplicationController
 
     case name
     when "forest"
-      @questions = get_questions('addition', 'medium')
+      @questions = get_questions('addition', 'easy')
     when "cave"
-      @questions = get_questions('multiplication', 'medium')
+      @questions = get_questions('multiplication', 'easy')
     when "temple"
       @questions = get_questions('addition', 'hard')
     end

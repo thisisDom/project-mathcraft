@@ -277,10 +277,10 @@ function wrong_sfx() {
 
 function question_sfx(streak_counter) {
   var sfx;
-  if (streak_counter < 4 ) {
+  if (streak_counter < 3 ) {
     sfx = coin
   }
-  else if (streak_counter == 4) {
+  else if (streak_counter < 5) {
     sfx = toasty
   }
   else {
