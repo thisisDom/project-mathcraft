@@ -1,55 +1,12 @@
-<%= javascript_include_tag 'input_handler' %>
-
-<div class="container">
-  <div class="status_bar">
-    <div class="hearts">
-      <% if @scene == 'temple' %>
-        <img id="heart1" alt="heart" src="/images/heart.gif">
-        <img id="heart2" alt="heart" src="/images/heart.gif">
-        <img id="heart3" alt="heart" src="/images/heart.gif">
-      <% end %>
-    </div>
-    <div class="counter_btn">
-      <button id="correct_counter" class="correct_counter">0</button>
-    </div>
-  </div>
-
-<!-- <button id="resource_btn" class="icons">LIVES</button> -->
-<!-- <button id="menu_btn" class="icons"></button>
-    <button id="pause_btn" class="icons"></button>
-    <button id="settings_btn" class="icons"></button> -->
-
-  <div class="game_wrapper">
-    <div id="gameArea" class="phaser_area">
-      <%= javascript_include_tag 'battle' %>
-    </div>
-
-    <div class="user_interface">
-      <div class="question_area">
-        <%= @question %>
-      </div>
-      <div class="answer_area">
-      </div>
-    </div>
-  </div>
-
-  <div class="calculator_wrapper">
-    <div class="calculator_area">
-      <button class="calculator">1</button>
-      <button class="calculator">2</button>
-      <button class="calculator">3</button>
-
-      <button class="calculator">4</button>
-      <button class="calculator">5</button>
-      <button class="calculator">6</button>
-
-      <button class="calculator">7</button>
-      <button class="calculator">8</button>
-      <button class="calculator">9</button>
-
-      <button class="calculator-cancel"></button>
-      <button class="calculator">0</button>
-      <button class="calculator-submit"></button>
-    </div>
-  </div>
+<div id="home-background">
+</div>
+<div id="home-logo">
+  <img id="imagetest" height="250" width="250" src="/images/buttons/home-logo.png">
+</div>
+<div id="home-buttons">
+  <a href="/town">
+  <button>
+    <img id="imagetest" height="250" width="250" src="/images/buttons/home-buttons.png">
+  </button>
+  </a>
 </div>

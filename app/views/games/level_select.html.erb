@@ -1,0 +1,15 @@
+<%= render "navbar" %>
+
+<div class="level-select">
+  <div id="level-select-header">LEVEL SELECT</div>
+  <div class="level-container">
+    <% @levels.each do |level| %>
+    <div id="<%=level['title']%>-level" class="level-wrapper">
+      <a class="level-button" href="/levels/<%=level['title']%>">
+        <div class="level-text"> <%= level['title'].capitalize %> </div>
+        <div class="level-text"> Required Level: <%=level['level_requirement'] %> </div>
+      </a>
+    </div>
+    <% end %>
+  </div>
+</div>
