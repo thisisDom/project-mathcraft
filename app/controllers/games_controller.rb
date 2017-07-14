@@ -29,10 +29,16 @@ class GamesController < ApplicationController
     case name
     when "forest"
       @questions = get_questions('addition', 'easy')
+      other_questions = get_questions('subtraction','easy')
+      @questions = @questions + other_questions
+      @questions.shuffle!
     when "cave"
       @questions = get_questions('multiplication', 'easy')
     when "temple"
       @questions = get_questions('addition', 'hard')
+      other_questions = get_questions('multiplication','easy')
+      @questions = @questions + other_questions
+      @questions.shuffle!
     end
 
     current_question = @questions.pop
