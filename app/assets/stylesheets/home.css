@@ -22,7 +22,7 @@
 #home-buttons {
   margin-top: 80%;
   background-repeat: no-repeat;
-  background-color: none;
+  background-color: transparent;
   height: 200px;
   width: 100%;
   position: absolute;
@@ -30,7 +30,11 @@
   z-index: 2;
   text-align: center;
 }
-
+#home-buttons button{
+  border:none;
+  outline:none;
+  background-color: transparent;
+}
 #imagetext {
   width: 100%;
   position: absolute;
