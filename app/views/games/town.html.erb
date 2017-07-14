@@ -11,6 +11,7 @@
   <%= javascript_include_tag 'town.js' %>
 </div>
 
+<div class="back-button-wrapper"><div id="back-button">BACK</div></div>
 <div id="stageMenu" class="show-menu hide-menu">
   <div class="menu-button" id="build">
    <div class="menu-text">BUILD</div>
@@ -29,9 +30,14 @@
 <script type="text/javascript">
   var menu = document.getElementById("stageMenu");
   var builtButton = document.getElementById("build");
+  var backButton = document.getElementById("back-button");
   builtButton.addEventListener("click", function() {
     menu.classList.toggle("show-menu");
     gon.buildMode = true;
+  });
+  backButton.addEventListener("click", function() {
+    menu.classList.toggle("show-menu");
+    gon.buildMode = false;
   });
 
    // AUDIO BUTTON
