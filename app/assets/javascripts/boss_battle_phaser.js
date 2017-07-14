@@ -2,6 +2,7 @@ var boss;
 var explode;
 var deadboss;
 var background;
+var explode_audio;
 gon.level_multiplier = 2;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
@@ -27,7 +28,9 @@ function preload() {
     game.load.spritesheet('explosion', 'images/sprites/explosion.png', 100, 100, 37);
 
     // Load audio
-    game.load.audio('zelda','../audio/background/zelda.mp3')
+    game.load.audio('zelda','../audio/background/zelda.mp3');
+    game.load.audio('explode_audio', '../audio/sfx/explosion.mp3');
+    game.load.audio('lose_heart', '../audio/sfx/lose_heart.mp3');
 }
 
 function create() {
@@ -39,6 +42,8 @@ function create() {
     game.time.events.add(Phaser.Timer.SECOND * 2, findBoss, this);
 
     music = game.add.audio('zelda');
+    explode_audio = game.add.audio('explode_audio');
+    lose_heart_audio = game.add.audio('lose_heart');
 
     music.play();
     music.volume = 3;
@@ -64,10 +69,12 @@ function update() {
 
     if (gon.bb_user_wrong_answer == true) {
         game.camera.shake(0.05, 500);
+        play_lose_heart_sound();
         gon.bb_user_wrong_answer = false;
     }
     else if (gon.bb_user_right_answer == true) {
         createExplosion();
+        play_explosion_sound();
         gon.bb_user_right_answer = false;
     }
 
@@ -133,7 +140,7 @@ function bossDeath() {
 }
 
 function popup_win() {
-    var res_gained = (gon.right_answer_counter) * gon.level_multiplier;
+    var res_gained = 5 * gon.level_multiplier;
 
     popup = game.add.sprite(game.world.centerX-125, game.world.centerY-100, 'popup');
     popup.inputEnabled = true;
@@ -145,21 +152,18 @@ function popup_win() {
 
     var result_text = "RESULTS";
     var newline1_text = "_______"
-    var correct_text = "Correct Answers: " + gon.right_answer_counter;
     var levelmult_text = "Level Multiplier: x " + gon.level_multiplier;
     var newline2_text = "____________";
     var resourcesgained_text = "Gained = " + res_gained;
 
     var result_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var newline1_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
-    var correct_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var levelmult_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var newline2_style = { font: "22px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
     var resourcesgained_style = { font: "15px Verdana", fill: "#fff", wordWrap: true, wordWrapWidth: 650 };
 
     var result = game.add.text(popup.x-20, popup.y-55, result_text, result_style);
     var newline1 = game.add.text(popup.x-20, popup.y-50, newline1_text, newline1_style);
-    var correct = game.add.text(popup.x-38, popup.y-15, correct_text, correct_style);
     var levelmult = game.add.text(popup.x-38, popup.y+25, levelmult_text, levelmult_style);
     var newline2 = game.add.text(popup.x-50, popup.y+35, newline2_text, newline2_style);
 
@@ -174,26 +178,22 @@ function popup_win() {
 
     result.setTextBounds(popup.x, popup.y);
     newline1.setTextBounds(popup.x, popup.y);
-    correct.setTextBounds(popup.x, popup.y);
     levelmult.setTextBounds(popup.x, popup.y);
     newline2.setTextBounds(popup.x, popup.y);
 
     result.align = 'center';
     newline1.align = 'center';
-    correct.align = 'center';
     levelmult.align = 'center';
     newline2.align = 'center';
 
     result.stroke = '#000000';
     newline1.stroke = '#00000';
-    correct.stroke = '#000000';
     levelmult.stroke = '#000000';
     newline2.stroke = '#00000';
     finalResourceAmount.stroke = '#00000';
 
     result.strokeThickness = 4;
     newline1.strokeThickness = 4;
-    correct.strokeThickness = 4;
     levelmult.strokeThickness = 4;
     newline2.strokeThickness = 4;
     finalResourceAmount.strokeThickness = 4;
@@ -252,4 +252,14 @@ function popup_loss() {
 
 function redirect_to_town() {
     window.open("/town", "_self");
+}
+
+function play_explosion_sound() {
+    explode_audio.play();
+    explode_audio.volume = 1;
+}
+
+function play_lose_heart_sound() {
+    lose_heart_audio.play();
+    lose_heart_audio.volume = 1;
 }
