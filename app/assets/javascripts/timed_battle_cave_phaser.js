@@ -3,7 +3,7 @@ var timer, timerEvent, text;
 var background;
 gon.level_multiplier = 1;
 var enemy;
-var time_limit = 20;
+var time_limit = 45;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
