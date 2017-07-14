@@ -1,9 +1,34 @@
+#back-button {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  border-width:4px;
+  border-color: white;
+  border-style: outset;
+  cursor: pointer;
+  background: #98DDFE;
+  width: 200px;
+  height: 30px;
+  bottom: 20px;
+  color: darkslategray;
+  font-size: 23px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.back-button-wrapper{
+  display:flex;
+  justify-content: center;
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  width:100%;
+}
 #navbar, #stageMenu{
   background: darkslategray;
-  background: -webkit-linear-gradient(left top, lightslategray , darkslategray);
-  background: -o-linear-gradient(top right, lightslategray, darkslategray);
-  background: -moz-linear-gradient(top right, lightslategray, darkslategray);
-  background: linear-gradient(to top right, lightslategray , darkslategray);
+  background: -webkit-linear-gradient(right top, darkslategray , lightslategray);
+  background: -o-linear-gradient(bottom top, darkslategray, lightslategray);
+  background: -moz-linear-gradient(bottom top, darkslategray, lightslategray);
+  background: linear-gradient(to bottom top, darkslategray , lightslategray);
   border-color:white;
 }
 
@@ -35,10 +60,10 @@
   display:flex;
   flex-direction: column;
   align-items: center;
-  color: white;
+  color: darkslategray;
   font-size: 23px;
   font-weight: 600;
-  border-radius: 25px;
+  border-radius: 10px;
   padding-top: 2%;
   height: 70%;
   margin: 7%;
