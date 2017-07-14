@@ -1,9 +1,9 @@
 #navbar, #stageMenu{
   background: darkslategray;
   background: -webkit-linear-gradient(left top, lightslategray , darkslategray);
-  background: -o-linear-gradient(bottom right, lightslategray, darkslategray);
-  background: -moz-linear-gradient(bottom right, lightslategray, darkslategray);
-  background: linear-gradient(to bottom right, lightslategray , darkslategray);
+  background: -o-linear-gradient(top right, lightslategray, darkslategray);
+  background: -moz-linear-gradient(top right, lightslategray, darkslategray);
+  background: linear-gradient(to top right, lightslategray , darkslategray);
   border-color:white;
 }
 
@@ -47,6 +47,7 @@
   border-width:4px;
   border-color: white;
   border-style: outset;
+  cursor: pointer;
 }
 
 

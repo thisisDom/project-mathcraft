@@ -2,11 +2,11 @@
   padding-top:85px;
   height: 100%;
   width: auto;
-  background: #45BBF4;
-  background: -webkit-linear-gradient(left top, #98DDFE , #45BBF4);
-  background: -o-linear-gradient(bottom right, #98DDFE, #45BBF4);
-  background: -moz-linear-gradient(bottom right, #98DDFE, #45BBF4);
-  background: linear-gradient(to bottom right, #98DDFE , #45BBF4);
+  background: darkslategray;
+  background: -webkit-linear-gradient(right top, darkslategray , lightslategray);
+  background: -o-linear-gradient(bottom top, darkslategray, lightslategray);
+  background: -moz-linear-gradient(bottom top, darkslategray, lightslategray);
+  background: linear-gradient(to bottom top, darkslategray , lightslategray);
 }
 
 .level-button {

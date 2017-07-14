@@ -19,7 +19,7 @@
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  font-family: "Franklin Gothic Medium", "Helvetica", sans-serif;
  }
 
 html, body {margin: 0; height: 100%; overflow: hidden}
