@@ -4,8 +4,6 @@ var background;
 gon.level_multiplier = 1;
 var enemy;
 var time_limit = 20;
-var coin;
-var music;
 
 game = new Phaser.Game($("#gameArea").width(), $("#gameArea").height(), Phaser.CANVAS, 'gameArea', {
     preload: preload,
@@ -30,13 +28,14 @@ function preload() {
     game.load.spritesheet('golem', '../images/sprites/golem.png', 142.3, 140, 11);
     game.load.spritesheet('golem2', '../images/sprites/golem2.png', 87, 94, 6);
 
-
     // Load Rock Resource
     game.load.image('cave-background', 'images/backgrounds/cave.png');
 
-    game.load.audio('super-mario', '../audio/background/super-mario.mp3')
+    // Load SFX
     game.load.audio('coin', '../audio/sfx/coin.mp3')
-
+    game.load.audio('toasty', '../audio/sfx/toasty.mp3')
+    game.load.audio('boomshakalaka', '../audio/sfx/boomshakalaka.mp3')
+    game.load.audio('nope', '../audio/sfx/nope.mp3')
 }
 
 function create() {
@@ -48,7 +47,7 @@ function create() {
 
     // Create a delayed event 1m and 30s from now
     // timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timerEvent = timer.add(Phaser.Timer.SECOND * time_limit, this.endTimer, this);
+  timerEvent = timer.add(Phaser.Timer.SECOND * time_limit, this.endTimer, this);
 
     // Start the timer if not boss level
     timer.start();
@@ -59,13 +58,10 @@ function create() {
 
     game.time.events.add(Phaser.Timer.SECOND * 1, findEnemy, this);
 
-    //when the level loads, play the theme
-
-    music = game.add.audio('super-mario');
-    music.play();
-    music.volume = 1;
-
     coin = game.add.audio('coin');
+    toasty = game.add.audio('toasty');
+    boomshakalaka = game.add.audio('boomshakalaka');
+    nope = game.add.audio('nope');
 }
 
 function findEnemy() {
@@ -103,12 +99,13 @@ function update() {
     if (gon.cave_user_wrong_answer == true) {
         game.camera.shake(0.05, 500);
         gon.cave_user_wrong_answer = false;
+        wrong_sfx();
     }
     else if (gon.cave_user_right_answer == true) {
         sproutResources();
         enemy.destroy();
         findEnemy();
-        coin_noise();
+        question_sfx(gon.streak_counter);
         gon.cave_user_right_answer = false;
     }
 }
@@ -264,9 +261,24 @@ function popup() {
     popup.events.onInputDown.add(redirect_to_town, this)
 }
 
-function coin_noise() {
-  coin.play();
-  coin.volume = 1;
+function wrong_sfx() {
+  nope.play();
+  nope.volume = 2;
+}
+
+function question_sfx(streak_counter) {
+  var sfx;
+  if (streak_counter < 4 ) {
+    sfx = coin
+  }
+  else if (streak_counter == 4) {
+    sfx = toasty
+  }
+  else {
+    sfx = boomshakalaka
+  }
+  sfx.play();
+  sfx.volume = 2;
 }
 
 function redirect_to_town() {
