@@ -1,0 +1,16 @@
+<div id="navbar">
+  <div id="home">
+   <a href="/town">
+     <img id="back" src="/images/buttons/home.png">
+   </a>
+  </div>
+
+  <div class="resource-container">
+  <% session['resources'].each do |resource| %>
+    <div class="resource">
+      <img id= "<%=resource['name'] %>" src="/images/resources/<%= resource['asset_link'] %>">
+      <div class="resource-amount" id="<%=resource['name']%>-amount"> <%= resource['quantity'] %></div>
+    </div>
+  <% end %>
+  </div>
+</div>

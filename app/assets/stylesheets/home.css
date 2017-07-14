@@ -1,0 +1,41 @@
+#home-background {
+  background-image: url(home-page.gif);
+  width: 414px;
+  height: 736px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: -380px 0px;
+}
+
+#home-logo {
+  margin-top: 20%;
+  background-repeat: no-repeat;
+  background-color: none;
+  height: 200px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+  text-align: center;
+}
+
+#home-buttons {
+  margin-top: 80%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  height: 200px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+  text-align: center;
+}
+#home-buttons button{
+  border:none;
+  outline:none;
+  background-color: transparent;
+}
+#imagetext {
+  width: 100%;
+  position: absolute;
+}
