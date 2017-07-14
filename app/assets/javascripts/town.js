@@ -1,3 +1,5 @@
+gon.buildMode = false;
+var buildMode = false;
 var appeared = false;
 var apt, sprite;
 var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
@@ -213,6 +215,8 @@ BasicGame.Boot.prototype =
             isoGroup.children[buildings[i].location].busy = true;
             isoGroup.children[buildings[i].location].alpha = 0;
         }
+        // UN-PAUSE
+        game.input.onDown.add(unpause, self);
     },
     update: function () {
         // Create a cursor
@@ -278,6 +282,10 @@ BasicGame.Boot.prototype =
             }
         });
         game.add.isoSprite(60,450,-20,'wall-tower');
+        if (buildMode == false){
+            console.log("WOW");
+            game.paused = true;
+        }
     },
 
     // ADD THE MAP TILES
@@ -463,7 +471,12 @@ function updateBuilding(name,offsetX,offsetY) {
     console.log(xhr)
 };
 
-
+function unpause(){
+    if (gon.buildMode == true && !buildMode) {
+    buildMode = true;
+    game.paused=false;
+    }
+}
 
 function upgradeBuilding() {
     upgradePopup.destroy();
