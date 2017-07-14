@@ -64,10 +64,10 @@ div.phaser_area {
 
 div.user_interface {
   background: #CCEEFF;
-  background: -webkit-linear-gradient(-90deg, #45BBF4 , #CCEEFF);
-  background: -o-linear-gradient(-90deg, #45BBF4, #CCEEFF);
-  background: -moz-linear-gradient(-90deg, #45BBF4, #CCEEFF);
-  background: linear-gradient(-90deg, #45BBF4 , #CCEEFF);
+  background: -webkit-linear-gradient(-90deg, #45BBF4 , #004a80);
+  background: -o-linear-gradient(-90deg, #45BBF4, #004a80);
+  background: -moz-linear-gradient(-90deg, #45BBF4, #004a80);
+  background: linear-gradient(-90deg, #45BBF4 , #004a80);
   border-color:white;
   border-width:2px 0px;
   border-style:solid;

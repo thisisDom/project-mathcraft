@@ -1,3 +1,7 @@
+<audio id="player">
+    <source src="../audio/background/super-mario.mp3" type="audio/mp3" />
+</audio>
+
 <%= javascript_include_tag 'timed_battle_cave_ajax' %>
 
 <div class="container">
@@ -48,3 +52,9 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+   // AUDIO AUTO PLAY
+   var getaudio = $('#player')[0];
+   getaudio.load();
+   getaudio.play();
+</script>
