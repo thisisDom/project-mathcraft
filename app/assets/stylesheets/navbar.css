@@ -1,25 +1,36 @@
 #navbar {
+  display: flex;
+  justify-content: space-between;
   position: absolute;
-  background: grey;
   top: 0px;
   width: 100%;
   height: 80px;
   z-index: 2;
+  border-width:0px 0px 3px;
+  border-style: inset;
 }
-
+.resource-container{
+  display: flex;
+  justify-content: space-between;
+  margin-right:5px;
+  padding:10px 0px;
+  width:250px;
+}
 .resource {
+  border-radius: 5px;
   margin: 1px;
-  margin-top: 10px;
-  margin-left: 10px;
   padding-right: 5px;
   background: #98DDFE;
   float: right;
+  border-width: 2px;
+  border-color: white;
+  border-style: solid;
 }
 
 .resource-amount {
   margin-top: 20px;
   margin-right: 1px;
-  color: black;
+  color:white;
   font-size: 1em;
   float: right;
 }

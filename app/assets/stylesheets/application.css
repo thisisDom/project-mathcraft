@@ -19,6 +19,7 @@
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
  }
 
 html, body {margin: 0; height: 100%; overflow: hidden}
