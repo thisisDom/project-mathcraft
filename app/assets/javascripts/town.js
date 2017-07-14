@@ -283,7 +283,6 @@ BasicGame.Boot.prototype =
         });
         game.add.isoSprite(60,450,-20,'wall-tower');
         if (buildMode == false){
-            console.log("WOW");
             game.paused = true;
         }
     },
@@ -473,6 +472,9 @@ function updateBuilding(name,offsetX,offsetY) {
 
 function unpause(){
     if (gon.buildMode == true && !buildMode) {
+    buildingPreviewResource.alpha = 1;
+    buildingPreviewPrice.alpha = 1;
+    appeared = true;
     buildMode = true;
     game.paused=false;
     }
