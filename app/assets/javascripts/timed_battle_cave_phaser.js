@@ -181,6 +181,7 @@ function sproutResources() {
 
 function popup() {
     var res_gained;
+
     var temp = (gon.right_answer_counter - gon.wrong_answer_counter) * gon.level_multiplier;
 
     if (temp < 0) {

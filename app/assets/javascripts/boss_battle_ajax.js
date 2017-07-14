@@ -1,5 +1,6 @@
 var wrong_answer_counter = 0;
 var right_answer_counter = 0;
+gon.right_answer_counter = 0;
 
 $(document).ready(function() {
     gon.disable_input = false;
@@ -43,6 +44,7 @@ var captureUserData_and_manipulateAnimation = function() {
       var $user_input = $(".answer_area")[0].innerText;
 
       if ($user_input == gon.answer) {
+        gon.right_answer_counter += 1;
         right_answer_counter += 1;
 
         if (right_answer_counter == 5) {
@@ -54,6 +56,7 @@ var captureUserData_and_manipulateAnimation = function() {
         }
       }
       else {
+        $(".answer_area")[0].innerText = "";
         wrong_answer_counter += 1;
 
         $find_hearts[$find_hearts.length-1].remove();
