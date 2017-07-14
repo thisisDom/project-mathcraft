@@ -1,7 +1,8 @@
 gon.wrong_answer_counter = 0;
 gon.right_answer_counter = 0;
-var streak_counter = 0;
+gon.streak_counter = 0;
 gon.correct_answers = 0
+
 $(document).ready(function() {
     gon.forest_round_over = false;
     gon.forest_user_wrong_answer = false;
@@ -46,17 +47,17 @@ var captureUserData_and_manipulateAnimation = function() {
         gon.correct_answers += 1
 
         updateQuestionsviaAJAX();
-        streak_counter += 1;
+        gon.streak_counter += 1;
 
-        if (streak_counter >= 2) {
-          $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + streak_counter + "</div><span>combo</span></div>");
+        if (gon.streak_counter >= 2) {
+          $(".streak_btn").html("<div id=\"streak_counter\" class=\"streak_counter\"><div>" + gon.streak_counter + "</div><span>combo</span></div>");
         }
       }
       else {
         gon.wrong_answer_counter += 1;
         updateQuestionsviaAJAX();
         $(".streak_counter").remove();
-        streak_counter = 0;
+        gon.streak_counter = 0;
 
         gon.forest_user_wrong_answer = true;
       }

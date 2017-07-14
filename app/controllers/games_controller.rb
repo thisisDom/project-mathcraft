@@ -5,11 +5,8 @@ class GamesController < ApplicationController
     session[:player] = nil
     session[:id] = 2
     @player_info = get_player(session[:id])
-
-    p "* #{@player_info}"
     session[:resources] = @player_info['resources']
     gon.data = @player_info
-
   end
 
   def level_select
@@ -17,24 +14,6 @@ class GamesController < ApplicationController
     session[:levels] = @levels
   end
 
-  def accept_town_buildings
-
-
-  end
-
-  def start
-    request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/start", query: { data: { level_id: 1, player_id: 1 } } )
-    p "^" * 100
-    body = JSON.parse(request.body)
-    p body
-    p "*" * 100
-    number = body['player_level']['id'].to_i
-    p number
-
-    other_request = HTTParty.post("http://mathcraft-api.herokuapp.com/playerslevels/complete", query: { data: { players_id: 1, players_level_id: number, correct_answers: 5 } } )
-    p other_request.body
-    p ":)" * 100
-  end
 
   def show
     name = params[:name]
