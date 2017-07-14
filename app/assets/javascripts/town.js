@@ -1,5 +1,6 @@
 gon.buildMode = false;
 var buildMode = false;
+var musicAdded = false;
 var appeared = false;
 var apt, sprite;
 var isoGroup, cursorPos, cursor, selectedTile, changedGroup, ghostGroup;
@@ -55,6 +56,16 @@ BasicGame.Boot.prototype =
         game.load.image('wall-tower', "images/buildings/wall-tower.png")
         game.load.image('wall-corner', "images/buildings/wall-corner.png")
 
+        game.load.image('tree-1', "images/buildings/tree-1.png")
+        game.load.image('tree-2', "images/buildings/tree-2.png")
+        game.load.image('tree-3', "images/buildings/tree-3.png")
+        game.load.image('tree-4', "images/buildings/tree-4.png")
+        game.load.image('rock-1', "images/buildings/rock-1.png")
+        game.load.image('log-1', "images/buildings/log-1.png")
+        game.load.image('log-2', "images/buildings/log-2.png")
+
+
+
 
         game.load.image('wood', "images/resources/wood.png")
         game.load.image('stone', "images/resources/stone.png")
@@ -98,6 +109,11 @@ BasicGame.Boot.prototype =
         game.iso.anchor.setTo(0.5, 0.2);
     },
     create: function () {
+        music = game.add.audio('pokemon');
+        music.play();
+        music.volume = 3;
+        // musicAdded = true;
+
         // Green Background
         game.add.tileSprite(-500, -500, 2000,2000, 'background-image');
 
@@ -132,7 +148,28 @@ BasicGame.Boot.prototype =
         game.add.isoSprite(450,450,0,'outside-wall-flip');
 
         game.add.isoSprite(450,495,-12,'wall-corner');
-        // game.add.isoSprite(60,450,0,'wall-tower');
+
+        // for (var xx = -601; xx < -300; xx += 60) {
+        //     for (var yy = -450; yy < 300; yy += 60) {
+        //         game.add.isoSprite(xx,yy,0,'tree-1');
+        //         console.log("again?")
+        //     }
+        // }
+        // game.add.isoSprite(-200,-360,0,'tree-4');
+        game.add.isoSprite(-320,-80,0,'tree-2');
+        game.add.isoSprite(-400,0,0,'tree-3');
+        game.add.isoSprite(-300,150,0,'tree-1');
+        game.add.isoSprite(-220,80,0,'log-2').scale.set(0.8);
+        game.add.isoSprite(400,700,0,'log-1').scale.set(0.8);
+
+        game.add.isoSprite(-200,-270,0,'tree-1');
+        game.add.isoSprite(520,200,0,'tree-3');
+        game.add.isoSprite(520,400,0,'tree-2');
+
+
+
+
+
 
         // LEFT BUTTON
         lButton = game.add.sprite(game.world.width/2 -290, game.world.height/2 + 300, 'left-button');
@@ -198,13 +235,6 @@ BasicGame.Boot.prototype =
 
         // Provide a 3D position for the cursor
         cursorPos = new Phaser.Plugin.Isometric.Point3();
-
-
-        //when the level loads, play the theme
-        music = game.add.audio('pokemon');
-
-        music.play();
-        music.volume = 3;
 
         // PLACE USER-OWN BUILDING FROM SERVER
         console.log(buildings);
@@ -281,10 +311,15 @@ BasicGame.Boot.prototype =
                 game.add.tween(tile).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
             }
         });
+
+        // Adds the tower as a spite on top of the wall
         game.add.isoSprite(60,450,-20,'wall-tower');
+
+        // pause the game so it is unavailable from menu
         if (buildMode == false){
             game.paused = true;
         }
+
     },
 
     // ADD THE MAP TILES
@@ -470,6 +505,10 @@ function updateBuilding(name,offsetX,offsetY) {
     console.log(xhr)
 };
 
+function rndNum(num) {
+    return Math.round(Math.random() * num);
+}
+
 function unpause(){
     if (gon.buildMode == true && !buildMode) {
     buildingPreviewResource.alpha = 1;
@@ -550,9 +589,7 @@ game.state.start('Boot');
 //   });
 
 
-// function rndNum(num) {
-//     return Math.round(Math.random() * num);
-// }
+
 
 // text = game.add.text(selectedTile.x, selectedTile.y, "10");
 // text.anchor.setTo(0.5, 0.5);
