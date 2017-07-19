@@ -14,8 +14,8 @@ An app that combines fundamental math concepts with the engaging elements of mob
 ## MVP functionalities
 
 * Decoupled architecture consisting of:
-  * [Rails back-end API](http://github.com/chinmaybanker/project-mathcraft-api)
-  * [Rails and JS front-end web application](http://github.com/chinmaybanker/project-mathcraft)
+  * [Rails back-end API](http://github.com/thisisdom/project-mathcraft-api)
+  * [Rails and JS front-end web application](http://github.com/thisisdom/project-mathcraft)
 
 * Rails back-end API features:
   * Persistent storage of players' resources, buildings, and levels across multiple play sessions
