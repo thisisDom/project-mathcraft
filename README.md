@@ -2,7 +2,7 @@
 
 An app that combines fundamental math concepts with the engaging elements of mobile gaming.
 
-![Project MathCraft Logo](/public/humanizess.png)
+![Project MathCraft Logo](/public/images/logo.png)
 
 ## Authored by
 
@@ -46,9 +46,8 @@ An app that combines fundamental math concepts with the engaging elements of mob
 ### Level Select
   * After they select a level, players are taken to the harvesting minigame. Currently, there are two supported game modes:
     * Time Attack: Players are given 45 seconds to answer as many questions correctly as possible. Players are incentivized to not only be quick, but accurate. Besides being penalized for wrong answers, players are offered the chance to encounter rare enemies by building their combo multiplier; defeating these rare monsters will increase their total resource gain at the end of the level.
-      * (GIF of time attack here)
-      * (GIF of rare monster being defeated, spewing resources)
-      * (Scrnshot of results screen)
+    ![Project MathCraft Logo](/public/readme_images/forest_play.gif)
+
     * Boss Battle: Players must answer 10 questions of increased difficulty within 30 seconds. They are given 3 lives, which deplete with each wrong answer. They must answer each question correctly before the timer expires. These levels serve as a checkpoint to ensure that players have sufficiently mastered the concepts presented in earlier levels- in order to unlock the next set of levels, players must beat the corresponding boss.
     *   (GIF of boss battle here)
     *   (Scrnshot of results screen)
