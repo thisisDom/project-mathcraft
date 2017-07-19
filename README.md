@@ -41,7 +41,8 @@ An app that combines fundamental math concepts with the engaging elements of mob
 ##Harvesting
   * In order to generate resources to build their town, players must play various levels- each level asks different types of math questions designed to hone the repititions needed to reinforce a strong math foundation.
   * As they level up, players gain access to levels with more difficult questions and more advanced mathematical and logical concepts.
-    * (Scrnshot of Level Select here)
+
+    ![Level Select](/public/readme_images/level_select.png)  
 
 ### Level Select
   * After they select a level, players are taken to the harvesting minigame. Currently, there are two supported game modes:
@@ -64,7 +65,8 @@ An app that combines fundamental math concepts with the engaging elements of mob
     ![Town Build](/public/readme_images/build_house.gif)
 
     * Upgrading: After placing a building, players are also given the option to upgrade their buildings. Clicking on a pre-existing building brings up the upgrade button. Besides the visual upgrade, higher-level buildings offer players more bonuses and privileges, such as increased resource gain or unlocking new structures.
-      (GIF of building being upgraded)
+
+    ![Building Upgrade](/public/readme_images/upgrade_building.gif)
 
   * TODO: Create a player profile screen, where they can see their results and progress. Ideally, players can see which categories they've excelled at and which they need to improve on. Feedback screen is VERY important.
 
@@ -82,8 +84,6 @@ An app that combines fundamental math concepts with the engaging elements of mob
   * Victories
   * Blockers & resolutions
   * Goals
-  * Gratitude
-  * Group hug 💕
 
 * Slicing
   * Horizontal slice
@@ -94,4 +94,5 @@ An app that combines fundamental math concepts with the engaging elements of mob
 
 ## Special Thanks
 
-We would also like to thank all of the DBC teachers, mentors, Alumni and Sea Lions of SF 2017 for their endless support and encouragement!
+We would like to thank all of the DBC teachers, mentors, Sea Lions, Rock Doves, Fiery Skippers of SF 2017 for their endless support and encouragement!
+
