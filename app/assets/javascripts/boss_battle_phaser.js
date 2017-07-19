@@ -92,6 +92,8 @@ function update() {
         boss.animations.stop(null, true);
         boss.alpha = 0;
         bossDeath();
+        createExplosion();
+        play_explosion_sound();
         gon.boss_game_over = false;
         gon.disable_input = true;
 
@@ -256,10 +258,10 @@ function redirect_to_town() {
 
 function play_explosion_sound() {
     explode_audio.play();
-    explode_audio.volume = 1;
+    explode_audio.volume = 2;
 }
 
 function play_lose_heart_sound() {
     lose_heart_audio.play();
-    lose_heart_audio.volume = 1;
+    lose_heart_audio.volume = 3;
 }
