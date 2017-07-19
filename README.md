@@ -1,4 +1,4 @@
-# [Project: MathCraft](http://project-mathcraft.herokuapp.com)
+# Project-Mathcraft [![Build Status](https://travis-ci.org/thisisDom/project-mathcraft.svg?branch=master)](https://travis-ci.org/thisisDom/project-mathcraft)
 
 An app that combines fundamental math concepts with the engaging elements of mobile gaming.
 
