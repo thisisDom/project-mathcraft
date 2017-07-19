@@ -47,17 +47,21 @@ An app that combines fundamental math concepts with the engaging elements of mob
 ### Level Select
   * After they select a level, players are taken to the harvesting minigame. Currently, there are two supported game modes:
     * Time Attack: Players are given 45 seconds to answer as many questions correctly as possible. Players are incentivized to not only be quick, but accurate. Besides being penalized for wrong answers, players are offered the chance to encounter rare enemies by building their combo multiplier; defeating these rare monsters will increase their total resource gain at the end of the level.
-    ![Forest Level Start](/public/readme_images/forest_start.gif)
-    ![Forest Level End](/public/readme_images/forest_end.gif)
+    
+     ![Forest Level Start](/public/readme_images/forest_start.gif)
+     ![Forest Level End](/public/readme_images/forest_end.gif)
 
     * Boss Battle: Players must answer 10 questions of increased difficulty within 30 seconds. They are given 3 lives, which deplete with each wrong answer. They must answer each question correctly before the timer expires. These levels serve as a checkpoint to ensure that players have sufficiently mastered the concepts presented in earlier levels- in order to unlock the next set of levels, players must beat the corresponding boss.
-    ![Boss Level Right Answer](/public/readme_images/boss_right_answer.gif)
-    ![Boss Level Wrong Answer](/public/readme_images/boss_wrong_answer.gif)
-    ![Boss Level Death](/public/readme_images/boss_death.gif)
+    
+     ![Boss Level Right Answer](/public/readme_images/boss_right_answer.gif)
+     ![Boss Level Wrong Answer](/public/readme_images/boss_wrong_answer.gif)
+     ![Boss Level Death](/public/readme_images/boss_death.gif)
 
+    
 ##Building
   * After players have gathered the requiste resources, they can head back to town and enter building mode. Building is separated into two different actions:
     * Building: Players can place buildings on any open plot of land in their town, as long as they meet the structure's resource cost.
+    
     ![Town Build](/public/readme_images/build_house.gif)
 
     * Upgrading: After placing a building, players are also given the option to upgrade their buildings. Clicking on a pre-existing building brings up the upgrade button. Besides the visual upgrade, higher-level buildings offer players more bonuses and privileges, such as increased resource gain or unlocking new structures.
@@ -65,8 +69,6 @@ An app that combines fundamental math concepts with the engaging elements of mob
     ![Building Upgrade](/public/readme_images/upgrade_building.gif)
 
   * TODO: Create a player profile screen, where they can see their results and progress. Ideally, players can see which categories they've excelled at and which they need to improve on. Feedback screen is VERY important.
-
-  ![Sample Data Visual](/public/sampledatass.gif)
 
 ## Team Dynamics
 
@@ -93,3 +95,4 @@ An app that combines fundamental math concepts with the engaging elements of mob
 ## Special Thanks
 
 We would like to thank all of the DBC teachers, mentors, Sea Lions, Rock Doves, Fiery Skippers of SF 2017 for their endless support and encouragement!
+
