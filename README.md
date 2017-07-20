@@ -4,6 +4,8 @@ An app that combines fundamental math concepts with the engaging elements of mob
 
 ![Project MathCraft Logo](/public/images/logo.png)
 
+[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/aAwIbdGh1go)
+
 ## Authored by
 
 * Chinmay Banker ([@chinmaybanker](http://github.com/chinmaybanker))
